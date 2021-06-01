@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart';
+import 'package:movie_catalog/hive/hive_helper.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class UserController {
@@ -10,7 +11,6 @@ class UserController {
     if (request.statusCode == 200) {
       var json = jsonDecode(request.body);
       var requestToken = json['request_token'];
-      print(requestToken);
       return requestToken;
     }
     return '';
@@ -31,8 +31,6 @@ class UserController {
             {"request_token": requestToken},
           ),
           headers: {'Content-Type': 'application/json'});
-      print(requestToken);
-      print(request.body);
       if (request.statusCode == 200) {
         var json = jsonDecode(request.body);
         var success = json['success'];
@@ -46,6 +44,19 @@ class UserController {
         break;
       }
     }
-    print(sessionID);
+    _getBaseUser(sessionID!);
+  }
+
+  static void _getBaseUser(String sessionId) async {
+    var request = await get(
+        Uri.parse('https://api.themoviedb.org/3/account?api_key=123cfdbadaa769bb037ba5a7a828a63a&'
+            'session_id=$sessionId'));
+    if (request.statusCode == 200) {
+      var json = jsonDecode(request.body);
+      var name = json['name'];
+      var userName = json['username'];
+      var incudeAdult = json['include_adult'];
+      await HiveHelper.setCurrentUser(name, userName, incudeAdult, sessionId);
+    }
   }
 }
