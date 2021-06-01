@@ -41,7 +41,11 @@ class MovieItemModel {
     popularity = json['popularity'];
     posterPath = json['poster_path'];
     releaseDate = json['release_date'];
-    title = json['title'];
+    if (json.containsKey('name')) {
+      title = json['name'];
+    } else {
+      title = json['title'];
+    }
     video = json['video'];
     voteAverage = json['vote_average'];
     voteCount = json['vote_count'];

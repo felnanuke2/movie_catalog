@@ -3,9 +3,11 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:movie_catalog/constant/constant_colors.dart';
 import 'package:movie_catalog/homScreen/home_screen.dart';
 import 'package:movie_catalog/login_screen.dart';
+import 'package:movie_catalog/user/user_controller.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+
   runApp(GetMaterialApp(
     home: MyApp(),
     debugShowCheckedModeBanner: false,
@@ -22,7 +24,7 @@ class MyApp extends StatelessWidget {
           primaryColor: BACKGROUND_COLOR,
           scaffoldBackgroundColor: BACKGROUND_COLOR,
           appBarTheme: AppBarTheme(color: BACKGROUND_COLOR),
-          fontFamily: 'Georgia',
+          fontFamily: 'Roboto',
           textTheme: TextTheme(
               headline1: TextStyle(color: Colors.white), subtitle1: TextStyle(color: Colors.white)),
           inputDecorationTheme: InputDecorationTheme(

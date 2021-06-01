@@ -4,20 +4,23 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:movie_catalog/homScreen/model/movie_item_model.dart';
 import 'package:movie_catalog/moviescreen/movie_screen.dart';
+import 'package:movie_catalog/tvscreen/tv_screen.dart';
 
 class MovieItem extends StatelessWidget {
   MovieItemModel? _movieItemModel;
   var _uniqueKey = UniqueKey();
-  MovieItem(this._movieItemModel);
+  MovieItem(this._movieItemModel, {this.tv});
+  bool? tv;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => MovieScreen(_movieItemModel, _uniqueKey),
-          )),
+      onTap: () => Navigator.push(context, MaterialPageRoute(
+        builder: (context) {
+          if (tv == true) return TVScreen(_movieItemModel, _uniqueKey);
+          return MovieScreen(_movieItemModel, _uniqueKey);
+        },
+      )),
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: 10),
         child: AspectRatio(

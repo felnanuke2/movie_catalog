@@ -2,8 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:movie_catalog/homScreen/controler/home_screen_controller.dart';
 import 'package:movie_catalog/homScreen/model/movie_item_model.dart';
+import 'package:movie_catalog/moviescreen/movie_screen.dart';
 
 class HomeSearch extends SearchDelegate {
   List<MovieItemModel> movieList = HomeScreenController.popularMovies;
@@ -67,34 +69,41 @@ class HomeSearch extends SearchDelegate {
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
                   var movieItem = snapshot.data![index];
+                  var uniquekey = UniqueKey();
                   var url = movieItem.posterPath;
                   if (url != null) {
                     url = 'https://www.themoviedb.org/t/p/w200' + url;
                   } else {
                     url = null;
                   }
-                  return Container(
-                    margin: EdgeInsets.symmetric(vertical: 10),
-                    color: Colors.white.withOpacity(0.04),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: 80,
-                          child: AspectRatio(
-                            aspectRatio: 0.699,
-                            child: url != null
-                                ? Image.network(
-                                    url,
-                                    fit: BoxFit.cover,
-                                  )
-                                : FlutterLogo(),
+                  return InkWell(
+                    onTap: () => Get.to(() => MovieScreen(movieItem, uniquekey)),
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 10),
+                      color: Colors.white.withOpacity(0.04),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 80,
+                            child: Hero(
+                              tag: uniquekey,
+                              child: AspectRatio(
+                                aspectRatio: 0.699,
+                                child: url != null
+                                    ? Image.network(
+                                        url,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : FlutterLogo(),
+                              ),
+                            ),
                           ),
-                        ),
-                        Expanded(
-                            child: Container(
-                                padding: EdgeInsets.all(8), child: Text(movieItem.title!)))
-                      ],
+                          Expanded(
+                              child: Container(
+                                  padding: EdgeInsets.all(8), child: Text(movieItem.title!)))
+                        ],
+                      ),
                     ),
                   );
                 }),
@@ -135,71 +144,82 @@ class HomeSearch extends SearchDelegate {
       itemCount: movieList.length,
       itemBuilder: (context, index) {
         var movieItem = movieList[index];
-        return Container(
-          color: Colors.white.withOpacity(0.02),
-          margin: EdgeInsets.symmetric(vertical: 8),
-          height: 200,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AspectRatio(
-                aspectRatio: 0.699,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: movieItem.posterPath != null
-                      ? Image.network(
-                          'https://www.themoviedb.org/t/p/w400' + movieItem.posterPath!,
-                          fit: BoxFit.cover,
-                        )
-                      : FlutterLogo(),
+        var uniqueKey = UniqueKey();
+        return InkWell(
+          onTap: () {
+            Get.to(() => MovieScreen(movieItem, uniqueKey));
+          },
+          child: Container(
+            color: Colors.white.withOpacity(0.02),
+            margin: EdgeInsets.symmetric(vertical: 8),
+            height: 200,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Hero(
+                  tag: uniqueKey,
+                  child: AspectRatio(
+                    aspectRatio: 0.699,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: movieItem.posterPath != null
+                          ? Image.network(
+                              'https://www.themoviedb.org/t/p/w400' + movieItem.posterPath!,
+                              fit: BoxFit.cover,
+                            )
+                          : FlutterLogo(),
+                    ),
+                  ),
                 ),
-              ),
-              Expanded(
-                  child: Container(
-                padding: EdgeInsets.all(8),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            movieItem.title!,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(fontSize: 18),
-                          ),
-                          if (movieItem.overview != null)
+                Expanded(
+                    child: Container(
+                  padding: EdgeInsets.all(8),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
                             Text(
-                              movieItem.overview!,
-                              maxLines: 6,
+                              movieItem.title!,
+                              maxLines: 2,
                               overflow: TextOverflow.ellipsis,
-                              style: TextStyle(fontSize: 15),
+                              style: TextStyle(fontSize: 18),
                             ),
+                            if (movieItem.overview != null)
+                              Text(
+                                movieItem.overview!,
+                                maxLines: 6,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(fontSize: 15),
+                              ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Stack(
+                        children: [
+                          Row(
+                            children: List<Widget>.generate(
+                                    5,
+                                    (index) =>
+                                        Icon(Icons.star_border_outlined, color: Colors.grey)) +
+                                [Text('  ${movieItem.voteAverage}')],
+                          ),
+                          Row(
+                            children: _buildStars(movieItem),
+                          ),
                         ],
                       ),
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Stack(
-                      children: [
-                        Row(
-                          children: List<Widget>.generate(5,
-                                  (index) => Icon(Icons.star_border_outlined, color: Colors.grey)) +
-                              [Text('  ${movieItem.voteAverage}')],
-                        ),
-                        Row(
-                          children: _buildStars(movieItem),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ))
-            ],
+                    ],
+                  ),
+                ))
+              ],
+            ),
           ),
         );
       },

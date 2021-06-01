@@ -46,7 +46,7 @@ class _MovieScreenState extends State<MovieScreen> with TickerProviderStateMixin
         backgroundColor: BACKGROUND_COLOR,
         body: CustomScrollView(
           slivers: [
-            _buildSliverAppBarWithImage(),
+            _buildSliverAppBarWithImage(context),
             SliverToBoxAdapter(
               child: Container(
                 padding: EdgeInsets.all(12),
@@ -107,36 +107,7 @@ class _MovieScreenState extends State<MovieScreen> with TickerProviderStateMixin
                     SizedBox(
                       height: 10,
                     ),
-                    StreamBuilder<List<MovieItemModel>>(
-                      stream: _movieControler.recomendationsStream,
-                      initialData: _movieControler.recomendationsList,
-                      builder: (context, snapshot) {
-                        if (!snapshot.hasData) return Container();
-                        if (snapshot.data!.isEmpty) return Container();
-                        return Column(
-                          children: [
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                'Similares',
-                                style: TextStyle(color: Colors.white, fontSize: 17),
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Container(
-                              height: 340,
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: snapshot.data!.length,
-                                itemBuilder: (context, index) => MovieItem(snapshot.data![index]),
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                    ),
+                    _buildSimilar(),
                     SizedBox(
                       height: 10,
                     ),
@@ -146,6 +117,39 @@ class _MovieScreenState extends State<MovieScreen> with TickerProviderStateMixin
             )
           ],
         ));
+  }
+
+  StreamBuilder<List<MovieItemModel>> _buildSimilar() {
+    return StreamBuilder<List<MovieItemModel>>(
+      stream: _movieControler.recomendationsStream,
+      initialData: _movieControler.recomendationsList,
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) return Container();
+        if (snapshot.data!.isEmpty) return Container();
+        return Column(
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Similares',
+                style: TextStyle(color: Colors.white, fontSize: 17),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              height: 340,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: snapshot.data!.length,
+                itemBuilder: (context, index) => MovieItem(snapshot.data![index]),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   StreamBuilder<List<MovieVideoModel>> _videosGridView() {
@@ -328,15 +332,15 @@ class _MovieScreenState extends State<MovieScreen> with TickerProviderStateMixin
     );
   }
 
-  SliverAppBar _buildSliverAppBarWithImage() {
+  SliverAppBar _buildSliverAppBarWithImage(BuildContext context) {
     return SliverAppBar(
-      expandedHeight: 480,
+      expandedHeight: (MediaQuery.of(context).size.width / 2) * 3,
       backgroundColor: Colors.transparent,
       pinned: true,
       flexibleSpace: Hero(
         tag: widget._uniqueKey!,
         child: AspectRatio(
-          aspectRatio: 0.699,
+          aspectRatio: 2 / 3.2,
           child: ClipRRect(
             borderRadius: BorderRadius.circular(16),
             child: Image.network(
