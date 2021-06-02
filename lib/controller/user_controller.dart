@@ -50,7 +50,6 @@ class UserController {
       if (cancelLogin) {
         break;
       }
-      print(sessionID);
     }
     if (cancelLogin) {
     } else {
@@ -109,8 +108,89 @@ class UserController {
         ProfileController.tvFavoritesController.add(ProfileController.tvFavorites);
       }
     }
+  }
 
-    print(request.body);
+  static void addToWatchList(
+      bool watchlist, String mediaType, MovieItemModel movieItemModel) async {
+    var id = UserModel.instance.baseUser!.id;
+    var sessionId = UserModel.instance.baseUser!.sessionID;
+    final url = 'https://api.themoviedb.org/3/account/$id/watchlist?api_key'
+        '=123cfdbadaa769bb037ba5a7a828a63a&session_id=$sessionId';
+    var request = await post(Uri.parse(url),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'media_type': mediaType,
+          'media_id': movieItemModel.id,
+          'watchlist': watchlist,
+        }));
+    if (watchlist) {
+      if (mediaType == 'movie') {
+        ProfileController.movieWhactList.add(movieItemModel);
+        ProfileController.movieWarchController.add(ProfileController.movieWhactList);
+      } else {
+        ProfileController.tvWhactList.add(movieItemModel);
+        ProfileController.tvWarchController.add(ProfileController.tvWhactList);
+      }
+    } else {
+      if (mediaType == 'movie') {
+        ProfileController.movieWhactList
+            .removeWhere((element) => element.id! == movieItemModel.id!);
+        ProfileController.movieWarchController.add(ProfileController.movieWhactList);
+      } else {
+        ProfileController.tvWhactList.removeWhere((element) => element.id == movieItemModel.id);
+        ProfileController.tvWarchController.add(ProfileController.tvWhactList);
+      }
+    }
+  }
+
+  static rateMovie(MovieItemModel movieItemModel, num rate) async {
+    var sessionId = UserModel.instance.baseUser!.sessionID;
+    final url = 'https://api.themoviedb.org/3/movie/${movieItemModel.id}/rating?api_key'
+        '=123cfdbadaa769bb037ba5a7a828a63a&session_id=$sessionId';
+    var request = await post(Uri.parse(url),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'value': rate,
+        }));
+    bool conatins = false;
+    movieItemModel.rating = rate;
+    var index = 0;
+    ProfileController.movieRated.forEach((element) {
+      if (element.id == movieItemModel.id) {
+        ProfileController.movieRated[index] = movieItemModel;
+        conatins = true;
+      }
+      index++;
+    });
+    if (!conatins) {
+      ProfileController.movieRated.add(movieItemModel);
+    }
+    ProfileController.movieRatedController.add(ProfileController.movieRated);
+  }
+
+  static rateSerie(MovieItemModel movieItemModel, num rate) async {
+    var sessionId = UserModel.instance.baseUser!.sessionID;
+    final url = 'https://api.themoviedb.org/3/tv/${movieItemModel.id}/rating?api_key'
+        '=123cfdbadaa769bb037ba5a7a828a63a&session_id=$sessionId';
+    var request = await post(Uri.parse(url),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'value': rate,
+        }));
+    bool conatins = false;
+    movieItemModel.rating = rate;
+    var index = 0;
+    ProfileController.tvRated.forEach((element) {
+      if (element.id == movieItemModel.id) {
+        ProfileController.tvRated[index] = movieItemModel;
+        conatins = true;
+      }
+      index++;
+    });
+    if (!conatins) {
+      ProfileController.tvRated.add(movieItemModel);
+    }
+    ProfileController.tvRatedController.add(ProfileController.tvRated);
   }
 
   static void loggout() {

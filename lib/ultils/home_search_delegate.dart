@@ -3,14 +3,18 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_state_manager/src/simple/list_notifier.dart';
 import 'package:movie_catalog/homScreen/controler/home_screen_controller.dart';
 import 'package:movie_catalog/homScreen/model/movie_item_model.dart';
 import 'package:movie_catalog/moviescreen/movie_screen.dart';
+import 'package:movie_catalog/tvscreen/tv_screen.dart';
 
 class HomeSearch extends SearchDelegate {
-  List<MovieItemModel> movieList = HomeScreenController.popularMovies;
+  String? type;
+  List<MovieItemModel> movieList = [];
+  HomeSearch(this.type) {}
+
   var _homeCntroler = HomeScreenController();
-  var _lastQuery = '';
 
   @override
   ThemeData appBarTheme(BuildContext context) {
@@ -50,17 +54,19 @@ class HomeSearch extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
+    if (super.query.isEmpty) return Container();
     return _buildResult();
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
     Future.delayed(Duration(seconds: 1, milliseconds: 200))
-        .then((value) => _homeCntroler.queryStream = super.query);
+        .then((value) => _homeCntroler.queryStream = [super.query, type!]);
+    if (super.query.isEmpty) return Container();
 
     return StreamBuilder<List<MovieItemModel>>(
       stream: _homeCntroler.searchStremResult,
-      initialData: HomeScreenController.searchMoviesStorage,
+      initialData: [],
       builder: (context, snapshot) => Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -77,7 +83,10 @@ class HomeSearch extends SearchDelegate {
                     url = null;
                   }
                   return InkWell(
-                    onTap: () => Get.to(() => MovieScreen(movieItem, uniquekey)),
+                    onTap: () => Get.to(() {
+                      if (type == 'tv') return TVScreen(movieItem, uniquekey);
+                      return MovieScreen(movieItem, uniquekey);
+                    }),
                     child: Container(
                       margin: EdgeInsets.symmetric(vertical: 10),
                       color: Colors.white.withOpacity(0.04),
@@ -136,93 +145,100 @@ class HomeSearch extends SearchDelegate {
     });
   }
 
-  ListView _buildResult() {
-    if (HomeScreenController.searchMoviesStorage.isNotEmpty) {
-      this.movieList = HomeScreenController.searchMoviesStorage;
-    }
-    return ListView.builder(
-      itemCount: movieList.length,
-      itemBuilder: (context, index) {
-        var movieItem = movieList[index];
-        var uniqueKey = UniqueKey();
-        return InkWell(
-          onTap: () {
-            Get.to(() => MovieScreen(movieItem, uniqueKey));
-          },
-          child: Container(
-            color: Colors.white.withOpacity(0.02),
-            margin: EdgeInsets.symmetric(vertical: 8),
-            height: 200,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Hero(
-                  tag: uniqueKey,
-                  child: AspectRatio(
-                    aspectRatio: 0.699,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: movieItem.posterPath != null
-                          ? Image.network(
-                              'https://www.themoviedb.org/t/p/w400' + movieItem.posterPath!,
-                              fit: BoxFit.cover,
-                            )
-                          : FlutterLogo(),
-                    ),
-                  ),
-                ),
-                Expanded(
-                    child: Container(
-                  padding: EdgeInsets.all(8),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  Widget _buildResult() {
+    if (HomeScreenController.searchMoviesStorage.isNotEmpty) {}
+    return StreamBuilder<List<MovieItemModel>>(
+        stream: _homeCntroler.searchStremResult,
+        initialData: [],
+        builder: (context, snapshot) {
+          movieList = snapshot.data!;
+          return ListView.builder(
+            itemCount: snapshot.data!.length,
+            itemBuilder: (context, index) {
+              var movieItem = movieList[index];
+              var uniqueKey = UniqueKey();
+              return InkWell(
+                onTap: () {
+                  Get.to(() {
+                    if (type == 'tv') return TVScreen(movieItem, uniqueKey);
+                    return MovieScreen(movieItem, uniqueKey);
+                  });
+                },
+                child: Container(
+                  color: Colors.white.withOpacity(0.02),
+                  margin: EdgeInsets.symmetric(vertical: 8),
+                  height: 200,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Hero(
+                        tag: uniqueKey,
+                        child: AspectRatio(
+                          aspectRatio: 0.699,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: movieItem.posterPath != null
+                                ? Image.network(
+                                    'https://www.themoviedb.org/t/p/w400' + movieItem.posterPath!,
+                                    fit: BoxFit.cover,
+                                  )
+                                : FlutterLogo(),
+                          ),
+                        ),
+                      ),
                       Expanded(
+                          child: Container(
+                        padding: EdgeInsets.all(8),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              movieItem.title!,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(fontSize: 18),
-                            ),
-                            if (movieItem.overview != null)
-                              Text(
-                                movieItem.overview!,
-                                maxLines: 6,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(fontSize: 15),
+                            Expanded(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    movieItem.title!,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                  if (movieItem.overview != null)
+                                    Text(
+                                      movieItem.overview!,
+                                      maxLines: 6,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(fontSize: 15),
+                                    ),
+                                ],
                               ),
+                            ),
+                            SizedBox(
+                              height: 8,
+                            ),
+                            Stack(
+                              children: [
+                                Row(
+                                  children: List<Widget>.generate(
+                                          5,
+                                          (index) => Icon(Icons.star_border_outlined,
+                                              color: Colors.grey)) +
+                                      [Text('  ${movieItem.voteAverage}')],
+                                ),
+                                Row(
+                                  children: _buildStars(movieItem),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
-                      ),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Stack(
-                        children: [
-                          Row(
-                            children: List<Widget>.generate(
-                                    5,
-                                    (index) =>
-                                        Icon(Icons.star_border_outlined, color: Colors.grey)) +
-                                [Text('  ${movieItem.voteAverage}')],
-                          ),
-                          Row(
-                            children: _buildStars(movieItem),
-                          ),
-                        ],
-                      ),
+                      ))
                     ],
                   ),
-                ))
-              ],
-            ),
-          ),
-        );
-      },
-    );
+                ),
+              );
+            },
+          );
+        });
   }
 }

@@ -1,13 +1,20 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:movie_catalog/constant/constant_colors.dart';
 import 'package:movie_catalog/homScreen/model/movie_item_model.dart';
+import 'package:movie_catalog/homScreen/tabs/profiletab/controller/profile_controller.dart';
 import 'package:movie_catalog/homScreen/widget/movie_item.dart';
 import 'package:movie_catalog/moviescreen/model/actor_model.dart';
 import 'package:movie_catalog/moviescreen/model/movie_video_model.dart';
 import 'package:movie_catalog/moviescreen/widget/cast_avatar_item.dart';
 import 'package:movie_catalog/tvscreen/controler/tv_controler.dart';
 import 'package:movie_catalog/tvscreen/models/tv_model.dart';
+import 'package:movie_catalog/user/user_controller.dart';
+import 'package:movie_catalog/user/usermodel.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:rive/rive.dart' as rive;
 
 class TVScreen extends StatefulWidget {
   MovieItemModel? movieItemModel;
@@ -26,12 +33,45 @@ class _TVScreenState extends State<TVScreen> with TickerProviderStateMixin {
   bool expandVideoGrid = false;
   Animation<double>? _arrowDownAnimation;
   AnimationController? _animationController;
+  rive.Artboard? _riveArtBoard;
+  bool isLiked = false;
+  bool wachList = false;
+  bool rated = false;
+  final _meditype = 'tv';
+  final _starController = StreamController<num>.broadcast();
+  num starCount = 0.5;
   @override
   void initState() {
     super.initState();
+    _controller.getData(widget.movieItemModel!.id.toString());
     _animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 300));
     _arrowDownAnimation = Tween<double>(begin: 0, end: 0.5)
         .animate(CurvedAnimation(parent: _animationController!, curve: Curves.linearToEaseOut));
+    rootBundle.load('assets/favorite Button.riv').then((value) {
+      final file = rive.RiveFile.import(value);
+      final artB = file.mainArtboard;
+      _riveArtBoard = artB;
+      setState(() {
+        _riveArtBoard!.addController(rive.SimpleAnimation(!isLiked ? 'unlike' : 'like'));
+      });
+    });
+    if (UserModel.instance.baseUser != null) {
+      isLiked = ProfileController.tvFavorites
+          .map((e) => e.id)
+          .toList()
+          .contains(widget.movieItemModel!.id!);
+      wachList = ProfileController.tvWhactList
+          .map((e) => e.id)
+          .toList()
+          .contains(widget.movieItemModel!.id!);
+      rated =
+          ProfileController.tvRated.map((e) => e.id).toList().contains(widget.movieItemModel!.id!);
+      if (rated) {
+        var item = ProfileController.tvRated
+            .firstWhere((element) => element.id == widget.movieItemModel!.id!);
+        starCount = item.rating!;
+      }
+    }
   }
 
   @override
@@ -58,6 +98,7 @@ class _TVScreenState extends State<TVScreen> with TickerProviderStateMixin {
                           height: 10,
                         ),
                         _buildTitle(),
+                        if (UserModel.instance.baseUser != null) _optionsRowUser(context),
                         SizedBox(
                           height: 10,
                         ),
@@ -124,15 +165,6 @@ class _TVScreenState extends State<TVScreen> with TickerProviderStateMixin {
                         SizedBox(
                           height: 10,
                         ),
-                        Builder(
-                          builder: (context) {
-                            if (!initiated) {
-                              _controller.tvId = widget.movieItemModel!.id.toString();
-                              initiated = true;
-                            }
-                            return Container();
-                          },
-                        )
                       ],
                     ),
                   ),
@@ -141,6 +173,163 @@ class _TVScreenState extends State<TVScreen> with TickerProviderStateMixin {
             );
           }),
     );
+  }
+
+  Row _optionsRowUser(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Container(
+          width: 50,
+          height: 50,
+          padding: EdgeInsets.all(4),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: BACKGROUND_COLOR,
+          ),
+          child: InkWell(
+            onTap: () {
+              _riveArtBoard!.addController(rive.SimpleAnimation(isLiked ? 'unlike' : 'like'));
+              isLiked = !isLiked;
+              UserController.markAsFavorite(isLiked, _meditype, widget.movieItemModel!);
+            },
+            child: _riveArtBoard != null
+                ? rive.Rive(artboard: _riveArtBoard!)
+                : Icon(
+                    Icons.favorite,
+                    color: Color(0xffef47b6),
+                  ),
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.all(4),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: wachList ? BACKGROUND_COLOR : Colors.white,
+          ),
+          child: InkWell(
+            onTap: () {
+              setState(() {
+                wachList = !wachList;
+                UserController.addToWatchList(wachList, _meditype, widget.movieItemModel!);
+              });
+            },
+            child: Icon(
+              Icons.bookmark,
+              color: wachList ? Colors.red : BACKGROUND_COLOR,
+              size: 28,
+            ),
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.all(4),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: rated ? BACKGROUND_COLOR : Colors.white,
+          ),
+          child: InkWell(
+            onTap: () {
+              _starRateGesture(context);
+            },
+            child: Icon(
+              Icons.star,
+              color: rated ? Colors.amber : BACKGROUND_COLOR,
+              size: 28,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  _starRateGesture(BuildContext context) async {
+    var result = await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          insetPadding: EdgeInsets.all(0),
+          backgroundColor: Colors.black.withOpacity(0.01),
+          content: Row(
+            children: [
+              GestureDetector(
+                onHorizontalDragUpdate: (details) {
+                  var position = details.localPosition.dx;
+                  if (position > 100) position = 100;
+                  if (position < 5) position = 5;
+                  starCount = position / 10;
+                  var string = starCount.toStringAsFixed(2);
+
+                  if (string.contains('.')) {
+                    var splited = string.split('.');
+                    var first = splited.first;
+                    var last = splited.last;
+                    var value = num.parse(last);
+                    var rest = 0;
+                    if (value > 50 && value < 70) value = 50;
+                    if (value < 50 && value > 30) value = 50;
+                    if (value < 30) {
+                      value = 0;
+                    }
+                    if (value > 70) {
+                      value = 0;
+                      rest += 1;
+                    }
+
+                    starCount = int.parse(first) + rest + (value / 100);
+                  }
+                  _starController.add(starCount);
+                },
+                onHorizontalDragEnd: (details) {
+                  Navigator.pop(context, true);
+                },
+                child: StreamBuilder<num>(
+                    stream: _starController.stream,
+                    initialData: starCount,
+                    builder: (context, snapshot) {
+                      var white = 10 - snapshot.data!.round();
+                      return ShaderMask(
+                        shaderCallback: (Rect bounds) {
+                          return LinearGradient(
+                                  colors: List.generate(snapshot.data!.round(),
+                                          (index) => Color(Colors.amber.value)) +
+                                      List.generate(white, (index) => Colors.white))
+                              .createShader(bounds);
+                        },
+                        child: Row(
+                          children: List.generate(
+                              5,
+                              (index) => Icon(
+                                    Icons.star,
+                                    color: Colors.white,
+                                    size: 30,
+                                  )),
+                        ),
+                      );
+                    }),
+              ),
+              SizedBox(
+                width: 8,
+              ),
+              StreamBuilder<num>(
+                  stream: _starController.stream,
+                  initialData: starCount,
+                  builder: (context, snapshot) {
+                    return Text(
+                      '${starCount.toStringAsFixed(1)} / 10.0',
+                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    );
+                  })
+            ],
+          ),
+        );
+      },
+    );
+    if (result == true) {
+      setState(() {
+        rated = true;
+        UserController.rateSerie(widget.movieItemModel!, num.parse(starCount.toStringAsFixed(1)));
+      });
+    }
   }
 
   StreamBuilder<List<MovieItemModel>> _buildSimilar() {
@@ -410,24 +599,59 @@ class _TVScreenState extends State<TVScreen> with TickerProviderStateMixin {
     );
   }
 
-  SliverAppBar _buildSliverAppBarWithImage(BuildContext context) {
-    return SliverAppBar(
-      expandedHeight: (MediaQuery.of(context).size.width / 2) * 3,
-      backgroundColor: Colors.transparent,
-      pinned: true,
-      flexibleSpace: Hero(
-        tag: widget._uniqueKey!,
-        child: AspectRatio(
-          aspectRatio: 2 / 3.2,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(16),
-            child: Image.network(
-              'https://www.themoviedb.org/t/p/w600_and_h900_bestv2${widget.movieItemModel!.posterPath}',
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-      ),
-    );
+  StreamBuilder _buildSliverAppBarWithImage(BuildContext context) {
+    return StreamBuilder<List>(
+        stream: _controller.videosStream,
+        initialData: _controller.videoList,
+        builder: (context, snapshot1) {
+          return StreamBuilder<CreditModel>(
+              stream: _controller.creditStream,
+              initialData: _controller.creditModel,
+              builder: (context, snapshot2) {
+                return StreamBuilder<TvModel>(
+                    stream: _controller.tvStream,
+                    initialData: _controller.tvModel,
+                    builder: (context, snapshot3) {
+                      return StreamBuilder<List<MovieItemModel>>(
+                          stream: _controller.similarListStream,
+                          initialData: _controller.similarTVList,
+                          builder: (context, snapshot4) {
+                            bool conenctAwait = snapshot1.data!.isEmpty &&
+                                snapshot2.data == null &&
+                                snapshot3.data == null;
+
+                            return SliverAppBar(
+                              expandedHeight: (MediaQuery.of(context).size.width / 2) * 3,
+                              backgroundColor: Colors.transparent,
+                              pinned: true,
+                              flexibleSpace: Hero(
+                                tag: widget._uniqueKey!,
+                                child: AspectRatio(
+                                  aspectRatio: 2 / 3.2,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(16),
+                                    child: Image.network(
+                                      'https://www.themoviedb.org/t/p/w600_and_h900_bestv2${widget.movieItemModel!.posterPath}',
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              actions: [
+                                if (conenctAwait)
+                                  Center(
+                                    child: CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation(Colors.white),
+                                    ),
+                                  ),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                              ],
+                            );
+                          });
+                    });
+              });
+        });
   }
 }

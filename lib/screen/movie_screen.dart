@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:movie_catalog/constant/constant_colors.dart';
@@ -15,7 +17,7 @@ import 'package:movie_catalog/moviescreen/widget/cast_avatar_item.dart';
 import 'package:movie_catalog/user/user_controller.dart';
 import 'package:movie_catalog/user/usermodel.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-import 'package:rive/rive.dart';
+import 'package:rive/rive.dart' as rive;
 
 class MovieScreen extends StatefulWidget {
   MovieItemModel? _movieItemModel;
@@ -34,24 +36,28 @@ class _MovieScreenState extends State<MovieScreen> with TickerProviderStateMixin
   bool expandedOverview = false;
   Animation<double>? _arrowDownAnimation;
   AnimationController? _animationController;
-  Artboard? _riveArtBoard;
+  rive.Artboard? _riveArtBoard;
   bool isLiked = false;
+  bool wachList = false;
+  bool rated = false;
   final _meditype = 'movie';
+  final _starController = StreamController<num>.broadcast();
+  num starCount = 0.5;
 
   @override
   initState() {
-    Future.delayed(Duration(milliseconds: 200))
-        .then((value) => _movieControler.movieID = widget._movieItemModel!.id!.toString());
+    Future.delayed(Duration(milliseconds: 350))
+        .then((value) => _movieControler.getData(widget._movieItemModel!.id!.toString()));
     super.initState();
     _animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 300));
     _arrowDownAnimation = Tween<double>(begin: 0, end: 0.5)
         .animate(CurvedAnimation(parent: _animationController!, curve: Curves.linearToEaseOut));
     rootBundle.load('assets/favorite Button.riv').then((value) {
-      final file = RiveFile.import(value);
+      final file = rive.RiveFile.import(value);
       final artB = file.mainArtboard;
       _riveArtBoard = artB;
       setState(() {
-        _riveArtBoard!.addController(SimpleAnimation(!isLiked ? 'unlike' : 'like'));
+        _riveArtBoard!.addController(rive.SimpleAnimation(!isLiked ? 'unlike' : 'like'));
       });
     });
     if (UserModel.instance.baseUser != null) {
@@ -59,6 +65,19 @@ class _MovieScreenState extends State<MovieScreen> with TickerProviderStateMixin
           .map((e) => e.id)
           .toList()
           .contains(widget._movieItemModel!.id!);
+      wachList = ProfileController.movieWhactList
+          .map((e) => e.id)
+          .toList()
+          .contains(widget._movieItemModel!.id!);
+      rated = ProfileController.movieRated
+          .map((e) => e.id)
+          .toList()
+          .contains(widget._movieItemModel!.id!);
+      if (rated) {
+        var item = ProfileController.movieRated
+            .firstWhere((element) => element.id == widget._movieItemModel!.id!);
+        starCount = item.rating!;
+      }
     }
   }
 
@@ -76,35 +95,7 @@ class _MovieScreenState extends State<MovieScreen> with TickerProviderStateMixin
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     _buildTitle(),
-                    if (UserModel.instance.baseUser != null)
-                      Row(
-                        children: [
-                          Container(
-                            width: 50,
-                            height: 50,
-                            padding: EdgeInsets.all(4),
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: BACKGROUND_COLOR,
-                            ),
-                            child: InkWell(
-                              onTap: () {
-                                _riveArtBoard!
-                                    .addController(SimpleAnimation(isLiked ? 'unlike' : 'like'));
-                                isLiked = !isLiked;
-                                UserController.markAsFavorite(
-                                    isLiked, _meditype, widget._movieItemModel!);
-                              },
-                              child: _riveArtBoard != null
-                                  ? Rive(artboard: _riveArtBoard!)
-                                  : Icon(
-                                      Icons.favorite,
-                                      color: Color(0xffef47b6),
-                                    ),
-                            ),
-                          )
-                        ],
-                      ),
+                    if (UserModel.instance.baseUser != null) _optionsRowUser(context),
                     SizedBox(
                       height: 10,
                     ),
@@ -168,6 +159,163 @@ class _MovieScreenState extends State<MovieScreen> with TickerProviderStateMixin
             )
           ],
         ));
+  }
+
+  Row _optionsRowUser(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Container(
+          width: 50,
+          height: 50,
+          padding: EdgeInsets.all(4),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: BACKGROUND_COLOR,
+          ),
+          child: InkWell(
+            onTap: () {
+              _riveArtBoard!.addController(rive.SimpleAnimation(isLiked ? 'unlike' : 'like'));
+              isLiked = !isLiked;
+              UserController.markAsFavorite(isLiked, _meditype, widget._movieItemModel!);
+            },
+            child: _riveArtBoard != null
+                ? rive.Rive(artboard: _riveArtBoard!)
+                : Icon(
+                    Icons.favorite,
+                    color: Color(0xffef47b6),
+                  ),
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.all(4),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: wachList ? BACKGROUND_COLOR : Colors.white,
+          ),
+          child: InkWell(
+            onTap: () {
+              setState(() {
+                wachList = !wachList;
+                UserController.addToWatchList(wachList, _meditype, widget._movieItemModel!);
+              });
+            },
+            child: Icon(
+              Icons.bookmark,
+              color: wachList ? Colors.red : BACKGROUND_COLOR,
+              size: 28,
+            ),
+          ),
+        ),
+        Container(
+          padding: EdgeInsets.all(4),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: rated ? BACKGROUND_COLOR : Colors.white,
+          ),
+          child: InkWell(
+            onTap: () {
+              _starRateGesture(context);
+            },
+            child: Icon(
+              Icons.star,
+              color: rated ? Colors.amber : BACKGROUND_COLOR,
+              size: 28,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  _starRateGesture(BuildContext context) async {
+    var result = await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          insetPadding: EdgeInsets.all(0),
+          backgroundColor: Colors.black.withOpacity(0.01),
+          content: Row(
+            children: [
+              GestureDetector(
+                onHorizontalDragUpdate: (details) {
+                  var position = details.localPosition.dx;
+                  if (position > 100) position = 100;
+                  if (position < 5) position = 5;
+                  starCount = position / 10;
+                  var string = starCount.toStringAsFixed(2);
+
+                  if (string.contains('.')) {
+                    var splited = string.split('.');
+                    var first = splited.first;
+                    var last = splited.last;
+                    var value = num.parse(last);
+                    var rest = 0;
+                    if (value > 50 && value < 70) value = 50;
+                    if (value < 50 && value > 30) value = 50;
+                    if (value < 30) {
+                      value = 0;
+                    }
+                    if (value > 70) {
+                      value = 0;
+                      rest += 1;
+                    }
+
+                    starCount = int.parse(first) + rest + (value / 100);
+                  }
+                  _starController.add(starCount);
+                },
+                onHorizontalDragEnd: (details) {
+                  Navigator.pop(context, true);
+                },
+                child: StreamBuilder<num>(
+                    stream: _starController.stream,
+                    initialData: starCount,
+                    builder: (context, snapshot) {
+                      var white = 10 - snapshot.data!.round();
+                      return ShaderMask(
+                        shaderCallback: (Rect bounds) {
+                          return LinearGradient(
+                                  colors: List.generate(snapshot.data!.round(),
+                                          (index) => Color(Colors.amber.value)) +
+                                      List.generate(white, (index) => Colors.white))
+                              .createShader(bounds);
+                        },
+                        child: Row(
+                          children: List.generate(
+                              5,
+                              (index) => Icon(
+                                    Icons.star,
+                                    color: Colors.white,
+                                    size: 30,
+                                  )),
+                        ),
+                      );
+                    }),
+              ),
+              SizedBox(
+                width: 8,
+              ),
+              StreamBuilder<num>(
+                  stream: _starController.stream,
+                  initialData: starCount,
+                  builder: (context, snapshot) {
+                    return Text(
+                      '${starCount.toStringAsFixed(1)} / 10.0',
+                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                    );
+                  })
+            ],
+          ),
+        );
+      },
+    );
+    if (result == true) {
+      setState(() {
+        rated = true;
+        UserController.rateMovie(widget._movieItemModel!, num.parse(starCount.toStringAsFixed(1)));
+      });
+    }
   }
 
   StreamBuilder<List<MovieItemModel>> _buildSimilar() {
@@ -383,25 +531,60 @@ class _MovieScreenState extends State<MovieScreen> with TickerProviderStateMixin
     );
   }
 
-  SliverAppBar _buildSliverAppBarWithImage(BuildContext context) {
-    return SliverAppBar(
-      expandedHeight: (MediaQuery.of(context).size.width / 2) * 3,
-      backgroundColor: Colors.transparent,
-      pinned: true,
-      flexibleSpace: Hero(
-        tag: widget._uniqueKey!,
-        child: AspectRatio(
-          aspectRatio: 2 / 3.2,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(16),
-            child: Image.network(
-              'https://www.themoviedb.org/t/p/w600_and_h900_bestv2${widget._movieItemModel!.posterPath}',
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-      ),
-    );
+  StreamBuilder _buildSliverAppBarWithImage(BuildContext context) {
+    return StreamBuilder<List>(
+        stream: _movieControler.listVideosStream,
+        initialData: _movieControler.listVideoModel,
+        builder: (context, snapshot1) {
+          return StreamBuilder<CreditModel>(
+              stream: _movieControler.movieCreditStream,
+              initialData: _movieControler.creditModel,
+              builder: (context, snapshot2) {
+                return StreamBuilder<MovieModelDetail>(
+                    stream: _movieControler.movieDetailStream,
+                    initialData: _movieControler.movieModelDetail,
+                    builder: (context, snapshot3) {
+                      return StreamBuilder<List<MovieItemModel>>(
+                          stream: _movieControler.recomendationsStream,
+                          initialData: _movieControler.recomendationsList,
+                          builder: (context, snapshot4) {
+                            bool conenctAwait = snapshot1.data!.isEmpty &&
+                                snapshot2.data == null &&
+                                snapshot3.data == null;
+
+                            return SliverAppBar(
+                              expandedHeight: (MediaQuery.of(context).size.width / 2) * 3,
+                              backgroundColor: Colors.transparent,
+                              pinned: true,
+                              flexibleSpace: Hero(
+                                tag: widget._uniqueKey!,
+                                child: AspectRatio(
+                                  aspectRatio: 2 / 3.2,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(16),
+                                    child: Image.network(
+                                      'https://www.themoviedb.org/t/p/w600_and_h900_bestv2${widget._movieItemModel!.posterPath}',
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              actions: [
+                                if (conenctAwait)
+                                  Center(
+                                    child: CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation(Colors.white),
+                                    ),
+                                  ),
+                                SizedBox(
+                                  width: 20,
+                                ),
+                              ],
+                            );
+                          });
+                    });
+              });
+        });
   }
 
   StreamBuilder<CreditModel> _buildCastingGridView() {

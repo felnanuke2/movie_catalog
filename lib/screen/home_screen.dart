@@ -3,13 +3,15 @@ import 'package:movie_catalog/constant/constant_colors.dart';
 import 'package:movie_catalog/homScreen/controler/home_screen_controller.dart';
 import 'package:movie_catalog/homScreen/model/movie_item_model.dart';
 import 'package:movie_catalog/homScreen/tabs/movie_tab.dart';
+import 'package:movie_catalog/homScreen/tabs/profiletab/controller/profile_controller.dart';
 import 'package:movie_catalog/homScreen/tabs/profiletab/profile_tab.dart';
 import 'package:movie_catalog/homScreen/tabs/tv_shows_tab.dart';
 import 'package:movie_catalog/homScreen/widget/bottom_navigatoion.dart';
-import 'package:movie_catalog/homScreen/widget/home_search_dlegate.dart';
+import 'package:movie_catalog/homScreen/widget/home_search_delegate.dart';
 import 'package:movie_catalog/homScreen/widget/movie_item.dart';
 import 'package:movie_catalog/homScreen/widget/sliver_app_bar_delegate.dart';
 import 'package:movie_catalog/user/user_controller.dart';
+import 'package:movie_catalog/user/usermodel.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -22,6 +24,14 @@ class _HomeScreenState extends State<HomeScreen> {
   var _pageController = PageController();
   @override
   void initState() {
+    if (UserModel.instance.baseUser != null) {
+      ProfileController.getMoviesWachList();
+      ProfileController.getMoviesRated();
+      ProfileController.getMoviesFavorites();
+      ProfileController.getTvWachList();
+      ProfileController.getTvRated();
+      ProfileController.getTvFavorites();
+    }
     super.initState();
   }
 

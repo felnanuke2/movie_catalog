@@ -35,7 +35,7 @@ class _TvShowsTabState extends State<TvShowsTab> with AutomaticKeepAliveClientMi
               height: 35,
             ),
           ),
-          PersistentHeaderSearchBar(),
+          PersistentHeaderSearchBar(SearchType.Tv),
           SliverListTitles(
             addFunction: HomeScreenController.getPopularTvshows,
             initialData: HomeScreenController.popularTvList,

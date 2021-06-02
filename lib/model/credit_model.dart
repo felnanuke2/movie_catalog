@@ -7,7 +7,7 @@ class CreditModel {
 
   CreditModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    print(id!);
+
     if (json['cast'] != null) {
       cast = List.from(json['cast']).map((e) => Cast.fromJson(e)).toList();
     }

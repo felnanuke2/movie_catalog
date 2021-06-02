@@ -10,6 +10,7 @@ class MovieItemModel {
   String? posterPath;
   String? releaseDate;
   String? title;
+  num? rating;
   bool? video;
   num? voteAverage;
   int? voteCount;
@@ -49,6 +50,11 @@ class MovieItemModel {
     video = json['video'];
     voteAverage = json['vote_average'];
     voteCount = json['vote_count'];
+    if (json.containsKey('rating')) {
+      rating = json['rating'];
+    } else {
+      rating = 0;
+    }
   }
 
   Map<String, dynamic> toJson() {

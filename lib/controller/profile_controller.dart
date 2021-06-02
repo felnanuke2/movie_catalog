@@ -23,21 +23,21 @@ class ProfileController {
   static int _tvRatedCurrentPage = 1;
 
   //STREAMCONTROLLERS
-  static var _movieWarchController = StreamController<List<MovieItemModel>>.broadcast();
+  static var movieWarchController = StreamController<List<MovieItemModel>>.broadcast();
   static var movieFavoritesController = StreamController<List<MovieItemModel>>.broadcast();
-  static var _movieRatedController = StreamController<List<MovieItemModel>>.broadcast();
-  static var _tvWarchController = StreamController<List<MovieItemModel>>.broadcast();
+  static var movieRatedController = StreamController<List<MovieItemModel>>.broadcast();
+  static var tvWarchController = StreamController<List<MovieItemModel>>.broadcast();
   static var tvFavoritesController = StreamController<List<MovieItemModel>>.broadcast();
-  static var _tvRatedController = StreamController<List<MovieItemModel>>.broadcast();
+  static var tvRatedController = StreamController<List<MovieItemModel>>.broadcast();
 
   //GETTERS
-  static Stream<List<MovieItemModel>> get moviesWachListController => _movieWarchController.stream;
+  static Stream<List<MovieItemModel>> get moviesWachListController => movieWarchController.stream;
   static Stream<List<MovieItemModel>> get moviesFavoritesListController =>
       movieFavoritesController.stream;
-  static Stream<List<MovieItemModel>> get moviesRatedListController => _movieRatedController.stream;
-  static Stream<List<MovieItemModel>> get tvWachListController => _tvWarchController.stream;
+  static Stream<List<MovieItemModel>> get moviesRatedListController => movieRatedController.stream;
+  static Stream<List<MovieItemModel>> get tvWachListController => tvWarchController.stream;
   static Stream<List<MovieItemModel>> get tvFavoritesListController => tvFavoritesController.stream;
-  static Stream<List<MovieItemModel>> get tvRatedListController => _tvRatedController.stream;
+  static Stream<List<MovieItemModel>> get tvRatedListController => tvRatedController.stream;
 
 //FUNCTIONS
   static void getMoviesWachList({bool? add}) async {
@@ -54,7 +54,7 @@ class ProfileController {
       var json = jsonDecode(request.body);
       var list = List.from(json['results']).map((e) => MovieItemModel.fromJson(e)).toList();
       movieWhactList.addAll(list);
-      _movieWarchController.add(movieWhactList);
+      movieWarchController.add(movieWhactList);
     }
   }
 
@@ -90,7 +90,7 @@ class ProfileController {
       var json = jsonDecode(request.body);
       var list = List.from(json['results']).map((e) => MovieItemModel.fromJson(e)).toList();
       movieRated.addAll(list);
-      _movieRatedController.add(movieRated);
+      movieRatedController.add(movieRated);
     }
   }
 
@@ -108,7 +108,7 @@ class ProfileController {
       var json = jsonDecode(request.body);
       var list = List.from(json['results']).map((e) => MovieItemModel.fromJson(e)).toList();
       tvWhactList.addAll(list);
-      _tvWarchController.add(tvWhactList);
+      tvWarchController.add(tvWhactList);
     }
   }
 
@@ -144,7 +144,7 @@ class ProfileController {
       var json = jsonDecode(request.body);
       var list = List.from(json['results']).map((e) => MovieItemModel.fromJson(e)).toList();
       tvRated.addAll(list);
-      _tvRatedController.add(tvRated);
+      tvRatedController.add(tvRated);
     }
   }
 

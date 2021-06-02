@@ -1,5 +1,6 @@
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:movie_catalog/homScreen/tabs/profiletab/controller/profile_controller.dart';
 import 'package:movie_catalog/user/base_user.dart';
 import 'package:movie_catalog/user/usermodel.dart';
 
@@ -23,9 +24,15 @@ class HiveHelper {
         avatar: avatar,
         id: id);
     await _box!.put('current_user', baseUser);
-    print(_box!.values.toList().first.userName);
+
     UserModel.instance.baseUser = baseUser;
     UserModel.instance.baseUserController!.add(baseUser);
+    ProfileController.getMoviesWachList();
+    ProfileController.getMoviesRated();
+    ProfileController.getMoviesFavorites();
+    ProfileController.getTvWachList();
+    ProfileController.getTvRated();
+    ProfileController.getTvFavorites();
   }
 
   static BaseUser? getBaseUser() {

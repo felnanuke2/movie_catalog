@@ -24,15 +24,7 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
   @override
   void initState() {
     if (widget.user != null) {
-      print('logged');
-      Future.delayed(Duration(milliseconds: 300)).then((value) {
-        ProfileController.getMoviesWachList();
-        ProfileController.getMoviesRated();
-        ProfileController.getMoviesFavorites();
-        ProfileController.getTvWachList();
-        ProfileController.getTvRated();
-        ProfileController.getTvFavorites();
-      });
+      Future.delayed(Duration(milliseconds: 300)).then((value) {});
       _pageController = TabController(length: 3, vsync: this);
       _movieorTvController = TabController(length: 2, vsync: this);
     }

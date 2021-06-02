@@ -3,7 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:movie_catalog/constant/constant_colors.dart';
 import 'package:movie_catalog/homScreen/controler/home_screen_controller.dart';
 import 'package:movie_catalog/homScreen/model/movie_item_model.dart';
-import 'package:movie_catalog/homScreen/widget/home_search_dlegate.dart';
+import 'package:movie_catalog/homScreen/widget/home_search_delegate.dart';
 import 'package:movie_catalog/homScreen/widget/movie_item.dart';
 import 'package:movie_catalog/homScreen/widget/persistent_header_search_bar.dart';
 import 'package:movie_catalog/homScreen/widget/sliverListTitles.dart';
@@ -91,7 +91,7 @@ class _MovieTabState extends State<MovieTab> with AutomaticKeepAliveClientMixin<
                   );
                 }),
           ),
-          PersistentHeaderSearchBar(),
+          PersistentHeaderSearchBar(SearchType.Movie),
           SliverListTitles(
               initialData: HomeScreenController.popularMovies,
               stream: HomeScreenController.popularMoviesStream,

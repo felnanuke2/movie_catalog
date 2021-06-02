@@ -1,9 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:movie_catalog/constant/constant_colors.dart';
-import 'package:movie_catalog/homScreen/widget/home_search_dlegate.dart';
+import 'package:movie_catalog/homScreen/widget/home_search_delegate.dart';
 import 'package:movie_catalog/homScreen/widget/sliver_app_bar_delegate.dart';
 
+enum SearchType {
+  Tv,
+  Movie,
+}
+
 class PersistentHeaderSearchBar extends StatelessWidget {
+  String? type;
+  PersistentHeaderSearchBar(SearchType searchType) {
+    if (searchType == SearchType.Movie) {
+      this.type = 'movie';
+    } else {
+      this.type = 'tv';
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return SliverPersistentHeader(
@@ -14,7 +27,7 @@ class PersistentHeaderSearchBar extends StatelessWidget {
           maxHeight: 105,
           child: TextField(
             onTap: () {
-              showSearch(context: context, delegate: HomeSearch());
+              showSearch(context: context, delegate: HomeSearch(type));
             },
             readOnly: true,
             decoration: InputDecoration(

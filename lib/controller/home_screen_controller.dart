@@ -13,7 +13,7 @@ class HomeScreenController {
   static List<MovieItemModel> playnowMovies = [];
   static List<MovieItemModel> topRatedMovies = [];
   //STREAM CONTROLERS MOVIES
-  final _searchStreamController = StreamController<String>.broadcast();
+  final _searchStreamController = StreamController<List<String>>.broadcast();
   static final _popularMovieSController = StreamController<List<MovieItemModel>>.broadcast();
   static final _upcomingMovieSController = StreamController<List<MovieItemModel>>.broadcast();
   static final _nowPlayngMovieSController = StreamController<List<MovieItemModel>>.broadcast();
@@ -25,7 +25,9 @@ class HomeScreenController {
   static int _topRatedMoviesCurrentPage = 1;
 
   //SETTER MOVIES
-  set queryStream(String query) => _searchStreamController.sink.add(query);
+  ///send array of params to querry [0] is query String and [1] is type of Query
+  ///use movie of tv.
+  set queryStream(List<String> param) => _searchStreamController.sink.add(param);
   //GETTER MOVIES
   static Stream<List<MovieItemModel>> get popularMoviesStream => _popularMovieSController.stream;
   static Stream<List<MovieItemModel>> get upcomingMoviesStream => _upcomingMovieSController.stream;
@@ -34,7 +36,7 @@ class HomeScreenController {
 
   Stream<List<MovieItemModel>> get searchStremResult =>
       _searchStreamController.stream.asyncMap((event) async {
-        return await search(event);
+        return await search(event[0], event[1]);
       });
 
   //FUNCTIONS MOVIES
@@ -73,14 +75,18 @@ class HomeScreenController {
     return upcomingMovies;
   }
 
-  static Future<List<MovieItemModel>> search(String query) async {
-    var request = await get(
-        Uri.parse('https://api.themoviedb.org/3/search/movie?api_key=$_apiKey=pt-br&query=$query'));
+  static Future<List<MovieItemModel>> search(String query, String type) async {
+    var request = await get(Uri.parse(
+        'https://api.themoviedb.org/3/search/$type?api_key=$_apiKey&language= pt-br&query=$query'));
     if (request.statusCode == 200) {
       var json = jsonDecode(request.body);
       searchMoviesStorage =
           List.from(json['results']).map((e) => MovieItemModel.fromJson(e)).toList();
+      searchMoviesStorage.sort((b, a) {
+        return a.popularity!.compareTo(b.popularity!);
+      });
     }
+    if (searchMoviesStorage == null) searchMoviesStorage = [];
     return searchMoviesStorage;
   }
 

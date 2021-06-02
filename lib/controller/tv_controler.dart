@@ -12,21 +12,25 @@ class TvController {
   CreditModel? creditModel;
   List<MovieVideoModel> videoList = [];
   List<MovieItemModel> similarTVList = [];
-  var _tvController = StreamController<String>.broadcast();
+  var _tvController = StreamController<TvModel>.broadcast();
+  var _creditController = StreamController<CreditModel>.broadcast();
+  var _videController = StreamController<List<MovieVideoModel>>.broadcast();
+  var _similarController = StreamController<List<MovieItemModel>>.broadcast();
 
-  set tvId(String id) => _tvController.add(id);
+  Stream<TvModel> get tvStream => _tvController.stream;
 
-  Stream<TvModel> get tvStream =>
-      _tvController.stream.asyncMap((event) async => await _getTvModel(event));
+  Stream<CreditModel> get creditStream => _creditController.stream;
 
-  Stream<CreditModel> get creditStream =>
-      _tvController.stream.asyncMap((event) async => await _getCredits(event));
+  Stream<List<MovieVideoModel>> get videosStream => _videController.stream;
 
-  Stream<List<MovieVideoModel>> get videosStream =>
-      _tvController.stream.asyncMap((event) async => await _getVideos(event));
+  Stream<List<MovieItemModel>> get similarListStream => _similarController.stream;
 
-  Stream<List<MovieItemModel>> get similarListStream =>
-      _tvController.stream.asyncMap((event) async => await _getSimilar(event));
+  getData(String id) {
+    _getTvModel(id);
+    _getCredits(id);
+    _getVideos(id);
+    _getSimilar(id);
+  }
 
   Future<TvModel> _getTvModel(String id) async {
     var request = await get(Uri.parse(
@@ -35,10 +39,9 @@ class TvController {
       var json = jsonDecode(request.body);
       try {
         tvModel = TvModel.fromJson(json);
-      } catch (e) {
-        print(e);
-      }
+      } catch (e) {}
     }
+    _tvController.add(tvModel!);
     return tvModel!;
   }
 
@@ -53,6 +56,7 @@ class TvController {
         print(e);
       }
     }
+    _creditController.add(creditModel!);
     return creditModel!;
   }
 
@@ -68,6 +72,7 @@ class TvController {
         print(e);
       }
     }
+    _videController.add(videoList);
     return videoList;
   }
 
@@ -82,6 +87,7 @@ class TvController {
         print(e);
       }
     }
+    _similarController.add(similarTVList);
     return similarTVList;
   }
 }
