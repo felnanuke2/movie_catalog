@@ -14,10 +14,14 @@ class TvShowsTab extends StatefulWidget {
 class _TvShowsTabState extends State<TvShowsTab> with AutomaticKeepAliveClientMixin {
   @override
   void initState() {
-    HomeScreenController.getPopularTvshows();
-    HomeScreenController.getLatestTvshows();
-    HomeScreenController.getTopRatedTvshows();
+    _setData();
     super.initState();
+  }
+
+  _setData() async {
+    await HomeScreenController.getPopularTvshows();
+    await HomeScreenController.getLatestTvshows();
+    await HomeScreenController.getTopRatedTvshows();
   }
 
   @override
@@ -28,7 +32,7 @@ class _TvShowsTabState extends State<TvShowsTab> with AutomaticKeepAliveClientMi
         slivers: [
           SliverToBoxAdapter(
             child: SizedBox(
-              height: 45,
+              height: 35,
             ),
           ),
           PersistentHeaderSearchBar(),

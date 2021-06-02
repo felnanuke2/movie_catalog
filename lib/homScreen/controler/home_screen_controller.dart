@@ -182,7 +182,7 @@ class HomeScreenController {
       var json = jsonDecode(request.body);
       topRatedTvList
           .addAll(List.from(json['results']).map((e) => MovieItemModel.fromJson(e)).toList());
-      _topRatedTvShowStream.add(topRatedMovies);
+      _topRatedTvShowStream.add(topRatedTvList);
     }
     return topRatedTvList;
   }

@@ -16,10 +16,11 @@ class BaseUser {
   @HiveField(3)
   String? sessionID;
 
-  BaseUser({
-    this.userName,
-    this.name,
-    this.incudeAdult,
-    this.sessionID,
-  });
+  @HiveField(4)
+  int? id;
+
+  @HiveField(5)
+  String? avatar;
+
+  BaseUser({this.userName, this.name, this.incudeAdult, this.sessionID, this.avatar, this.id});
 }

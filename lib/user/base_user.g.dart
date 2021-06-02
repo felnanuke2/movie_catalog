@@ -16,17 +16,20 @@ class BaseUserAdapter extends TypeAdapter<BaseUser> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return BaseUser()
-      ..userName = fields[0] as String?
-      ..name = fields[1] as String?
-      ..incudeAdult = fields[2] as bool?
-      ..sessionID = fields[3] as String?;
+    return BaseUser(
+      userName: fields[0] as String?,
+      name: fields[1] as String?,
+      incudeAdult: fields[2] as bool?,
+      sessionID: fields[3] as String?,
+      avatar: fields[5] as String?,
+      id: fields[4] as int?,
+    );
   }
 
   @override
   void write(BinaryWriter writer, BaseUser obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.userName)
       ..writeByte(1)
@@ -34,7 +37,11 @@ class BaseUserAdapter extends TypeAdapter<BaseUser> {
       ..writeByte(2)
       ..write(obj.incudeAdult)
       ..writeByte(3)
-      ..write(obj.sessionID);
+      ..write(obj.sessionID)
+      ..writeByte(4)
+      ..write(obj.id)
+      ..writeByte(5)
+      ..write(obj.avatar);
   }
 
   @override

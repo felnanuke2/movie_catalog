@@ -15,13 +15,15 @@ class _MovieTvShowNavigationBarState extends State<MovieTvShowNavigationBar> {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         unselectedItemColor: Colors.white.withOpacity(0.4),
         backgroundColor: BACKGROUND_COLOR,
         elevation: 4,
         currentIndex: widget.currentPage,
         onTap: (value) {
           widget.currentPage = value;
-          widget.pageController!.jumpToPage(value);
+          widget.pageController!.animateToPage(value,
+              duration: Duration(milliseconds: 450), curve: Curves.linearToEaseOut);
           setState(() {});
         },
         items: [
@@ -50,7 +52,20 @@ class _MovieTvShowNavigationBarState extends State<MovieTvShowNavigationBar> {
                     )
                 ],
               ),
-              label: 'Séries')
+              label: 'Séries'),
+          BottomNavigationBarItem(
+              icon: Column(
+                children: [
+                  Icon(Icons.person),
+                  if (widget.currentPage == 2)
+                    Container(
+                      width: 6,
+                      height: 6,
+                      decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white),
+                    )
+                ],
+              ),
+              label: 'Perfil'),
         ]);
   }
 }

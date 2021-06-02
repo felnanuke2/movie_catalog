@@ -1,16 +1,21 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:movie_catalog/constant/constant_colors.dart';
 import 'package:movie_catalog/homScreen/model/movie_item_model.dart';
+import 'package:movie_catalog/homScreen/tabs/profiletab/controller/profile_controller.dart';
 import 'package:movie_catalog/homScreen/widget/movie_item.dart';
 import 'package:movie_catalog/moviescreen/controler/movie_screen_controller.dart';
 import 'package:movie_catalog/moviescreen/model/actor_model.dart';
 import 'package:movie_catalog/moviescreen/model/movie_model_detailed.dart';
 import 'package:movie_catalog/moviescreen/model/movie_video_model.dart';
 import 'package:movie_catalog/moviescreen/widget/cast_avatar_item.dart';
+import 'package:movie_catalog/user/user_controller.dart';
+import 'package:movie_catalog/user/usermodel.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:rive/rive.dart';
 
 class MovieScreen extends StatefulWidget {
   MovieItemModel? _movieItemModel;
@@ -29,6 +34,9 @@ class _MovieScreenState extends State<MovieScreen> with TickerProviderStateMixin
   bool expandedOverview = false;
   Animation<double>? _arrowDownAnimation;
   AnimationController? _animationController;
+  Artboard? _riveArtBoard;
+  bool isLiked = false;
+  final _meditype = 'movie';
 
   @override
   initState() {
@@ -38,6 +46,20 @@ class _MovieScreenState extends State<MovieScreen> with TickerProviderStateMixin
     _animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 300));
     _arrowDownAnimation = Tween<double>(begin: 0, end: 0.5)
         .animate(CurvedAnimation(parent: _animationController!, curve: Curves.linearToEaseOut));
+    rootBundle.load('assets/favorite Button.riv').then((value) {
+      final file = RiveFile.import(value);
+      final artB = file.mainArtboard;
+      _riveArtBoard = artB;
+      setState(() {
+        _riveArtBoard!.addController(SimpleAnimation(!isLiked ? 'unlike' : 'like'));
+      });
+    });
+    if (UserModel.instance.baseUser != null) {
+      isLiked = ProfileController.movieFavorites
+          .map((e) => e.id)
+          .toList()
+          .contains(widget._movieItemModel!.id!);
+    }
   }
 
   @override
@@ -54,6 +76,35 @@ class _MovieScreenState extends State<MovieScreen> with TickerProviderStateMixin
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     _buildTitle(),
+                    if (UserModel.instance.baseUser != null)
+                      Row(
+                        children: [
+                          Container(
+                            width: 50,
+                            height: 50,
+                            padding: EdgeInsets.all(4),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: BACKGROUND_COLOR,
+                            ),
+                            child: InkWell(
+                              onTap: () {
+                                _riveArtBoard!
+                                    .addController(SimpleAnimation(isLiked ? 'unlike' : 'like'));
+                                isLiked = !isLiked;
+                                UserController.markAsFavorite(
+                                    isLiked, _meditype, widget._movieItemModel!);
+                              },
+                              child: _riveArtBoard != null
+                                  ? Rive(artboard: _riveArtBoard!)
+                                  : Icon(
+                                      Icons.favorite,
+                                      color: Color(0xffef47b6),
+                                    ),
+                            ),
+                          )
+                        ],
+                      ),
                     SizedBox(
                       height: 10,
                     ),

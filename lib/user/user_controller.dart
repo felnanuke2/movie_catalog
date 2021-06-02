@@ -2,9 +2,16 @@ import 'dart:convert';
 
 import 'package:http/http.dart';
 import 'package:movie_catalog/hive/hive_helper.dart';
+import 'package:movie_catalog/homScreen/model/movie_item_model.dart';
+import 'package:movie_catalog/homScreen/tabs/profiletab/controller/profile_controller.dart';
+import 'package:movie_catalog/homScreen/tabs/profiletab/profile_tab.dart';
+import 'package:movie_catalog/homScreen/widget/movie_item.dart';
+import 'package:movie_catalog/user/usermodel.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class UserController {
+  static bool cancelLogin = false;
+  static bool loginSession = false;
   static Future<String> _getToken() async {
     var request = await get(Uri.parse(
         'https://api.themoviedb.org/3/authentication/token/new?api_key=123cfdbadaa769bb037ba5a7a828a63a'));
@@ -17,11 +24,11 @@ class UserController {
   }
 
   static createSession() async {
+    loginSession = true;
     var requestToken = await _getToken();
     launch('https://www.themoviedb.org/authenticate/$requestToken');
     String? sessionID;
     await Future.delayed(Duration(seconds: 4));
-    bool canceled = false;
 
     while (sessionID == null) {
       var request = await post(
@@ -40,11 +47,16 @@ class UserController {
         }
       }
       await Future.delayed(Duration(seconds: 2));
-      if (canceled) {
+      if (cancelLogin) {
         break;
       }
+      print(sessionID);
     }
-    _getBaseUser(sessionID!);
+    if (cancelLogin) {
+    } else {
+      _getBaseUser(sessionID!);
+    }
+    loginSession = false;
   }
 
   static void _getBaseUser(String sessionId) async {
@@ -56,7 +68,53 @@ class UserController {
       var name = json['name'];
       var userName = json['username'];
       var incudeAdult = json['include_adult'];
-      await HiveHelper.setCurrentUser(name, userName, incudeAdult, sessionId);
+      String? avatar;
+      if (json['avatar']['tmdb']['avatar_path'] != null) {
+        avatar = 'https://www.themoviedb.org/t/p/w150_and_h150_face' +
+            json['avatar']['tmdb']['avatar_path'];
+      }
+      var userId = json['id'];
+      var id =
+          await HiveHelper.setCurrentUser(name, userName, incudeAdult, sessionId, avatar, userId);
     }
+  }
+
+  static void markAsFavorite(bool favorite, String mediaType, MovieItemModel movieItemModel) async {
+    var id = UserModel.instance.baseUser!.id;
+    var sessionId = UserModel.instance.baseUser!.sessionID;
+    final url = 'https://api.themoviedb.org/3/account/$id/favorite?api_key'
+        '=123cfdbadaa769bb037ba5a7a828a63a&session_id=$sessionId';
+    var request = await post(Uri.parse(url),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'media_type': mediaType,
+          'media_id': movieItemModel.id,
+          'favorite': favorite,
+        }));
+    if (favorite) {
+      if (mediaType == 'movie') {
+        ProfileController.movieFavorites.add(movieItemModel);
+        ProfileController.movieFavoritesController.add(ProfileController.movieFavorites);
+      } else {
+        ProfileController.tvFavorites.add(movieItemModel);
+        ProfileController.tvFavoritesController.add(ProfileController.tvFavorites);
+      }
+    } else {
+      if (mediaType == 'movie') {
+        ProfileController.movieFavorites
+            .removeWhere((element) => element.id! == movieItemModel.id!);
+        ProfileController.movieFavoritesController.add(ProfileController.movieFavorites);
+      } else {
+        ProfileController.tvFavorites.removeWhere((element) => element.id == movieItemModel.id);
+        ProfileController.tvFavoritesController.add(ProfileController.tvFavorites);
+      }
+    }
+
+    print(request.body);
+  }
+
+  static void loggout() {
+    ProfileController.cleanAllLists();
+    HiveHelper.loggout();
   }
 }

@@ -13,14 +13,30 @@ class HiveHelper {
     _box = await Hive.openBox('user');
   }
 
-  static setCurrentUser(String name, String userName, bool incudeAdult, String sessionID) async {
-    var baseUser =
-        BaseUser(incudeAdult: incudeAdult, name: name, userName: userName, sessionID: sessionID);
+  static setCurrentUser(String name, String userName, bool incudeAdult, String sessionID,
+      String? avatar, int id) async {
+    var baseUser = BaseUser(
+        incudeAdult: incudeAdult,
+        name: name,
+        userName: userName,
+        sessionID: sessionID,
+        avatar: avatar,
+        id: id);
     await _box!.put('current_user', baseUser);
-    print(_box!.values);
+    print(_box!.values.toList().first.userName);
+    UserModel.instance.baseUser = baseUser;
+    UserModel.instance.baseUserController!.add(baseUser);
   }
 
   static BaseUser? getBaseUser() {
-    return _box!.get('current_user');
+    var currentUser = _box!.get('current_user');
+
+    return currentUser;
+  }
+
+  static void loggout() {
+    _box!.delete('current_user');
+    UserModel.instance.baseUser = null;
+    UserModel.instance.baseUserController!.add(null);
   }
 }

@@ -19,6 +19,7 @@ class TVScreen extends StatefulWidget {
 }
 
 class _TVScreenState extends State<TVScreen> with TickerProviderStateMixin {
+  var initiated = false;
   var _controller = TvController();
   TvModel? tvModel;
   bool expandedOverview = false;
@@ -27,8 +28,6 @@ class _TVScreenState extends State<TVScreen> with TickerProviderStateMixin {
   AnimationController? _animationController;
   @override
   void initState() {
-    Future.delayed(Duration(milliseconds: 400))
-        .then((value) => _controller.tvId = widget.movieItemModel!.id.toString());
     super.initState();
     _animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 300));
     _arrowDownAnimation = Tween<double>(begin: 0, end: 0.5)
@@ -125,6 +124,15 @@ class _TVScreenState extends State<TVScreen> with TickerProviderStateMixin {
                         SizedBox(
                           height: 10,
                         ),
+                        Builder(
+                          builder: (context) {
+                            if (!initiated) {
+                              _controller.tvId = widget.movieItemModel!.id.toString();
+                              initiated = true;
+                            }
+                            return Container();
+                          },
+                        )
                       ],
                     ),
                   ),

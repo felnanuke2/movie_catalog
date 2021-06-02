@@ -8,6 +8,8 @@ import 'package:movie_catalog/homScreen/widget/movie_item.dart';
 import 'package:movie_catalog/homScreen/widget/persistent_header_search_bar.dart';
 import 'package:movie_catalog/homScreen/widget/sliverListTitles.dart';
 import 'package:movie_catalog/homScreen/widget/sliver_app_bar_delegate.dart';
+import 'package:movie_catalog/user/base_user.dart';
+import 'package:movie_catalog/user/usermodel.dart';
 
 class MovieTab extends StatefulWidget {
   @override
@@ -40,26 +42,54 @@ class _MovieTabState extends State<MovieTab> with AutomaticKeepAliveClientMixin<
             ),
           ),
           SliverToBoxAdapter(
-            child: ListTile(
-              title: Text(
-                'Olá Visitante',
-                style: TextStyle(
-                  fontSize: 20,
-                ),
-              ),
-              subtitle: Text(
-                'Escolha seus Filmes e Séries Favoritos',
-                style: TextStyle(color: Colors.white.withOpacity(0.6)),
-              ),
-              trailing: Container(
-                width: 50,
-                height: 50,
-                child: CircleAvatar(
-                  backgroundColor: Colors.black,
-                  child: FlutterLogo(),
-                ),
-              ),
-            ),
+            child: StreamBuilder<BaseUser?>(
+                stream: UserModel.instance.baseUserController!.stream,
+                initialData: UserModel.instance.baseUser,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData)
+                    return ListTile(
+                      title: Text(
+                        'Olá ${snapshot.data!.userName}',
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
+                      ),
+                      subtitle: Text(
+                        'Escolha seus Filmes e Séries Favoritos',
+                        style: TextStyle(color: Colors.white.withOpacity(0.6)),
+                      ),
+                      trailing: Container(
+                        width: 50,
+                        height: 50,
+                        child: CircleAvatar(
+                          backgroundColor: Colors.black,
+                          child: snapshot.data!.avatar != null
+                              ? Image.network(snapshot.data!.avatar!)
+                              : FlutterLogo(),
+                        ),
+                      ),
+                    );
+                  return ListTile(
+                    title: Text(
+                      'Olá Visitante',
+                      style: TextStyle(
+                        fontSize: 20,
+                      ),
+                    ),
+                    subtitle: Text(
+                      'Escolha seus Filmes e Séries Favoritos',
+                      style: TextStyle(color: Colors.white.withOpacity(0.6)),
+                    ),
+                    trailing: Container(
+                      width: 50,
+                      height: 50,
+                      child: CircleAvatar(
+                        backgroundColor: Colors.black,
+                        child: FlutterLogo(),
+                      ),
+                    ),
+                  );
+                }),
           ),
           PersistentHeaderSearchBar(),
           SliverListTitles(
