@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:movie_catalog/constant/constant_colors.dart';
-import 'package:movie_catalog/homScreen/widget/home_search_delegate.dart';
-import 'package:movie_catalog/homScreen/widget/sliver_app_bar_delegate.dart';
+import 'package:movie_catalog/ultils/home_search_delegate.dart';
+import 'package:movie_catalog/ultils/sliver_app_bar_delegate.dart';
 
 enum SearchType {
   Tv,

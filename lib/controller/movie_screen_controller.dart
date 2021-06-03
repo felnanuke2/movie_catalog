@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart';
-import 'package:movie_catalog/homScreen/model/movie_item_model.dart';
-import 'package:movie_catalog/moviescreen/model/actor_model.dart';
-import 'package:movie_catalog/moviescreen/model/movie_model_detailed.dart';
-import 'package:movie_catalog/moviescreen/model/movie_video_model.dart';
+import 'package:movie_catalog/model/movie_item_model.dart';
+import 'package:movie_catalog/model/credit_model.dart';
+import 'package:movie_catalog/model/movie_model_detailed.dart';
+import 'package:movie_catalog/model/movie_video_model.dart';
 
 class MovieScreenController {
   CreditModel? creditModel;

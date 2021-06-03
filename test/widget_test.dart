@@ -1,3 +1,3 @@
-import 'package:movie_catalog/user/user_controller.dart';
+import 'package:movie_catalog/controller/user_controller.dart';
 
 void main() async {}

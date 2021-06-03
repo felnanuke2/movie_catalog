@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:movie_catalog/constant/constant_colors.dart';
-import 'package:movie_catalog/homScreen/controler/home_screen_controller.dart';
-import 'package:movie_catalog/homScreen/model/movie_item_model.dart';
-import 'package:movie_catalog/homScreen/widget/home_search_delegate.dart';
-import 'package:movie_catalog/homScreen/widget/movie_item.dart';
-import 'package:movie_catalog/homScreen/widget/persistent_header_search_bar.dart';
-import 'package:movie_catalog/homScreen/widget/sliverListTitles.dart';
-import 'package:movie_catalog/homScreen/widget/sliver_app_bar_delegate.dart';
-import 'package:movie_catalog/user/base_user.dart';
-import 'package:movie_catalog/user/usermodel.dart';
+import 'package:movie_catalog/controller/home_screen_controller.dart';
+import 'package:movie_catalog/widget/persistent_header_search_bar.dart';
+import 'package:movie_catalog/widget/sliverListTitles.dart';
+import 'package:movie_catalog/model/base_user.dart';
+import 'package:movie_catalog/model/usermodel.dart';
 
 class MovieTab extends StatefulWidget {
   @override
@@ -118,6 +113,5 @@ class _MovieTabState extends State<MovieTab> with AutomaticKeepAliveClientMixin<
   }
 
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }

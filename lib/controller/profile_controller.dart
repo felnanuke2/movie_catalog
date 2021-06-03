@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart';
-import 'package:movie_catalog/homScreen/model/movie_item_model.dart';
-import 'package:movie_catalog/user/usermodel.dart';
+import 'package:movie_catalog/model/movie_item_model.dart';
+import 'package:movie_catalog/model/usermodel.dart';
 
 class ProfileController {
   //LISTS

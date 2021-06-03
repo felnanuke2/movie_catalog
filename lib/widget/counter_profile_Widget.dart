@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movie_catalog/homScreen/model/movie_item_model.dart';
+import 'package:movie_catalog/model/movie_item_model.dart';
 
 class CounterProfileWidget extends StatelessWidget {
   List<MovieItemModel>? initialData;

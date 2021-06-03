@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart';
-import 'package:movie_catalog/homScreen/model/movie_item_model.dart';
+import 'package:movie_catalog/model/movie_item_model.dart';
 
 class HomeScreenController {
   static var _apiKey = '123cfdbadaa769bb037ba5a7a828a63a';

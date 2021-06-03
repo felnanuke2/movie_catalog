@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:movie_catalog/homScreen/model/movie_item_model.dart';
-import 'package:movie_catalog/homScreen/widget/movie_item.dart';
+import 'package:movie_catalog/model/movie_item_model.dart';
+import 'package:movie_catalog/widget/movie_item.dart';
 
 class GridUserProfile extends StatelessWidget {
   Stream<List<MovieItemModel>>? stream;

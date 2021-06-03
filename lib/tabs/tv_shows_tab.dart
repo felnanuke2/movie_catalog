@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:movie_catalog/homScreen/controler/home_screen_controller.dart';
-import 'package:movie_catalog/homScreen/model/movie_item_model.dart';
-import 'package:movie_catalog/homScreen/widget/movie_item.dart';
-import 'package:movie_catalog/homScreen/widget/persistent_header_search_bar.dart';
-import 'package:movie_catalog/homScreen/widget/sliverListTitles.dart';
+import 'package:movie_catalog/controller/home_screen_controller.dart';
+import 'package:movie_catalog/model/movie_item_model.dart';
+import 'package:movie_catalog/widget/movie_item.dart';
+import 'package:movie_catalog/widget/persistent_header_search_bar.dart';
+import 'package:movie_catalog/widget/sliverListTitles.dart';
 
 class TvShowsTab extends StatefulWidget {
   @override

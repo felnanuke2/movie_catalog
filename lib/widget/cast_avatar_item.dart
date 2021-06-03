@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_catalog/constant/constant_colors.dart';
-import 'package:movie_catalog/moviescreen/model/actor_model.dart';
+import 'package:movie_catalog/model/credit_model.dart';
 
 class CastAvatarItem extends StatelessWidget {
   Cast? _actorModel;

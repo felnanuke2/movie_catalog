@@ -2,9 +2,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:movie_catalog/homScreen/model/movie_item_model.dart';
-import 'package:movie_catalog/moviescreen/movie_screen.dart';
-import 'package:movie_catalog/tvscreen/tv_screen.dart';
+import 'package:movie_catalog/model/movie_item_model.dart';
+import 'package:movie_catalog/screen/movie_screen.dart';
+import 'package:movie_catalog/screen/tv_screen.dart';
 
 class MovieItem extends StatelessWidget {
   MovieItemModel? _movieItemModel;

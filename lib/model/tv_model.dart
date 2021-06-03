@@ -1,4 +1,4 @@
-import 'package:movie_catalog/moviescreen/model/movie_model_detailed.dart';
+import 'package:movie_catalog/model/movie_model_detailed.dart';
 
 class TvModel {
   String? backdropPath;
@@ -140,18 +140,6 @@ class CreatedBy {
     name = json['name'];
     gender = json['gender'];
     profilePath = json['profile_path'];
-  }
-}
-
-class Genres {
-  int? id;
-  String? name;
-
-  Genres({this.id, this.name});
-
-  Genres.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
   }
 }
 

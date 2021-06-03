@@ -2,13 +2,13 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:movie_catalog/homScreen/model/movie_item_model.dart';
-import 'package:movie_catalog/homScreen/tabs/profiletab/controller/profile_controller.dart';
-import 'package:movie_catalog/homScreen/tabs/profiletab/screens/login_screen.dart';
-import 'package:movie_catalog/homScreen/tabs/profiletab/screens/profile_screen.dart';
-import 'package:movie_catalog/homScreen/widget/movie_item.dart';
-import 'package:movie_catalog/user/base_user.dart';
-import 'package:movie_catalog/user/usermodel.dart';
+import 'package:movie_catalog/model/movie_item_model.dart';
+import 'package:movie_catalog/controller/profile_controller.dart';
+import 'package:movie_catalog/screen/login_screen.dart';
+import 'package:movie_catalog/screen/profile_screen.dart';
+import 'package:movie_catalog/widget/movie_item.dart';
+import 'package:movie_catalog/model/base_user.dart';
+import 'package:movie_catalog/model/usermodel.dart';
 
 class ProfileTab extends StatefulWidget {
   @override

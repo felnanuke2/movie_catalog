@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:movie_catalog/homScreen/model/movie_item_model.dart';
-import 'package:movie_catalog/homScreen/widget/movie_item.dart';
+import 'package:movie_catalog/model/movie_item_model.dart';
+import 'package:movie_catalog/widget/movie_item.dart';
 
 class SliverListTitles extends StatelessWidget {
   Stream<List<MovieItemModel>>? stream;
@@ -44,7 +44,7 @@ class SliverListTitles extends StatelessWidget {
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
-                  if (index == movieList.length)
+                  if (index == movieList.length && addFunction != null)
                     return InkWell(
                       onTap: () => addFunction!(add: true),
                       child: AspectRatio(
@@ -83,7 +83,7 @@ class SliverListTitles extends StatelessWidget {
                     tv: tv,
                   );
                 },
-                itemCount: movieList.length + 1,
+                itemCount: addFunction != null ? movieList.length + 1 : movieList.length,
               ),
             ),
           ],

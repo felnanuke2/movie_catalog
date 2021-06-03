@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:movie_catalog/hive/hive_helper.dart';
-import 'package:movie_catalog/homScreen/tabs/profiletab/controller/profile_controller.dart';
-import 'package:movie_catalog/user/base_user.dart';
+import 'package:movie_catalog/controller/profile_controller.dart';
+import 'package:movie_catalog/model/base_user.dart';
 
 class UserModel {
   UserModel._internal() {

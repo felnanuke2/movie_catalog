@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:movie_catalog/constant/constant_colors.dart';
 import 'package:movie_catalog/hive/hive_helper.dart';
-import 'package:movie_catalog/homScreen/home_screen.dart';
+import 'package:movie_catalog/screen/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

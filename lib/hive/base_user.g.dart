@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'base_user.dart';
+part of '../model/base_user.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
@@ -50,7 +50,5 @@ class BaseUserAdapter extends TypeAdapter<BaseUser> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is BaseUserAdapter &&
-          runtimeType == other.runtimeType &&
-          typeId == other.typeId;
+      other is BaseUserAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
 }

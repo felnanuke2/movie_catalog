@@ -2,11 +2,11 @@ import 'dart:convert';
 
 import 'package:http/http.dart';
 import 'package:movie_catalog/hive/hive_helper.dart';
-import 'package:movie_catalog/homScreen/model/movie_item_model.dart';
-import 'package:movie_catalog/homScreen/tabs/profiletab/controller/profile_controller.dart';
-import 'package:movie_catalog/homScreen/tabs/profiletab/profile_tab.dart';
-import 'package:movie_catalog/homScreen/widget/movie_item.dart';
-import 'package:movie_catalog/user/usermodel.dart';
+import 'package:movie_catalog/model/movie_item_model.dart';
+import 'package:movie_catalog/controller/profile_controller.dart';
+import 'package:movie_catalog/tabs/profile_tab.dart';
+import 'package:movie_catalog/widget/movie_item.dart';
+import 'package:movie_catalog/model/usermodel.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class UserController {
@@ -191,6 +191,7 @@ class UserController {
       ProfileController.tvRated.add(movieItemModel);
     }
     ProfileController.tvRatedController.add(ProfileController.tvRated);
+    print(request.body);
   }
 
   static void loggout() {
