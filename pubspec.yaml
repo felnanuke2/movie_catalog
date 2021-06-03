@@ -28,8 +28,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  firebase_auth: ^1.2.0
-  cloud_firestore: ^2.2.0
+ 
   http: ^0.13.3
   get: ^4.1.4
   youtube_player_flutter: ^8.0.0
@@ -39,6 +38,14 @@ dependencies:
   hive_flutter: ^1.0.0
   flutter_svg: ^0.22.0
   rive: ^0.7.11
+  flutter_launcher_icons: ^0.9.0
+  flutter_native_splash: ^1.1.8+4
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/popcorn.png"
   
 
 dev_dependencies:
@@ -62,6 +69,7 @@ flutter:
   assets:
     - assets/blue_square_2-d537fb228cf3ded904ef09b136fe3fec72548ebc1fea3fbbd1ad9e36364db38b.svg
     - assets/favorite Button.riv
+    - assets/popcorn.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
