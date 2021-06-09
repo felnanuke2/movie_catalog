@@ -18,9 +18,8 @@ after getting your api key follow these steps:
 ## Dowload Now
 
 ### Play Store
-<a href='https://play.google.com/store/apps/details?id=br.tec.appdelivery.movie_catalog&hl=pt_BR&gl=US'><img alt='Get it on Google Play' src='https://www.gstatic.com/android/market_images/web/play_prism_hlock_2x.png' width="170"/></a>
+<a href='https://play.google.com/store/apps/details?id=br.tec.appdelivery.movie_catalog&hl=pt_BR&gl=US'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width="170"/></a>
 
 ### App Store
 <a href='https://apps.apple.com/us/app/cat%C3%A1logo-de-s%C3%A9ries-e-filmes/id1570664151'><img alt='Get it on AppStore' src='https://devimages-cdn.apple.com/app-store/marketing/guidelines/images/badge-download-on-the-app-store.svg' width="140"/></a>
-
 
