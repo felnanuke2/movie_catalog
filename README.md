@@ -2,6 +2,12 @@
 
 This App consumes the Api from https://www.themoviedb.org site to create a UI for android and ios app using Flutter.
 
+<p align="center">
+  <img src="https://github.com/felnanuke2/movie_catalog/raw/master/image-1.png" width="250"/>
+  <img src="https://github.com/felnanuke2/movie_catalog/raw/master/image-2.png" width="250"/>
+ 
+</p>
+
 ## Getting Started
 First of all you will need an api key which can be obtained from https://www.themoviedb.org/settings/api.
 after getting your api key follow these steps:
