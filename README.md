@@ -11,6 +11,6 @@ after getting your api key follow these steps:
 
 ## Dowload Now
 
-<a href='Android https://play.google.com/store/apps/details?id=br.tec.appdelivery.movie_catalog&hl=pt_BR&gl=US'><img alt='Get it on Google Play' src='https://www.gstatic.com/android/market_images/web/play_prism_hlock_2x.png' width="170"/></a>
+<a href='https://play.google.com/store/apps/details?id=br.tec.appdelivery.movie_catalog&hl=pt_BR&gl=US'><img alt='Get it on Google Play' src='https://www.gstatic.com/android/market_images/web/play_prism_hlock_2x.png' width="170"/></a>
 
 - Ios https://apps.apple.com/us/app/cat%C3%A1logo-de-s%C3%A9ries-e-filmes/id1570664151
