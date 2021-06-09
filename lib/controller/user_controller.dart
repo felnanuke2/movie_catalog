@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart';
+import 'package:movie_catalog/constant/api_key.dart';
 import 'package:movie_catalog/hive/hive_helper.dart';
 import 'package:movie_catalog/model/movie_item_model.dart';
 import 'package:movie_catalog/controller/profile_controller.dart';
@@ -13,8 +14,8 @@ class UserController {
   static bool cancelLogin = false;
   static bool loginSession = false;
   static Future<String> _getToken() async {
-    var request = await get(Uri.parse(
-        'https://api.themoviedb.org/3/authentication/token/new?api_key=123cfdbadaa769bb037ba5a7a828a63a'));
+    var request = await get(
+        Uri.parse('https://api.themoviedb.org/3/authentication/token/new?api_key=$API_KEY'));
     if (request.statusCode == 200) {
       var json = jsonDecode(request.body);
       var requestToken = json['request_token'];
@@ -32,8 +33,7 @@ class UserController {
 
     while (sessionID == null) {
       var request = await post(
-          Uri.parse(
-              'https://api.themoviedb.org/3/authentication/session/new?api_key=123cfdbadaa769bb037ba5a7a828a63a'),
+          Uri.parse('https://api.themoviedb.org/3/authentication/session/new?api_key=$API_KEY'),
           body: jsonEncode(
             {"request_token": requestToken},
           ),
@@ -59,9 +59,8 @@ class UserController {
   }
 
   static void _getBaseUser(String sessionId) async {
-    var request = await get(
-        Uri.parse('https://api.themoviedb.org/3/account?api_key=123cfdbadaa769bb037ba5a7a828a63a&'
-            'session_id=$sessionId'));
+    var request = await get(Uri.parse('https://api.themoviedb.org/3/account?api_key=$API_KEY&'
+        'session_id=$sessionId'));
     if (request.statusCode == 200) {
       var json = jsonDecode(request.body);
       var name = json['name'];
@@ -82,7 +81,7 @@ class UserController {
     var id = UserModel.instance.baseUser!.id;
     var sessionId = UserModel.instance.baseUser!.sessionID;
     final url = 'https://api.themoviedb.org/3/account/$id/favorite?api_key'
-        '=123cfdbadaa769bb037ba5a7a828a63a&session_id=$sessionId';
+        '=$API_KEY&session_id=$sessionId';
     var request = await post(Uri.parse(url),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
@@ -115,7 +114,7 @@ class UserController {
     var id = UserModel.instance.baseUser!.id;
     var sessionId = UserModel.instance.baseUser!.sessionID;
     final url = 'https://api.themoviedb.org/3/account/$id/watchlist?api_key'
-        '=123cfdbadaa769bb037ba5a7a828a63a&session_id=$sessionId';
+        '=$API_KEY&session_id=$sessionId';
     var request = await post(Uri.parse(url),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
@@ -146,7 +145,7 @@ class UserController {
   static rateMovie(MovieItemModel movieItemModel, num rate) async {
     var sessionId = UserModel.instance.baseUser!.sessionID;
     final url = 'https://api.themoviedb.org/3/movie/${movieItemModel.id}/rating?api_key'
-        '=123cfdbadaa769bb037ba5a7a828a63a&session_id=$sessionId';
+        '=$API_KEY&session_id=$sessionId';
     var request = await post(Uri.parse(url),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
@@ -171,7 +170,7 @@ class UserController {
   static rateSerie(MovieItemModel movieItemModel, num rate) async {
     var sessionId = UserModel.instance.baseUser!.sessionID;
     final url = 'https://api.themoviedb.org/3/tv/${movieItemModel.id}/rating?api_key'
-        '=123cfdbadaa769bb037ba5a7a828a63a&session_id=$sessionId';
+        '=$API_KEY&session_id=$sessionId';
     var request = await post(Uri.parse(url),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({

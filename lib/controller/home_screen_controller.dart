@@ -2,10 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart';
+import 'package:movie_catalog/constant/api_key.dart';
 import 'package:movie_catalog/model/movie_item_model.dart';
 
 class HomeScreenController {
-  static var _apiKey = '123cfdbadaa769bb037ba5a7a828a63a';
   //LISTS MOVIES
   static List<MovieItemModel> popularMovies = [];
   static List<MovieItemModel> upcomingMovies = [];
@@ -46,7 +46,7 @@ class HomeScreenController {
       _popularMoviesCurrentPage += 1;
     }
     var request = await get(Uri.parse(
-        'https://api.themoviedb.org/3/movie/popular?api_key=$_apiKey&language=pt-br&page=$_popularMoviesCurrentPage'));
+        'https://api.themoviedb.org/3/movie/popular?api_key=$API_KEY&language=pt-br&page=$_popularMoviesCurrentPage'));
     if (request.statusCode == 200) {
       var json = jsonDecode(request.body);
       var moviesList = List.from(json['results']).map((e) => MovieItemModel.fromJson(e)).toList();
@@ -63,7 +63,7 @@ class HomeScreenController {
       _upcomingMoviesCurrentPage += 1;
     }
     var request = await get(Uri.parse(
-        'https://api.themoviedb.org/3/movie/upcoming?api_key=$_apiKey&language=pt-br&page=$_upcomingMoviesCurrentPage'));
+        'https://api.themoviedb.org/3/movie/upcoming?api_key=$API_KEY&language=pt-br&page=$_upcomingMoviesCurrentPage'));
     if (request.statusCode == 200) {
       var json = jsonDecode(request.body);
       var moviesList = List.from(json['results']).map((e) => MovieItemModel.fromJson(e)).toList();
@@ -77,7 +77,7 @@ class HomeScreenController {
 
   static Future<List<MovieItemModel>> search(String query, String type) async {
     var request = await get(Uri.parse(
-        'https://api.themoviedb.org/3/search/$type?api_key=$_apiKey&language= pt-br&query=$query'));
+        'https://api.themoviedb.org/3/search/$type?api_key=$API_KEY&language= pt-br&query=$query'));
     if (request.statusCode == 200) {
       var json = jsonDecode(request.body);
       searchMoviesStorage =
@@ -95,7 +95,7 @@ class HomeScreenController {
       _nowPlayngMoviesCurrentPage += 1;
     }
     var request = await get(Uri.parse(
-        'https://api.themoviedb.org/3/movie/now_playing?api_key=$_apiKey&language=pt-br&page=$_nowPlayngMoviesCurrentPage'));
+        'https://api.themoviedb.org/3/movie/now_playing?api_key=$API_KEY&language=pt-br&page=$_nowPlayngMoviesCurrentPage'));
     if (request.statusCode == 200) {
       var json = jsonDecode(request.body);
       playnowMovies
@@ -113,7 +113,7 @@ class HomeScreenController {
       _topRatedMoviesCurrentPage += 1;
     }
     var request = await get(Uri.parse(
-        'https://api.themoviedb.org/3/movie/top_rated?api_key=$_apiKey&language=pt-br&page=$_topRatedMoviesCurrentPage'));
+        'https://api.themoviedb.org/3/movie/top_rated?api_key=$API_KEY&language=pt-br&page=$_topRatedMoviesCurrentPage'));
     if (request.statusCode == 200) {
       var json = jsonDecode(request.body);
       topRatedMovies
@@ -153,7 +153,7 @@ class HomeScreenController {
       _popularTvShowsCurrentPage += 1;
     }
     var request = await get(Uri.parse(
-        'https://api.themoviedb.org/3/tv/popular?api_key=$_apiKey&language=pt-br&page=$_popularTvShowsCurrentPage'));
+        'https://api.themoviedb.org/3/tv/popular?api_key=$API_KEY&language=pt-br&page=$_popularTvShowsCurrentPage'));
     if (request.statusCode == 200) {
       var json = jsonDecode(request.body);
       popularTvList
@@ -168,7 +168,7 @@ class HomeScreenController {
       _onTheAirTvShowsCurrentPage += 1;
     }
     var request = await get(Uri.parse(
-        'https://api.themoviedb.org/3/tv/on_the_air?api_key=$_apiKey&language=pt-br&page=$_popularTvShowsCurrentPage'));
+        'https://api.themoviedb.org/3/tv/on_the_air?api_key=$API_KEY&language=pt-br&page=$_popularTvShowsCurrentPage'));
     if (request.statusCode == 200) {
       var json = jsonDecode(request.body);
       ontheAirTvList
@@ -183,7 +183,7 @@ class HomeScreenController {
       _topRatedTvShowsCurrentPage += 1;
     }
     var request = await get(Uri.parse(
-        'https://api.themoviedb.org/3/tv/top_rated?api_key=$_apiKey&language=pt-br&page=$_popularTvShowsCurrentPage'));
+        'https://api.themoviedb.org/3/tv/top_rated?api_key=$API_KEY&language=pt-br&page=$_popularTvShowsCurrentPage'));
     if (request.statusCode == 200) {
       var json = jsonDecode(request.body);
       topRatedTvList

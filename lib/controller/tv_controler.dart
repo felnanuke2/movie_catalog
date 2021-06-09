@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart';
+import 'package:movie_catalog/constant/api_key.dart';
 import 'package:movie_catalog/model/movie_item_model.dart';
 import 'package:movie_catalog/model/credit_model.dart';
 import 'package:movie_catalog/model/movie_video_model.dart';
@@ -33,8 +34,8 @@ class TvController {
   }
 
   Future<TvModel> _getTvModel(String id) async {
-    var request = await get(Uri.parse(
-        'https://api.themoviedb.org/3/tv/$id?api_key=123cfdbadaa769bb037ba5a7a828a63a&language=pt-BR'));
+    var request =
+        await get(Uri.parse('https://api.themoviedb.org/3/tv/$id?api_key=$API_KEY&language=pt-BR'));
     if (request.statusCode == 200) {
       var json = jsonDecode(request.body);
       try {
@@ -46,8 +47,8 @@ class TvController {
   }
 
   Future<CreditModel> _getCredits(String id) async {
-    var request = await get(Uri.parse(
-        'https://api.themoviedb.org/3/tv/$id/credits?api_key=123cfdbadaa769bb037ba5a7a828a63a&language=pt-BR'));
+    var request = await get(
+        Uri.parse('https://api.themoviedb.org/3/tv/$id/credits?api_key=$API_KEY&language=pt-BR'));
     if (request.statusCode == 200) {
       var json = jsonDecode(request.body);
       try {
@@ -61,8 +62,8 @@ class TvController {
   }
 
   Future<List<MovieVideoModel>> _getVideos(String id) async {
-    var request = await get(Uri.parse(
-        'https://api.themoviedb.org/3/tv/$id/videos?api_key=123cfdbadaa769bb037ba5a7a828a63a'));
+    var request =
+        await get(Uri.parse('https://api.themoviedb.org/3/tv/$id/videos?api_key=$API_KEY'));
     if (request.statusCode == 200) {
       var json = jsonDecode(request.body);
       try {
@@ -77,8 +78,8 @@ class TvController {
   }
 
   Future<List<MovieItemModel>> _getSimilar(String id) async {
-    var request = await get(Uri.parse(
-        'https://api.themoviedb.org/3/tv/$id/similar?api_key=123cfdbadaa769bb037ba5a7a828a63a'));
+    var request =
+        await get(Uri.parse('https://api.themoviedb.org/3/tv/$id/similar?api_key=$API_KEY'));
     if (request.statusCode == 200) {
       var json = jsonDecode(request.body);
       try {

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart';
+import 'package:movie_catalog/constant/api_key.dart';
 import 'package:movie_catalog/model/movie_item_model.dart';
 import 'package:movie_catalog/model/usermodel.dart';
 
@@ -47,7 +48,7 @@ class ProfileController {
     var id = UserModel.instance.baseUser!.id;
     var sessionId = UserModel.instance.baseUser!.sessionID;
     var requestURL = 'https://api.themoviedb.org/3/account/$id/watchlist'
-        '/movies?api_key=123cfdbadaa769bb037ba5a7a828a63a&session_'
+        '/movies?api_key=$API_KEY&session_'
         'id=$sessionId&language=pt-BR&&sort_by=created_at.desc&page=$_moviesWhachCurrentPage';
     var request = await get(Uri.parse(requestURL));
     if (request.statusCode == 200) {
@@ -65,7 +66,7 @@ class ProfileController {
     var id = UserModel.instance.baseUser!.id;
     var sessionId = UserModel.instance.baseUser!.sessionID;
     var requestURL = 'https://api.themoviedb.org/3/account/$id/favorite'
-        '/movies?api_key=123cfdbadaa769bb037ba5a7a828a63a&session_'
+        '/movies?api_key=$API_KEY&session_'
         'id=$sessionId&language=pt-BR&&sort_by=created_at.desc&page=$_moviesFavoritesCurrentPage';
     var request = await get(Uri.parse(requestURL));
     if (request.statusCode == 200) {
@@ -83,7 +84,7 @@ class ProfileController {
     var id = UserModel.instance.baseUser!.id;
     var sessionId = UserModel.instance.baseUser!.sessionID;
     var requestURL = 'https://api.themoviedb.org/3/account/$id/rated'
-        '/movies?api_key=123cfdbadaa769bb037ba5a7a828a63a&session_'
+        '/movies?api_key=$API_KEY&session_'
         'id=$sessionId&language=pt-BR&&sort_by=created_at.desc&page=$_moviesRatedCurrentPage';
     var request = await get(Uri.parse(requestURL));
     if (request.statusCode == 200) {
@@ -101,7 +102,7 @@ class ProfileController {
     var id = UserModel.instance.baseUser!.id;
     var sessionId = UserModel.instance.baseUser!.sessionID;
     var requestURL = 'https://api.themoviedb.org/3/account/$id/watchlist'
-        '/tv?api_key=123cfdbadaa769bb037ba5a7a828a63a&session_'
+        '/tv?api_key=$API_KEY&session_'
         'id=$sessionId&language=pt-BR&&sort_by=created_at.desc&page=$_tvWhachCurrentPage';
     var request = await get(Uri.parse(requestURL));
     if (request.statusCode == 200) {
@@ -119,7 +120,7 @@ class ProfileController {
     var id = UserModel.instance.baseUser!.id;
     var sessionId = UserModel.instance.baseUser!.sessionID;
     var requestURL = 'https://api.themoviedb.org/3/account/$id/favorite'
-        '/tv?api_key=123cfdbadaa769bb037ba5a7a828a63a&session_'
+        '/tv?api_key=$API_KEY&session_'
         'id=$sessionId&language=pt-BR&&sort_by=created_at.desc&page=$_tvFavoritesCurrentPage';
     var request = await get(Uri.parse(requestURL));
     if (request.statusCode == 200) {
@@ -137,7 +138,7 @@ class ProfileController {
     var id = UserModel.instance.baseUser!.id;
     var sessionId = UserModel.instance.baseUser!.sessionID;
     var requestURL = 'https://api.themoviedb.org/3/account/$id/rated'
-        '/tv?api_key=123cfdbadaa769bb037ba5a7a828a63a&session_'
+        '/tv?api_key=$API_KEY&session_'
         'id=$sessionId&language=pt-BR&&sort_by=created_at.desc&page=$_tvRatedCurrentPage';
     var request = await get(Uri.parse(requestURL));
     if (request.statusCode == 200) {

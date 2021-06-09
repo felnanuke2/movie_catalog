@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart';
+import 'package:movie_catalog/constant/api_key.dart';
 import 'package:movie_catalog/model/movie_item_model.dart';
 import 'package:movie_catalog/model/credit_model.dart';
 import 'package:movie_catalog/model/movie_model_detailed.dart';
@@ -38,9 +39,8 @@ class MovieScreenController {
   Future<CreditModel> _getCredits(
     String movieId,
   ) async {
-    var request = await get(
-        Uri.parse('https://api.themoviedb.org/3/movie/$movieId/credits?api_key=123cfdbadaa'
-            '769bb037ba5a7a828a63a&language=pt-br'));
+    var request = await get(Uri.parse(
+        'https://api.themoviedb.org/3/movie/$movieId/credits?api_key=$API_KEY&language=pt-br'));
     if (request.statusCode == 200) {
       var json = jsonDecode(request.body);
       creditModel = CreditModel.fromJson(json);
@@ -54,8 +54,8 @@ class MovieScreenController {
   }
 
   Future<MovieModelDetail> _getDetails(String id) async {
-    var request = await get(Uri.parse(
-        'https://api.themoviedb.org/3/movie/$id?api_key=123cfdbadaa769bb037ba5a7a828a63a&language=pt-br'));
+    var request = await get(
+        Uri.parse('https://api.themoviedb.org/3/movie/$id?api_key=$API_KEY&language=pt-br'));
     if (request.statusCode == 200) {
       var json = jsonDecode(request.body);
       movieModelDetail = MovieModelDetail.fromJson(json);
@@ -65,8 +65,8 @@ class MovieScreenController {
   }
 
   Future<List<MovieVideoModel>> _getVideosList(String id) async {
-    var request = await get(Uri.parse(
-        'https://api.themoviedb.org/3/movie/$id/videos?api_key=123cfdbadaa769bb037ba5a7a828a63a'));
+    var request =
+        await get(Uri.parse('https://api.themoviedb.org/3/movie/$id/videos?api_key=$API_KEY'));
     if (request.statusCode == 200) {
       var json = jsonDecode(request.body);
       this.listVideoModel =
@@ -80,7 +80,7 @@ class MovieScreenController {
 
   Future<List<MovieItemModel>> _getRecomendations(String id) async {
     var request = await get(Uri.parse(
-        'https://api.themoviedb.org/3/movie/$id/similar?api_key=123cfdbadaa769bb037ba5a7a828a63a&language=pt-br'));
+        'https://api.themoviedb.org/3/movie/$id/similar?api_key=$API_KEY&language=pt-br'));
     if (request.statusCode == 200) {
       var json = jsonDecode(request.body);
       this.recomendationsList =
