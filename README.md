@@ -12,7 +12,7 @@ This App consumes the Api from https://www.themoviedb.org site to create a UI fo
 First of all you will need an api key which can be obtained from https://www.themoviedb.org/settings/api.
 after getting your api key follow these steps:
 - create a file in lib/constant/api_key.dart
-- create declare a variable with [final API_KEY = <your api key here> ]
+- create declare a variable with [final API_KEY = <<your api key here>> ]
 - after that you can run [flutter run ] and it will run the app on your device.
 
 ## Dowload Now
