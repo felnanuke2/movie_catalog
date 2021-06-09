@@ -1,16 +1,16 @@
-# movie_catalog
+# Film and Series Catalog
 
-A new Flutter project.
+This App consumes the Api from https://www.themoviedb.org site to create a UI for android and ios app using Flutter.
 
 ## Getting Started
+First of all you will need an api key which can be obtained from https://www.themoviedb.org/settings/api.
+after getting your api key follow these steps:
+- create a file in lib/constant/api_key.dart
+- create declare a variable with [final API_KEY = <your api key here> ]
+- after that you can run [flutter run ] and it will run the app on your device.
 
-This project is a starting point for a Flutter application.
+## Dowload Now
 
-A few resources to get you started if this is your first Flutter project:
+<a href='Android https://play.google.com/store/apps/details?id=br.tec.appdelivery.movie_catalog&hl=pt_BR&gl=US'><img alt='Get it on Google Play' src='https://www.gstatic.com/android/market_images/web/play_prism_hlock_2x.png' width="170"/></a>
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Ios https://apps.apple.com/us/app/cat%C3%A1logo-de-s%C3%A9ries-e-filmes/id1570664151
