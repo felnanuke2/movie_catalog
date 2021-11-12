@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:rive/rive.dart' as rive;
+import 'package:movie_catalog/core/model/movie_item_model.dart';
 
+import 'package:rive/rive.dart' as rive;
 import 'package:movie_catalog/constant/constant_colors.dart';
 import 'package:movie_catalog/controller/profile_controller.dart';
 import 'package:movie_catalog/controller/user_controller.dart';
-import 'package:movie_catalog/model/movie_item_model.dart';
-import 'package:movie_catalog/model/usermodel.dart';
 import 'package:movie_catalog/widget/stars_gesture_rate_widget.dart';
 
 class UserRateMarkFavRow extends StatefulWidget {
@@ -35,7 +34,8 @@ class _UserRateMarkFavRowState extends State<UserRateMarkFavRow> {
       final artB = file.mainArtboard;
       _riveArtBoard = artB;
       setState(() {
-        _riveArtBoard!.addController(rive.SimpleAnimation(!isLiked! ? 'unlike' : 'like'));
+        _riveArtBoard!
+            .addController(rive.SimpleAnimation(!isLiked! ? 'unlike' : 'like'));
       });
     });
 
@@ -54,8 +54,8 @@ class _UserRateMarkFavRowState extends State<UserRateMarkFavRow> {
             .toList()
             .contains(widget._movieItemModel!.id!);
         if (rated) {
-          var item = ProfileController.tvRated
-              .firstWhere((element) => element.id == widget._movieItemModel!.id!);
+          var item = ProfileController.tvRated.firstWhere(
+              (element) => element.id == widget._movieItemModel!.id!);
           starCount = item.rating!;
         }
       } else {
@@ -72,8 +72,8 @@ class _UserRateMarkFavRowState extends State<UserRateMarkFavRow> {
             .toList()
             .contains(widget._movieItemModel!.id!);
         if (rated) {
-          var item = ProfileController.movieRated
-              .firstWhere((element) => element.id == widget._movieItemModel!.id!);
+          var item = ProfileController.movieRated.firstWhere(
+              (element) => element.id == widget._movieItemModel!.id!);
           starCount = item.rating!;
         }
       }
@@ -97,9 +97,11 @@ class _UserRateMarkFavRowState extends State<UserRateMarkFavRow> {
           ),
           child: InkWell(
             onTap: () {
-              _riveArtBoard!.addController(rive.SimpleAnimation(isLiked! ? 'unlike' : 'like'));
+              _riveArtBoard!.addController(
+                  rive.SimpleAnimation(isLiked! ? 'unlike' : 'like'));
               isLiked = !isLiked!;
-              UserController.markAsFavorite(isLiked!, widget._mediaType!, widget._movieItemModel!);
+              UserController.markAsFavorite(
+                  isLiked!, widget._mediaType!, widget._movieItemModel!);
             },
             child: _riveArtBoard != null
                 ? rive.Rive(artboard: _riveArtBoard!)
@@ -161,9 +163,11 @@ class _UserRateMarkFavRowState extends State<UserRateMarkFavRow> {
         rated = true;
         starCount = result;
         if (widget._mediaType == 'tv') {
-          UserController.rateSerie(widget._movieItemModel!, num.parse(result.toStringAsFixed(1)));
+          UserController.rateSerie(
+              widget._movieItemModel!, num.parse(result.toStringAsFixed(1)));
         } else {
-          UserController.rateMovie(widget._movieItemModel!, num.parse(result.toStringAsFixed(1)));
+          UserController.rateMovie(
+              widget._movieItemModel!, num.parse(result.toStringAsFixed(1)));
         }
       });
     }

@@ -1,6 +1,6 @@
 import 'package:hive/hive.dart';
 
-part '../hive/base_user.g.dart';
+part 'base_user.g.dart';
 
 @HiveType(typeId: 0)
 class BaseUser {
@@ -22,5 +22,11 @@ class BaseUser {
   @HiveField(5)
   String? avatar;
 
-  BaseUser({this.userName, this.name, this.incudeAdult, this.sessionID, this.avatar, this.id});
+  BaseUser(
+      {this.userName,
+      this.name,
+      this.incudeAdult,
+      this.sessionID,
+      this.avatar,
+      this.id});
 }

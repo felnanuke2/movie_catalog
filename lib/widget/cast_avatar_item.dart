@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movie_catalog/constant/constant_colors.dart';
-import 'package:movie_catalog/model/credit_model.dart';
+import 'package:movie_catalog/core/model/credit_model.dart';
 
 class CastAvatarItem extends StatelessWidget {
   Cast? _actorModel;
@@ -11,7 +10,9 @@ class CastAvatarItem extends StatelessWidget {
       children: [
         Expanded(
           child: Container(
-              child: _actorModel!.profilePath != null ? Container() : FlutterLogo(),
+              child: _actorModel!.profilePath != null
+                  ? Container()
+                  : FlutterLogo(),
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   image: _actorModel!.profilePath != null

@@ -1,94 +1,37 @@
-import 'dart:async';
-import 'dart:convert';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:get/instance_manager.dart';
+import 'package:movie_catalog/core/api/api.dart';
+import 'package:movie_catalog/core/model/movie_item_model.dart';
 
-import 'package:http/http.dart';
-import 'package:movie_catalog/constant/api_key.dart';
-import 'package:movie_catalog/model/movie_item_model.dart';
-import 'package:movie_catalog/model/credit_model.dart';
-import 'package:movie_catalog/model/movie_video_model.dart';
-import 'package:movie_catalog/model/tv_model.dart';
+class TvController extends GetxController {
+  final Api api = Get.find();
 
-class TvController {
-  TvModel? tvModel;
-  CreditModel? creditModel;
-  List<MovieVideoModel> videoList = [];
-  List<MovieItemModel> similarTVList = [];
-  var _tvController = StreamController<TvModel>.broadcast();
-  var _creditController = StreamController<CreditModel>.broadcast();
-  var _videController = StreamController<List<MovieVideoModel>>.broadcast();
-  var _similarController = StreamController<List<MovieItemModel>>.broadcast();
+  final popularList = <MovieItemModel>[].obs;
 
-  Stream<TvModel> get tvStream => _tvController.stream;
+  final latestTvList = <MovieItemModel>[].obs;
 
-  Stream<CreditModel> get creditStream => _creditController.stream;
+  final topratedTvList = <MovieItemModel>[].obs;
 
-  Stream<List<MovieVideoModel>> get videosStream => _videController.stream;
+  int popularPage = 0;
+  int latestPage = 0;
+  int topRatedPage = 0;
 
-  Stream<List<MovieItemModel>> get similarListStream => _similarController.stream;
-
-  getData(String id) {
-    _getTvModel(id);
-    _getCredits(id);
-    _getVideos(id);
-    _getSimilar(id);
+  Future<List<MovieItemModel>> getPopularTvList({bool? add}) async {
+    final list = await api.getPopularTvShows(page: ++popularPage);
+    popularList.addAll(list);
+    return list;
   }
 
-  Future<TvModel> _getTvModel(String id) async {
-    var request =
-        await get(Uri.parse('https://api.themoviedb.org/3/tv/$id?api_key=$API_KEY&language=pt-BR'));
-    if (request.statusCode == 200) {
-      var json = jsonDecode(request.body);
-      try {
-        tvModel = TvModel.fromJson(json);
-      } catch (e) {}
-    }
-    _tvController.add(tvModel!);
-    return tvModel!;
+  Future<List<MovieItemModel>> getLatestTvList({bool? add}) async {
+    final list = await api.getLatestTvShow(page: ++latestPage);
+    latestTvList.addAll(list);
+    return list;
   }
 
-  Future<CreditModel> _getCredits(String id) async {
-    var request = await get(
-        Uri.parse('https://api.themoviedb.org/3/tv/$id/credits?api_key=$API_KEY&language=pt-BR'));
-    if (request.statusCode == 200) {
-      var json = jsonDecode(request.body);
-      try {
-        creditModel = CreditModel.fromJson(json);
-      } catch (e) {
-        print(e);
-      }
-    }
-    _creditController.add(creditModel!);
-    return creditModel!;
-  }
-
-  Future<List<MovieVideoModel>> _getVideos(String id) async {
-    var request =
-        await get(Uri.parse('https://api.themoviedb.org/3/tv/$id/videos?api_key=$API_KEY'));
-    if (request.statusCode == 200) {
-      var json = jsonDecode(request.body);
-      try {
-        videoList = List.from(json['results']).map((e) => MovieVideoModel.fromJson(e)).toList();
-        videoList.removeWhere((element) => element.site != 'YouTube');
-      } catch (e) {
-        print(e);
-      }
-    }
-    _videController.add(videoList);
-    return videoList;
-  }
-
-  Future<List<MovieItemModel>> _getSimilar(String id) async {
-    var request =
-        await get(Uri.parse('https://api.themoviedb.org/3/tv/$id/similar?api_key=$API_KEY'));
-    if (request.statusCode == 200) {
-      var json = jsonDecode(request.body);
-      try {
-        similarTVList = List.from(json['results']).map((e) => MovieItemModel.fromJson(e)).toList();
-      } catch (e) {
-        print(e);
-      }
-    }
-    _similarController.add(similarTVList);
-    return similarTVList;
+  Future<List<MovieItemModel>> getTopRatedTvList({bool? add}) async {
+    final list = await api.getTopRatedTvShow(page: ++topRatedPage);
+    topratedTvList.addAll(list);
+    return list;
   }
 }

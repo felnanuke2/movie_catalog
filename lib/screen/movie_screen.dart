@@ -1,33 +1,19 @@
 import 'dart:async';
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:movie_catalog/constant/constant_colors.dart';
-import 'package:movie_catalog/model/movie_item_model.dart';
-import 'package:movie_catalog/controller/profile_controller.dart';
+import 'package:movie_catalog/core/model/movie_model_detailed.dart';
 import 'package:movie_catalog/widget/casting_grid_view.dart';
 import 'package:movie_catalog/widget/categorys_wrap_widget.dart';
-import 'package:movie_catalog/widget/movie_item.dart';
-import 'package:movie_catalog/controller/movie_screen_controller.dart';
-import 'package:movie_catalog/model/credit_model.dart';
-import 'package:movie_catalog/model/movie_model_detailed.dart';
-import 'package:movie_catalog/model/movie_video_model.dart';
-import 'package:movie_catalog/widget/cast_avatar_item.dart';
-import 'package:movie_catalog/controller/user_controller.dart';
-import 'package:movie_catalog/model/usermodel.dart';
+import 'package:movie_catalog/controller/movie_controller.dart';
 import 'package:movie_catalog/widget/sliverListTitles.dart';
 import 'package:movie_catalog/widget/sliver_appBar_with_image.dart';
 import 'package:movie_catalog/widget/stars_row_with_average.dart';
 import 'package:movie_catalog/widget/user_rate_mark_fav_row.dart';
 import 'package:movie_catalog/widget/videos_gridView.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-import 'package:rive/rive.dart' as rive;
 
 class MovieScreen extends StatefulWidget {
-  MovieItemModel? _movieItemModel;
+  MovieScreen? _movieItemModel;
   UniqueKey? _uniqueKey;
 
   MovieScreen(this._movieItemModel, this._uniqueKey);
@@ -36,7 +22,8 @@ class MovieScreen extends StatefulWidget {
   _MovieScreenState createState() => _MovieScreenState();
 }
 
-class _MovieScreenState extends State<MovieScreen> with TickerProviderStateMixin {
+class _MovieScreenState extends State<MovieScreen>
+    with TickerProviderStateMixin {
   var _movieControler = MovieScreenController();
   MovieModelDetail? _movieModelDetail;
   bool expandedOverview = false;
@@ -44,8 +31,8 @@ class _MovieScreenState extends State<MovieScreen> with TickerProviderStateMixin
 
   @override
   initState() {
-    Future.delayed(Duration(milliseconds: 350))
-        .then((value) => _movieControler.getData(widget._movieItemModel!.id!.toString()));
+    Future.delayed(Duration(milliseconds: 350)).then((value) =>
+        _movieControler.getData(widget._movieItemModel!.id!.toString()));
     super.initState();
   }
 
@@ -77,16 +64,19 @@ class _MovieScreenState extends State<MovieScreen> with TickerProviderStateMixin
                         children: [
                           _buildTitle(),
                           if (UserModel.instance.baseUser != null)
-                            UserRateMarkFavRow(_meditype, widget._movieItemModel),
+                            UserRateMarkFavRow(
+                                _meditype, widget._movieItemModel),
                           SizedBox(
                             height: 10,
                           ),
                           if (_movieModelDetail != null)
-                            CategorysWrapWidget(_movieControler.movieModelDetail!.genres),
+                            CategorysWrapWidget(
+                                _movieControler.movieModelDetail!.genres),
                           SizedBox(
                             height: 10,
                           ),
-                          StarsRowWithAverage(widget._movieItemModel!.voteAverage!),
+                          StarsRowWithAverage(
+                              widget._movieItemModel!.voteAverage!),
                           SizedBox(
                             height: 10,
                           ),
@@ -102,7 +92,8 @@ class _MovieScreenState extends State<MovieScreen> with TickerProviderStateMixin
 
                                 return Text(
                                   'Lançamento: ${snapshot.data!.releaseDate}',
-                                  style: TextStyle(color: Colors.white, fontSize: 16),
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 16),
                                 );
                               },
                             ),
@@ -118,19 +109,20 @@ class _MovieScreenState extends State<MovieScreen> with TickerProviderStateMixin
                             alignment: Alignment.centerLeft,
                             child: Text(
                               'Elenco',
-                              style: TextStyle(color: Colors.white, fontSize: 17),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 17),
                             ),
                           ),
                           SizedBox(
                             height: 10,
                           ),
-                          CastingGridView(
-                              _movieControler.creditModel, _movieControler.movieCreditStream),
+                          CastingGridView(_movieControler.creditModel,
+                              _movieControler.movieCreditStream),
                           SizedBox(
                             height: 10,
                           ),
-                          VideosGridView(
-                              _movieControler.listVideosStream, _movieControler.listVideoModel),
+                          VideosGridView(_movieControler.listVideosStream,
+                              _movieControler.listVideoModel),
                           SizedBox(
                             height: 10,
                           ),
@@ -159,8 +151,9 @@ class _MovieScreenState extends State<MovieScreen> with TickerProviderStateMixin
         initialData: _movieControler.creditModel,
         builder: (context, snapshot) {
           if (!snapshot.hasData) return Container();
-          var director =
-              snapshot.data!.crew!.firstWhere((element) => element.job == 'Director').name;
+          var director = snapshot.data!.crew!
+              .firstWhere((element) => element.job == 'Director')
+              .name;
           return Text(
             'Diretor: $director',
             style: TextStyle(color: Colors.white, fontSize: 16),

@@ -1,4 +1,4 @@
-import 'package:movie_catalog/model/movie_model_detailed.dart';
+import 'movie_model_detailed.dart';
 
 class TvModel {
   String? backdropPath;
@@ -68,16 +68,20 @@ class TvModel {
   TvModel.fromJson(Map<String, dynamic> json) {
     backdropPath = json['backdrop_path'];
     if (json['created_by'] != null) {
-      createdBy = List.from(json['created_by']).map((e) => CreatedBy.fromJson(e)).toList();
+      createdBy = List.from(json['created_by'])
+          .map((e) => CreatedBy.fromJson(e))
+          .toList();
     }
     num episodeavarage = 0;
     List.from(json['episode_run_time']).forEach((element) {
       episodeavarage += element;
     });
-    episodeRunTime = (episodeavarage / List.from(json['episode_run_time']).length).round();
+    episodeRunTime =
+        (episodeavarage / List.from(json['episode_run_time']).length).round();
     firstAirDate = json['first_air_date'];
     if (json['genres'] != null) {
-      genres = List.from(json['genres']).map((e) => Genres.fromJson(e)).toList();
+      genres =
+          List.from(json['genres']).map((e) => Genres.fromJson(e)).toList();
     }
     homepage = json['homepage'];
     id = json['id'];
@@ -90,7 +94,8 @@ class TvModel {
     name = json['name'];
 
     if (json['networks'] != null) {
-      networks = List.from(json['networks']).map((e) => Networks.fromJson(e)).toList();
+      networks =
+          List.from(json['networks']).map((e) => Networks.fromJson(e)).toList();
     }
     numberOfEpisodes = json['number_of_episodes'];
     numberOfSeasons = json['number_of_seasons'];
@@ -111,11 +116,13 @@ class TvModel {
           .toList();
     }
     if (json['seasons'] != null) {
-      seasons = List.from(json['seasons']).map((e) => Seasons.fromJson(e)).toList();
+      seasons =
+          List.from(json['seasons']).map((e) => Seasons.fromJson(e)).toList();
     }
     if (json['spoken_languages'] != null) {
-      spokenLanguages =
-          List.from(json['spoken_languages']).map((e) => SpokenLanguages.fromJson(e)).toList();
+      spokenLanguages = List.from(json['spoken_languages'])
+          .map((e) => SpokenLanguages.fromJson(e))
+          .toList();
     }
     status = json['status'];
     tagline = json['tagline'];

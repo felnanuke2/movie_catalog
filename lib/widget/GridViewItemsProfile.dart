@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movie_catalog/model/movie_item_model.dart';
+import 'package:movie_catalog/core/model/movie_item_model.dart';
 import 'package:movie_catalog/widget/movie_item.dart';
 
 class GridUserProfile extends StatelessWidget {
@@ -7,7 +7,11 @@ class GridUserProfile extends StatelessWidget {
   List<MovieItemModel>? initialdata;
   bool? tv;
   void Function({bool? add})? addFun;
-  GridUserProfile({required this.addFun, required this.initialdata, required this.stream, this.tv});
+  GridUserProfile(
+      {required this.addFun,
+      required this.initialdata,
+      required this.stream,
+      this.tv});
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<MovieItemModel>>(

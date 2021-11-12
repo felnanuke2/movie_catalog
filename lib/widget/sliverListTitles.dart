@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:movie_catalog/model/movie_item_model.dart';
+import 'package:movie_catalog/core/model/movie_item_model.dart';
 import 'package:movie_catalog/widget/movie_item.dart';
 
 class SliverListTitles extends StatelessWidget {
-  Stream<List<MovieItemModel>>? stream;
+  Stream<List<MovieItemModel>?>? stream;
   List<MovieItemModel>? initialData;
   String? title;
   Future<List<MovieItemModel>> Function({bool? add})? addFunction;
@@ -18,8 +18,8 @@ class SliverListTitles extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
-        child: StreamBuilder<List<MovieItemModel>>(
-      stream: stream!,
+        child: StreamBuilder<List<MovieItemModel>?>(
+      stream: stream,
       initialData: initialData,
       builder: (
         context,
@@ -59,7 +59,8 @@ class SliverListTitles extends StatelessWidget {
                                 children: [
                                   Text(
                                     'Ver Mais',
-                                    style: TextStyle(color: Colors.white, fontSize: 18),
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 18),
                                   ),
                                   Align(
                                     alignment: Alignment.centerRight,
@@ -70,7 +71,8 @@ class SliverListTitles extends StatelessWidget {
                                   )
                                 ],
                               ),
-                            if (snapshotMoviesList.connectionState == ConnectionState.waiting)
+                            if (snapshotMoviesList.connectionState ==
+                                ConnectionState.waiting)
                               Center(
                                 child: CircularProgressIndicator(),
                               )
@@ -83,7 +85,9 @@ class SliverListTitles extends StatelessWidget {
                     tv: tv,
                   );
                 },
-                itemCount: addFunction != null ? movieList.length + 1 : movieList.length,
+                itemCount: addFunction != null
+                    ? movieList.length + 1
+                    : movieList.length,
               ),
             ),
           ],

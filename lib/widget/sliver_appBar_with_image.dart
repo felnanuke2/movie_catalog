@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movie_catalog/model/credit_model.dart';
-import 'package:movie_catalog/model/tv_model.dart';
+import 'package:movie_catalog/core/model/credit_model.dart';
 
 class SliverAppbarWithImage extends StatelessWidget {
   Stream<List>? stream1;
@@ -42,7 +41,8 @@ class SliverAppbarWithImage extends StatelessWidget {
                           snapshot3.data == null;
 
                       return SliverAppBar(
-                        expandedHeight: (MediaQuery.of(context).size.width / 2) * 3,
+                        expandedHeight:
+                            (MediaQuery.of(context).size.width / 2) * 3,
                         backgroundColor: Colors.transparent,
                         pinned: true,
                         flexibleSpace: Hero(
@@ -62,7 +62,8 @@ class SliverAppbarWithImage extends StatelessWidget {
                           if (conenctAwait)
                             Center(
                               child: CircularProgressIndicator(
-                                valueColor: AlwaysStoppedAnimation(Colors.white),
+                                valueColor:
+                                    AlwaysStoppedAnimation(Colors.white),
                               ),
                             ),
                           SizedBox(

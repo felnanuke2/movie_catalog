@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:movie_catalog/constant/constant_colors.dart';
-import 'package:movie_catalog/hive/hive_helper.dart';
-import 'package:movie_catalog/screen/home_screen.dart';
+import 'package:movie_catalog/screen/home/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await HiveHelper.init();
+
   runApp(GetMaterialApp(
     home: MyApp(),
     debugShowCheckedModeBanner: false,
@@ -25,7 +24,8 @@ class MyApp extends StatelessWidget {
           appBarTheme: AppBarTheme(color: BACKGROUND_COLOR),
           fontFamily: 'Roboto',
           textTheme: TextTheme(
-              headline1: TextStyle(color: Colors.white), subtitle1: TextStyle(color: Colors.white)),
+              headline1: TextStyle(color: Colors.white),
+              subtitle1: TextStyle(color: Colors.white)),
           inputDecorationTheme: InputDecorationTheme(
               hintStyle: TextStyle(color: Colors.white60),
               fillColor: Colors.black87,

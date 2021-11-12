@@ -1,8 +1,5 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:movie_catalog/model/movie_item_model.dart';
+import 'package:movie_catalog/core/model/movie_item_model.dart';
 import 'package:movie_catalog/screen/movie_screen.dart';
 import 'package:movie_catalog/screen/tv_screen.dart';
 
@@ -51,7 +48,9 @@ class MovieItem extends StatelessWidget {
                   children: [
                     Row(
                       children: List.generate(
-                          5, (index) => Icon(Icons.star_border_outlined, color: Colors.grey)),
+                          5,
+                          (index) => Icon(Icons.star_border_outlined,
+                              color: Colors.grey)),
                     ),
                     Row(
                       children: _buildStars(),
@@ -83,7 +82,8 @@ class MovieItem extends StatelessWidget {
 
     return List.generate(_voteRate, (index) {
       if (_voteRateRest != null) {
-        if (index == _voteRate - 1) return Icon(Icons.star_half_outlined, color: Colors.amber);
+        if (index == _voteRate - 1)
+          return Icon(Icons.star_half_outlined, color: Colors.amber);
       }
       return Icon(Icons.star, color: Colors.amber);
     });

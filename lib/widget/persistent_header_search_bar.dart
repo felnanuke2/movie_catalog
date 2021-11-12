@@ -27,7 +27,7 @@ class PersistentHeaderSearchBar extends StatelessWidget {
           maxHeight: 105,
           child: TextField(
             onTap: () {
-              showSearch(context: context, delegate: HomeSearch(type));
+              // showSearch(context: context, delegate: HomeSearch(type));
             },
             readOnly: true,
             decoration: InputDecoration(

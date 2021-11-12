@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movie_catalog/model/credit_model.dart';
+import 'package:movie_catalog/core/model/credit_model.dart';
 import 'package:movie_catalog/widget/cast_avatar_item.dart';
 
 class CastingGridView extends StatelessWidget {
@@ -34,8 +34,10 @@ class CastingGridView extends StatelessWidget {
                 crossAxisSpacing: 8,
                 childAspectRatio: 3 / 4,
                 crossAxisCount: 5,
-                children: List.generate(actorsList.length >= 10 ? 10 : actorsList.length,
-                    (index) => Container(child: CastAvatarItem(actorsList[index]))),
+                children: List.generate(
+                    actorsList.length >= 10 ? 10 : actorsList.length,
+                    (index) =>
+                        Container(child: CastAvatarItem(actorsList[index]))),
               ),
             ],
           );

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movie_catalog/model/movie_video_model.dart';
+import 'package:movie_catalog/core/model/movie_video_model.dart';
 import 'package:movie_catalog/widget/video_dialog.dart';
 
 class VideosGridView extends StatefulWidget {
@@ -12,7 +12,8 @@ class VideosGridView extends StatefulWidget {
   _VideosGridViewState createState() => _VideosGridViewState();
 }
 
-class _VideosGridViewState extends State<VideosGridView> with TickerProviderStateMixin {
+class _VideosGridViewState extends State<VideosGridView>
+    with TickerProviderStateMixin {
   bool _expandedGridView = false;
 
   Animation<double>? _arrowDownAnimation;
@@ -20,9 +21,11 @@ class _VideosGridViewState extends State<VideosGridView> with TickerProviderStat
   AnimationController? _animationController;
   @override
   void initState() {
-    _animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 300));
-    _arrowDownAnimation = Tween<double>(begin: 0, end: 0.5)
-        .animate(CurvedAnimation(parent: _animationController!, curve: Curves.linearToEaseOut));
+    _animationController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+    _arrowDownAnimation = Tween<double>(begin: 0, end: 0.5).animate(
+        CurvedAnimation(
+            parent: _animationController!, curve: Curves.linearToEaseOut));
     super.initState();
   }
 
@@ -61,7 +64,8 @@ class _VideosGridViewState extends State<VideosGridView> with TickerProviderStat
                           ? 4
                           : snapshot.data!.length, (index) {
                 var videoItem = snapshot.data![index];
-                var imageUr = 'https://img.youtube.com/vi/${videoItem.key}/0.jpg';
+                var imageUr =
+                    'https://img.youtube.com/vi/${videoItem.key}/0.jpg';
                 return InkWell(
                   onTap: () => showDialog(
                     context: context,
