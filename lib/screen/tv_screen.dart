@@ -7,7 +7,7 @@ import 'package:movie_catalog/model/movie_item_model.dart';
 import 'package:movie_catalog/controller/profile_controller.dart';
 import 'package:movie_catalog/widget/casting_grid_view.dart';
 import 'package:movie_catalog/widget/categorys_wrap_widget.dart';
-import 'package:movie_catalog/controller/tv_controler.dart';
+import 'package:movie_catalog/controller/tv_tab_controler.dart';
 import 'package:movie_catalog/model/tv_model.dart';
 import 'package:movie_catalog/controller/user_controller.dart';
 import 'package:movie_catalog/model/usermodel.dart';
@@ -30,7 +30,7 @@ class TVScreen extends StatefulWidget {
 
 class _TVScreenState extends State<TVScreen> with TickerProviderStateMixin {
   var initiated = false;
-  var _controller = TvController();
+  var _controller = TvTabController();
   TvModel? tvModel;
   bool expandedOverview = false;
   bool expandVideoGrid = false;
@@ -71,7 +71,8 @@ class _TVScreenState extends State<TVScreen> with TickerProviderStateMixin {
                 ),
                 SliverToBoxAdapter(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 8),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 0, horizontal: 8),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
@@ -84,11 +85,13 @@ class _TVScreenState extends State<TVScreen> with TickerProviderStateMixin {
                         SizedBox(
                           height: 10,
                         ),
-                        if (tvModel != null) CategorysWrapWidget(tvModel!.genres),
+                        if (tvModel != null)
+                          CategorysWrapWidget(tvModel!.genres),
                         SizedBox(
                           height: 10,
                         ),
-                        StarsRowWithAverage(widget.movieItemModel!.voteAverage!),
+                        StarsRowWithAverage(
+                            widget.movieItemModel!.voteAverage!),
                         SizedBox(
                           height: 10,
                         ),
@@ -98,7 +101,8 @@ class _TVScreenState extends State<TVScreen> with TickerProviderStateMixin {
                               Expanded(
                                 child: Text(
                                   'Temporadas: ${tvModel!.numberOfSeasons}',
-                                  style: TextStyle(color: Colors.white, fontSize: 15),
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 15),
                                 ),
                               ),
                               Expanded(
@@ -106,7 +110,8 @@ class _TVScreenState extends State<TVScreen> with TickerProviderStateMixin {
                                   alignment: Alignment.centerRight,
                                   child: Text(
                                     'Episódios: ${tvModel!.numberOfEpisodes}',
-                                    style: TextStyle(color: Colors.white, fontSize: 15),
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 15),
                                   ),
                                 ),
                               ),
@@ -117,7 +122,8 @@ class _TVScreenState extends State<TVScreen> with TickerProviderStateMixin {
                             alignment: Alignment.bottomLeft,
                             child: Text(
                               'Duração dos Episódios: ${tvModel!.episodeRunTime}m',
-                              style: TextStyle(color: Colors.white, fontSize: 15),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 15),
                             ),
                           ),
                         if (tvModel != null)
@@ -125,7 +131,8 @@ class _TVScreenState extends State<TVScreen> with TickerProviderStateMixin {
                             alignment: Alignment.bottomLeft,
                             child: Text(
                               'Lançamento: ${tvModel!.firstAirDate}',
-                              style: TextStyle(color: Colors.white, fontSize: 15),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 15),
                             ),
                           ),
                         SizedBox(
@@ -135,11 +142,13 @@ class _TVScreenState extends State<TVScreen> with TickerProviderStateMixin {
                         SizedBox(
                           height: 10,
                         ),
-                        CastingGridView(_controller.creditModel, _controller.creditStream),
+                        CastingGridView(
+                            _controller.creditModel, _controller.creditStream),
                         SizedBox(
                           height: 10,
                         ),
-                        VideosGridView(_controller.videosStream, _controller.videoList),
+                        VideosGridView(
+                            _controller.videosStream, _controller.videoList),
                         SizedBox(
                           height: 10,
                         ),

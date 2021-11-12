@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:movie_catalog/controller/tv_controler.dart';
+import 'package:movie_catalog/controller/tv_tab_controler.dart';
 import 'package:movie_catalog/widget/persistent_header_search_bar.dart';
 import 'package:movie_catalog/widget/sliverListTitles.dart';
 
@@ -16,8 +16,8 @@ class _TvShowsTabState extends State<TvShowsTab>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return GetBuilder<TvController>(
-      init: TvController(),
+    return GetBuilder<TvTabController>(
+      init: TvTabController(),
       builder: (controller) => Padding(
         padding: const EdgeInsets.only(bottom: 8, left: 8, right: 8),
         child: CustomScrollView(

@@ -1,13 +1,8 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:movie_catalog/hive/hive_helper.dart';
-import 'package:movie_catalog/model/movie_item_model.dart';
 import 'package:movie_catalog/controller/profile_controller.dart';
 import 'package:movie_catalog/widget/GridViewItemsProfile.dart';
 import 'package:movie_catalog/widget/counter_profile_Widget.dart';
-import 'package:movie_catalog/widget/movie_item.dart';
-import 'package:movie_catalog/model/base_user.dart';
 import 'package:movie_catalog/controller/user_controller.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -17,7 +12,8 @@ class ProfileScreen extends StatefulWidget {
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateMixin {
+class _ProfileScreenState extends State<ProfileScreen>
+    with TickerProviderStateMixin {
   TabController? _pageController;
   TabController? _movieorTvController;
   var _streamController = StreamController<double>.broadcast();
@@ -51,8 +47,10 @@ class _ProfileScreenState extends State<ProfileScreen> with TickerProviderStateM
                       : FlutterLogo(),
                   title: Text(
                     widget.user!.userName!,
-                    style:
-                        TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18),
                   ),
                 ),
               ),

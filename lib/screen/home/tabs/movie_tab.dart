@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/instance_manager.dart';
-import 'package:movie_catalog/controller/movie_controller.dart';
+import 'package:movie_catalog/controller/movie_tab_controller.dart';
 import 'package:movie_catalog/controller/session_controller.dart';
 import 'package:movie_catalog/core/model/base_user.dart';
 import 'package:movie_catalog/widget/persistent_header_search_bar.dart';
@@ -18,8 +18,8 @@ class _MovieTabState extends State<MovieTab>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return GetBuilder<MovieController>(
-      init: MovieController(),
+    return GetBuilder<MovieTabController>(
+      init: MovieTabController(),
       builder: (controller) => Padding(
         padding: const EdgeInsets.only(bottom: 8, left: 8, right: 8),
         child: CustomScrollView(

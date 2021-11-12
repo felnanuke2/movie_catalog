@@ -4,7 +4,7 @@ import 'package:get/instance_manager.dart';
 import 'package:movie_catalog/core/api/api.dart';
 import 'package:movie_catalog/core/model/movie_item_model.dart';
 
-class MovieController extends GetxController {
+class MovieTabController extends GetxController {
   final Api api = Get.find();
   final popularMovies = <MovieItemModel>[].obs;
   final upcomingMovies = <MovieItemModel>[].obs;
