@@ -1,21 +1,30 @@
 import 'package:movie_catalog/core/interfaces/auth_interface.dart';
 import 'package:movie_catalog/core/interfaces/movies_interface.dart';
+import 'package:movie_catalog/core/interfaces/persistence_interface.dart';
 import 'package:movie_catalog/core/interfaces/tv_interface.dart';
+import 'package:movie_catalog/core/interfaces/user_interface.dart';
+import 'package:movie_catalog/core/model/base_user.dart';
 import 'package:movie_catalog/core/model/movie_item_model.dart';
 
 class Api {
   final AuthRepoInterface _auth;
   final MoviesRepoInterface _movies;
   final TvRepoInterface _series;
+  final UserInterface _user;
+  final PersistenceInterface _persistence;
 
   Api(
     this._auth,
     this._movies,
     this._series,
+    this._user,
+    this._persistence,
   );
 
+  BaseUser? get currentUser => _user.currentUser;
+
   Future initialize() async {
-    await _auth.initilize();
+    await _persistence.init();
   }
 
   Future signIn(String sessionId) => _auth.signIn(sessionId);

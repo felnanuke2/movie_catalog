@@ -19,7 +19,7 @@ class _ProfileTabState extends State<ProfileTab>
         builder: (controller) => Obx(() {
               return controller.currentUser.value == null
                   ? LoginScreen()
-                  : ProfileScreen(controller.currentUser.value);
+                  : ProfileScreen();
             }));
   }
 

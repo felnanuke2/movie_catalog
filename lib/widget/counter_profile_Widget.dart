@@ -3,7 +3,7 @@ import 'package:movie_catalog/core/model/movie_item_model.dart';
 
 class CounterProfileWidget extends StatelessWidget {
   List<MovieItemModel>? initialData;
-  Stream<List<MovieItemModel>>? stream;
+  Stream<List<MovieItemModel>?>? stream;
   Stream<double>? animation;
   int? positionofPageView;
   String? title;
@@ -14,7 +14,7 @@ class CounterProfileWidget extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<MovieItemModel>>(
+    return StreamBuilder<List<MovieItemModel>?>(
         stream: stream,
         initialData: initialData,
         builder: (context, snapshot) {

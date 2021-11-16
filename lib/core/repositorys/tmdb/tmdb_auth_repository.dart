@@ -1,20 +1,23 @@
 import 'dart:convert';
 
 import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart';
+
 import 'package:movie_catalog/constant/api_key.dart';
 import 'package:movie_catalog/core/interfaces/auth_interface.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:movie_catalog/core/interfaces/persistence_interface.dart';
 import 'package:movie_catalog/core/interfaces/user_auth.dart';
 import 'package:movie_catalog/core/model/auth/tmdb_user_auth.dart';
 import 'package:movie_catalog/core/model/base_user.dart';
 
-const _USER_BOX = 'user_box';
-const CURRENT_USER = 'current_user';
-
 class TmdbAuthrepository implements AuthRepoInterface {
-  late Box<BaseUser> _userBox;
-  BaseUser? get currentUser => _userBox.get(CURRENT_USER);
+  final PersistenceInterface persistence;
+  TmdbAuthrepository({
+    required this.persistence,
+  });
+
+  BaseUser? get currentUser => persistence.currentUser;
 
   @override
   TmdbUserAuth? get getUserAuth => UserAuth(args: {
@@ -23,21 +26,13 @@ class TmdbAuthrepository implements AuthRepoInterface {
       }).asTmdbAuth();
 
   @override
-  Future<void> initilize() async {
-    await Hive.initFlutter();
-    Hive.registerAdapter(BaseUserAdapter());
-    _userBox = await Hive.openBox(_USER_BOX);
-  }
-
-  @override
   Future<BaseUser> signIn(String sessionId) async {
     return await _getBaseUser(sessionId);
   }
 
   @override
   Future signOut() async {
-    // TODO: implement signOut
-    throw UnimplementedError();
+    await persistence.clearUser();
   }
 
   Future<String> _getToken() async {
@@ -77,7 +72,7 @@ class TmdbAuthrepository implements AuthRepoInterface {
       sessionID: sessionId,
       userName: userName,
     );
-    await _userBox.put(CURRENT_USER, user);
+    await persistence.saveUser(user);
     return user;
   }
 }

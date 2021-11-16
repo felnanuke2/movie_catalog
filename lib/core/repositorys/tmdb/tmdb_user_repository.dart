@@ -4,16 +4,23 @@ import 'package:http/http.dart';
 
 import 'package:movie_catalog/constant/api_key.dart';
 import 'package:movie_catalog/core/interfaces/auth_interface.dart';
+import 'package:movie_catalog/core/interfaces/persistence_interface.dart';
 import 'package:movie_catalog/core/interfaces/user_interface.dart';
 import 'package:movie_catalog/core/model/auth/tmdb_user_auth.dart';
+import 'package:movie_catalog/core/model/base_user.dart';
 import 'package:movie_catalog/core/model/movie_item_model.dart';
 
-class UserRepository extends UserInterface {
+class TmdbUserRepository extends UserInterface {
   final AuthRepoInterface _auth;
+  final PersistenceInterface persistence;
   TmdbUserAuth get _authUser => _auth.getUserAuth as TmdbUserAuth;
 
-  UserRepository(
+  @override
+  BaseUser? get currentUser => persistence.currentUser;
+
+  TmdbUserRepository(
     this._auth,
+    this.persistence,
   );
 
   Future<List<MovieItemModel>> getMoviesWachList(

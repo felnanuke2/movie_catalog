@@ -1,23 +1,12 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:movie_catalog/constant/constant_colors.dart';
-import 'package:movie_catalog/model/movie_item_model.dart';
-import 'package:movie_catalog/controller/profile_controller.dart';
 import 'package:movie_catalog/widget/casting_grid_view.dart';
 import 'package:movie_catalog/widget/categorys_wrap_widget.dart';
 import 'package:movie_catalog/controller/tv_tab_controler.dart';
-import 'package:movie_catalog/model/tv_model.dart';
-import 'package:movie_catalog/controller/user_controller.dart';
-import 'package:movie_catalog/model/usermodel.dart';
 import 'package:movie_catalog/widget/sliverListTitles.dart';
 import 'package:movie_catalog/widget/sliver_appBar_with_image.dart';
-import 'package:movie_catalog/widget/stars_gesture_rate_widget.dart';
 import 'package:movie_catalog/widget/stars_row_with_average.dart';
 import 'package:movie_catalog/widget/user_rate_mark_fav_row.dart';
-import 'package:movie_catalog/widget/videos_gridView.dart';
-import 'package:rive/rive.dart' as rive;
 
 class TVScreen extends StatefulWidget {
   MovieItemModel? movieItemModel;

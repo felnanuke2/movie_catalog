@@ -1,148 +1,145 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:movie_catalog/controller/profile_controller.dart';
 import 'package:movie_catalog/widget/GridViewItemsProfile.dart';
 import 'package:movie_catalog/widget/counter_profile_Widget.dart';
-import 'package:movie_catalog/controller/user_controller.dart';
 
 class ProfileScreen extends StatefulWidget {
-  BaseUser? user;
-  ProfileScreen(this.user);
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen>
     with TickerProviderStateMixin {
-  TabController? _pageController;
-  TabController? _movieorTvController;
-  var _streamController = StreamController<double>.broadcast();
-  @override
-  void initState() {
-    if (widget.user != null) {
-      Future.delayed(Duration(milliseconds: 300)).then((value) {});
-      _pageController = TabController(length: 3, vsync: this);
-      _movieorTvController = TabController(length: 2, vsync: this);
-    }
-    super.initState();
-  }
-
   var currentIndex = 0;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 50,
-        ),
-        Container(
-          padding: EdgeInsets.all(12),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Expanded(
-                child: ListTile(
-                  leading: widget.user!.avatar != null
-                      ? Image.network(widget.user!.avatar!)
-                      : FlutterLogo(),
-                  title: Text(
-                    widget.user!.userName!,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18),
+    return GetBuilder<ProfileController>(
+      init: ProfileController(vsync: this),
+      builder: (controller) => Column(
+        children: [
+          SizedBox(
+            height: 50,
+          ),
+          Container(
+            padding: EdgeInsets.all(12),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: ListTile(
+                    leading: controller.user!.avatar != null
+                        ? Image.network(controller.user!.avatar!)
+                        : FlutterLogo(),
+                    title: Text(
+                      controller.user!.userName!,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18),
+                    ),
                   ),
                 ),
-              ),
-              TextButton(
-                onPressed: () {
-                  _requestLoggout(context);
-                },
-                child: Text(
-                  'Sair',
-                  style: TextStyle(color: Colors.red, fontSize: 16),
-                ),
-              )
-            ],
-          ),
-        ),
-        SizedBox(
-          height: 20,
-        ),
-        _moviesOrTvSelectRow(),
-        SizedBox(
-          height: 10,
-        ),
-        Expanded(
-          child: TabBarView(controller: _movieorTvController, children: [
-            Column(
-              children: [
-                _divider(),
-                _infosRowMovies(),
-                _divider(),
-                Expanded(
-                  child: TabBarView(
-                    controller: _pageController!,
-                    children: [
-                      GridUserProfile(
-                        addFun: ProfileController.getMoviesWachList,
-                        initialdata: ProfileController.movieWhactList,
-                        stream: ProfileController.moviesWachListController,
-                      ),
-                      GridUserProfile(
-                        addFun: ProfileController.getMoviesFavorites,
-                        initialdata: ProfileController.movieFavorites,
-                        stream: ProfileController.moviesFavoritesListController,
-                      ),
-                      GridUserProfile(
-                        addFun: ProfileController.getMoviesRated,
-                        initialdata: ProfileController.movieRated,
-                        stream: ProfileController.moviesRatedListController,
-                      ),
-                    ],
+                TextButton(
+                  onPressed: () {
+                    _requestLoggout(context, controller);
+                  },
+                  child: Text(
+                    'Sair',
+                    style: TextStyle(color: Colors.red, fontSize: 16),
                   ),
                 )
               ],
             ),
-            Column(
-              children: [
-                _divider(),
-                _infosRowTv(),
-                _divider(),
-                Expanded(
-                  child: TabBarView(
-                    controller: _pageController!,
-                    children: [
-                      GridUserProfile(
-                        addFun: ProfileController.getTvWachList,
-                        initialdata: ProfileController.tvWhactList,
-                        stream: ProfileController.tvWachListController,
-                        tv: true,
-                      ),
-                      GridUserProfile(
-                        addFun: ProfileController.getTvFavorites,
-                        initialdata: ProfileController.tvFavorites,
-                        stream: ProfileController.tvFavoritesListController,
-                        tv: true,
-                      ),
-                      GridUserProfile(
-                        addFun: ProfileController.getTvRated,
-                        initialdata: ProfileController.tvRated,
-                        stream: ProfileController.tvRatedListController,
-                        tv: true,
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            )
-          ]),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          _moviesOrTvSelectRow(controller),
+          SizedBox(
+            height: 10,
+          ),
+          Expanded(
+            child: TabBarView(
+                controller: controller.serieOrTvTabController,
+                children: [
+                  _buildMoviesTab(controller),
+                  _buildSeriesTab(controller)
+                ]),
+          )
+        ],
+      ),
+    );
+  }
+
+  Column _buildSeriesTab(ProfileController controller) {
+    return Column(
+      children: [
+        _divider(),
+        _infosRowTv(controller),
+        _divider(),
+        Expanded(
+          child: TabBarView(
+            controller: controller.seriesTabController,
+            children: [
+              GridUserProfile(
+                addFun: controller.getTvWachList,
+                initialdata: controller.tvWhactList,
+                stream: controller.tvWhactList.stream,
+                tv: true,
+              ),
+              GridUserProfile(
+                addFun: controller.getTvFavorites,
+                initialdata: controller.tvFavorites,
+                stream: controller.tvFavorites.stream,
+                tv: true,
+              ),
+              GridUserProfile(
+                addFun: controller.getTvRated,
+                initialdata: controller.tvRated,
+                stream: controller.tvRated.stream,
+                tv: true,
+              ),
+            ],
+          ),
         )
       ],
     );
   }
 
-  _requestLoggout(BuildContext context) async {
+  Column _buildMoviesTab(ProfileController controller) {
+    return Column(
+      children: [
+        _divider(),
+        _infosRowMovies(controller),
+        _divider(),
+        Expanded(
+          child: TabBarView(
+            controller: controller.moviesTabController,
+            children: [
+              GridUserProfile(
+                addFun: controller.getMoviesWachList,
+                initialdata: controller.movieWhactList,
+                stream: controller.movieWhactList.stream,
+              ),
+              GridUserProfile(
+                addFun: controller.getMoviesFavorites,
+                initialdata: controller.movieFavorites,
+                stream: controller.movieFavorites.stream,
+              ),
+              GridUserProfile(
+                addFun: controller.getMoviesRated,
+                initialdata: controller.movieRated,
+                stream: controller.movieRated.stream,
+              ),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  _requestLoggout(BuildContext context, ProfileController controller) async {
     var result = await showDialog(
       context: context,
       builder: (context) {
@@ -175,11 +172,11 @@ class _ProfileScreenState extends State<ProfileScreen>
       },
     );
     if (result == true) {
-      UserController.loggout();
+      controller.signOut();
     }
   }
 
-  Widget _moviesOrTvSelectRow() {
+  Widget _moviesOrTvSelectRow(ProfileController controller) {
     return TabBar(
         indicatorColor: Colors.white,
         indicatorWeight: 3,
@@ -187,7 +184,7 @@ class _ProfileScreenState extends State<ProfileScreen>
         indicatorSize: TabBarIndicatorSize.label,
         labelStyle: TextStyle(fontSize: 18),
         labelPadding: EdgeInsets.all(8),
-        controller: _movieorTvController,
+        controller: controller.serieOrTvTabController,
         tabs: [
           Text(
             'Filmes',
@@ -208,53 +205,53 @@ class _ProfileScreenState extends State<ProfileScreen>
     );
   }
 
-  Widget _infosRowMovies() {
+  Widget _infosRowMovies(ProfileController controller) {
     return TabBar(
-      controller: _pageController,
+      controller: controller.moviesTabController,
       unselectedLabelColor: Colors.white.withOpacity(0.4),
       isScrollable: true,
       indicatorColor: Colors.white,
       tabs: [
         CounterProfileWidget(
-          initialData: ProfileController.movieWhactList,
-          stream: ProfileController.moviesWachListController,
+          initialData: controller.movieWhactList,
+          stream: controller.movieWhactList.stream,
           title: 'Interesses',
         ),
         CounterProfileWidget(
-          initialData: ProfileController.movieFavorites,
-          stream: ProfileController.moviesFavoritesListController,
+          initialData: controller.movieFavorites,
+          stream: controller.movieFavorites.stream,
           title: 'Favoritos',
         ),
         CounterProfileWidget(
-          initialData: ProfileController.movieRated,
-          stream: ProfileController.moviesRatedListController,
+          initialData: controller.movieRated,
+          stream: controller.movieRated.stream,
           title: 'Votados',
         ),
       ],
     );
   }
 
-  Widget _infosRowTv() {
+  Widget _infosRowTv(ProfileController controller) {
     return TabBar(
-      controller: _pageController,
+      controller: controller.serieOrTvTabController,
       unselectedLabelColor: Colors.white.withOpacity(0.4),
       labelStyle: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
       isScrollable: true,
       indicatorColor: Colors.white,
       tabs: [
         CounterProfileWidget(
-          initialData: ProfileController.tvWhactList,
-          stream: ProfileController.tvWachListController,
+          initialData: controller.tvWhactList,
+          stream: controller.tvWhactList.stream,
           title: 'Interesses',
         ),
         CounterProfileWidget(
-          initialData: ProfileController.tvFavorites,
-          stream: ProfileController.tvFavoritesListController,
+          initialData: controller.tvFavorites,
+          stream: controller.tvFavorites.stream,
           title: 'Favoritos',
         ),
         CounterProfileWidget(
-          initialData: ProfileController.tvRated,
-          stream: ProfileController.tvRatedListController,
+          initialData: controller.tvRated,
+          stream: controller.tvRated.stream,
           title: 'Votados',
         ),
       ],

@@ -1,6 +1,9 @@
+import 'package:movie_catalog/core/model/base_user.dart';
 import 'package:movie_catalog/core/model/movie_item_model.dart';
 
 abstract class UserInterface {
+  BaseUser? get currentUser;
+
   Future<List<MovieItemModel>> getMoviesWachList({bool? add, int page = 1});
 
   Future<List<MovieItemModel>> getMoviesFavorites({bool? add, int page = 1});
