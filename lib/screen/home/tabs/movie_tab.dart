@@ -5,7 +5,8 @@ import 'package:get/instance_manager.dart';
 import 'package:movie_catalog/controller/movie_tab_controller.dart';
 import 'package:movie_catalog/controller/session_controller.dart';
 import 'package:movie_catalog/core/model/base_user.dart';
-import 'package:movie_catalog/widget/persistent_header_search_bar.dart';
+import 'package:movie_catalog/widget/home_app_bar_widget.dart';
+
 import 'package:movie_catalog/widget/sliverListTitles.dart';
 
 class MovieTab extends StatefulWidget {
@@ -21,14 +22,10 @@ class _MovieTabState extends State<MovieTab>
     return GetBuilder<MovieTabController>(
       init: MovieTabController(),
       builder: (controller) => Padding(
-        padding: const EdgeInsets.only(bottom: 8, left: 8, right: 8),
+        padding: const EdgeInsets.only(bottom: 8, left: 2, right: 0),
         child: CustomScrollView(
           slivers: [
-            SliverToBoxAdapter(
-              child: SizedBox(
-                height: 45,
-              ),
-            ),
+            HomeAppBarWidget(),
             SliverToBoxAdapter(
               child: Obx(() {
                 final user = Get.find<SessionController>().currentUser.value;
@@ -36,7 +33,6 @@ class _MovieTabState extends State<MovieTab>
                 return _buildAnonHeaders();
               }),
             ),
-            PersistentHeaderSearchBar(SearchType.Movie),
             SliverListTitles(
                 initialData: controller.popularMovies,
                 stream: controller.popularMovies.stream,
@@ -99,12 +95,13 @@ class _MovieTabState extends State<MovieTab>
         style: TextStyle(color: Colors.white.withOpacity(0.6)),
       ),
       trailing: Container(
-        width: 50,
-        height: 50,
+        width: 55,
+        height: 55,
         child: CircleAvatar(
           backgroundColor: Colors.black,
-          child:
-              user.avatar != null ? Image.network(user.avatar!) : FlutterLogo(),
+          child: user.avatar != null
+              ? ClipOval(child: Image.network(user.avatar!))
+              : FlutterLogo(),
         ),
       ),
     );

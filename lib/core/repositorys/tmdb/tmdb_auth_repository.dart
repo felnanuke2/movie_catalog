@@ -1,7 +1,4 @@
 import 'dart:convert';
-
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart';
 
 import 'package:movie_catalog/constant/api_key.dart';
@@ -25,8 +22,22 @@ class TmdbAuthrepository implements AuthRepoInterface {
         'user_id': currentUser?.id
       }).asTmdbAuth();
 
+  Future<String> _getSessionId(String token) async {
+    final response = await post(
+        Uri.parse(
+          'https://api.themoviedb.org/3/authentication/session/new?api_key=$API_KEY',
+        ),
+        body: jsonEncode({'request_token': token}),
+        headers: {'Content-Type': 'application/json'});
+    if (response.statusCode != 200) throw response.body;
+    final json = jsonDecode(response.body);
+    final sesisonid = json['session_id'];
+    return sesisonid;
+  }
+
   @override
-  Future<BaseUser> signIn(String sessionId) async {
+  Future<BaseUser> signIn({required String token}) async {
+    final sessionId = await _getSessionId(token);
     return await _getBaseUser(sessionId);
   }
 
@@ -44,9 +55,12 @@ class TmdbAuthrepository implements AuthRepoInterface {
     return requestToken;
   }
 
-  Future<String> createSession() async {
+  Future<String> requestToken({String? redirectTo}) async {
     var requestToken = await _getToken();
-    return 'https://www.themoviedb.org/authenticate/$requestToken';
+    final sBuffeer = StringBuffer();
+    sBuffeer.write('https://www.themoviedb.org/authenticate/$requestToken');
+    if (redirectTo != null) sBuffeer.write('?redirect_to=$redirectTo');
+    return sBuffeer.toString();
   }
 
   Future<BaseUser> _getBaseUser(String sessionId) async {

@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:movie_catalog/constant/constant_colors.dart';
+import 'package:movie_catalog/constant/constant.dart';
 
 class MovieTvShowNavigationBar extends StatefulWidget {
-  MovieTvShowNavigationBar({required this.currentPage, required this.pageController});
+  MovieTvShowNavigationBar(
+      {required this.currentPage, required this.pageController});
 
   int currentPage;
   PageController? pageController;
 
   @override
-  _MovieTvShowNavigationBarState createState() => _MovieTvShowNavigationBarState();
+  _MovieTvShowNavigationBarState createState() =>
+      _MovieTvShowNavigationBarState();
 }
 
 class _MovieTvShowNavigationBarState extends State<MovieTvShowNavigationBar> {
@@ -23,7 +25,8 @@ class _MovieTvShowNavigationBarState extends State<MovieTvShowNavigationBar> {
         onTap: (value) {
           widget.currentPage = value;
           widget.pageController!.animateToPage(value,
-              duration: Duration(milliseconds: 450), curve: Curves.linearToEaseOut);
+              duration: Duration(milliseconds: 450),
+              curve: Curves.linearToEaseOut);
           setState(() {});
         },
         items: [
@@ -35,7 +38,8 @@ class _MovieTvShowNavigationBarState extends State<MovieTvShowNavigationBar> {
                     Container(
                       width: 6,
                       height: 6,
-                      decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle, color: Colors.white),
                     )
                 ],
               ),
@@ -48,7 +52,8 @@ class _MovieTvShowNavigationBarState extends State<MovieTvShowNavigationBar> {
                     Container(
                       width: 6,
                       height: 6,
-                      decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle, color: Colors.white),
                     )
                 ],
               ),
@@ -61,7 +66,8 @@ class _MovieTvShowNavigationBarState extends State<MovieTvShowNavigationBar> {
                     Container(
                       width: 6,
                       height: 6,
-                      decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white),
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle, color: Colors.white),
                     )
                 ],
               ),

@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:movie_catalog/core/model/movie_item_model.dart';
-
 import 'package:rive/rive.dart' as rive;
-import 'package:movie_catalog/constant/constant_colors.dart';
-import 'package:movie_catalog/controller/profile_controller.dart';
-import 'package:movie_catalog/controller/user_controller.dart';
+import 'package:movie_catalog/constant/constant.dart';
+import 'package:movie_catalog/controller/session_controller.dart';
+import 'package:movie_catalog/core/model/movie_item_model.dart';
 import 'package:movie_catalog/widget/stars_gesture_rate_widget.dart';
 
 class UserRateMarkFavRow extends StatefulWidget {
+  final SessionController controller;
   String? _mediaType;
   MovieItemModel? _movieItemModel;
+
   UserRateMarkFavRow(
     this._mediaType,
-    this._movieItemModel,
-  );
+    this._movieItemModel, {
+    required this.controller,
+    Key? key,
+  }) : super(key: key);
 
   @override
   _UserRateMarkFavRowState createState() => _UserRateMarkFavRowState();
@@ -26,9 +28,11 @@ class _UserRateMarkFavRowState extends State<UserRateMarkFavRow> {
   bool rated = false;
   bool? isLiked;
   num starCount = 0.5;
+  late SessionController controller;
 
   @override
   void initState() {
+    controller = widget.controller;
     rootBundle.load('assets/favorite Button.riv').then((value) {
       final file = rive.RiveFile.import(value);
       final artB = file.mainArtboard;
@@ -39,40 +43,40 @@ class _UserRateMarkFavRowState extends State<UserRateMarkFavRow> {
       });
     });
 
-    if (UserModel.instance.baseUser != null) {
+    if (controller.currentUser.value != null) {
       if (widget._mediaType == 'tv') {
-        isLiked = ProfileController.tvFavorites
+        isLiked = controller.tvFavorites
             .map((e) => e.id)
             .toList()
             .contains(widget._movieItemModel!.id!);
-        wachList = ProfileController.tvWhactList
+        wachList = controller.tvWhactList
             .map((e) => e.id)
             .toList()
             .contains(widget._movieItemModel!.id!);
-        rated = ProfileController.tvRated
+        rated = controller.tvRated
             .map((e) => e.id)
             .toList()
             .contains(widget._movieItemModel!.id!);
         if (rated) {
-          var item = ProfileController.tvRated.firstWhere(
+          var item = controller.tvRated.firstWhere(
               (element) => element.id == widget._movieItemModel!.id!);
           starCount = item.rating!;
         }
       } else {
-        isLiked = ProfileController.movieFavorites
+        isLiked = controller.movieFavorites
             .map((e) => e.id)
             .toList()
             .contains(widget._movieItemModel!.id!);
-        wachList = ProfileController.movieWhactList
+        wachList = controller.movieWhactList
             .map((e) => e.id)
             .toList()
             .contains(widget._movieItemModel!.id!);
-        rated = ProfileController.movieRated
+        rated = controller.movieRated
             .map((e) => e.id)
             .toList()
             .contains(widget._movieItemModel!.id!);
         if (rated) {
-          var item = ProfileController.movieRated.firstWhere(
+          var item = controller.movieRated.firstWhere(
               (element) => element.id == widget._movieItemModel!.id!);
           starCount = item.rating!;
         }
@@ -100,7 +104,7 @@ class _UserRateMarkFavRowState extends State<UserRateMarkFavRow> {
               _riveArtBoard!.addController(
                   rive.SimpleAnimation(isLiked! ? 'unlike' : 'like'));
               isLiked = !isLiked!;
-              UserController.markAsFavorite(
+              controller.markAsFavorite(
                   isLiked!, widget._mediaType!, widget._movieItemModel!);
             },
             child: _riveArtBoard != null
@@ -121,7 +125,7 @@ class _UserRateMarkFavRowState extends State<UserRateMarkFavRow> {
             onTap: () {
               setState(() {
                 wachList = !wachList;
-                UserController.addToWatchList(
+                controller.addToWatchList(
                     wachList, widget._mediaType!, widget._movieItemModel!);
               });
             },
@@ -163,10 +167,10 @@ class _UserRateMarkFavRowState extends State<UserRateMarkFavRow> {
         rated = true;
         starCount = result;
         if (widget._mediaType == 'tv') {
-          UserController.rateSerie(
+          controller.rateSerie(
               widget._movieItemModel!, num.parse(result.toStringAsFixed(1)));
         } else {
-          UserController.rateMovie(
+          controller.rateMovie(
               widget._movieItemModel!, num.parse(result.toStringAsFixed(1)));
         }
       });

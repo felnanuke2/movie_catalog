@@ -21,7 +21,7 @@ class TvScreenController extends GetxController {
   }) {
     final id = (movieItemModel.id ?? 0).toString();
     tvModel = _api.getTvModel(id);
-    creditModel = _api.getCreditModel(id);
+    creditModel = _api.getTvCreditModel(id);
     movieVideos = _api.getTvVideos(id);
   }
 

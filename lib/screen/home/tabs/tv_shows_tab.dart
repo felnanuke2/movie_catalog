@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:movie_catalog/controller/tv_tab_controler.dart';
-import 'package:movie_catalog/widget/persistent_header_search_bar.dart';
+import 'package:movie_catalog/widget/home_app_bar_widget.dart';
+
 import 'package:movie_catalog/widget/sliverListTitles.dart';
 
 class TvShowsTab extends StatefulWidget {
@@ -22,12 +23,7 @@ class _TvShowsTabState extends State<TvShowsTab>
         padding: const EdgeInsets.only(bottom: 8, left: 8, right: 8),
         child: CustomScrollView(
           slivers: [
-            SliverToBoxAdapter(
-              child: SizedBox(
-                height: 35,
-              ),
-            ),
-            PersistentHeaderSearchBar(SearchType.Tv),
+            HomeAppBarWidget(),
             SliverListTitles(
               addFunction: controller.getPopularTvList,
               initialData: controller.popularList,

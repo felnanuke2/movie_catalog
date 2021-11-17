@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:movie_catalog/constant/constant_colors.dart';
-import 'package:movie_catalog/controller/user_controller.dart';
+
+import 'package:movie_catalog/constant/constant.dart';
 
 class LoginButton extends StatelessWidget {
-  AnimationController? animationController;
-  Animation<double>? animation;
-  LoginButton(this.animation, this.animationController);
+  final AnimationController? animationController;
+  final Animation<double>? animation;
+  final Future<void> Function() login;
+  const LoginButton({
+    Key? key,
+    this.animationController,
+    this.animation,
+    required this.login,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
@@ -16,15 +23,14 @@ class LoginButton extends StatelessWidget {
             children: [
               Container(
                 padding: EdgeInsets.all(4),
-                decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white),
+                decoration:
+                    BoxDecoration(shape: BoxShape.circle, color: Colors.white),
                 child: CircularProgressIndicator(
                   valueColor: AlwaysStoppedAnimation(BACKGROUND_COLOR),
                 ),
               ),
               TextButton(
                   onPressed: () {
-                    UserController.cancelLogin = true;
-
                     animationController!.forward();
                   },
                   child: Text(
@@ -41,14 +47,11 @@ class LoginButton extends StatelessWidget {
                 height: 45,
                 width: animation!.value,
                 child: ElevatedButton(
-                    onPressed: () {
-                      animationController!.reverse();
-                      UserController.cancelLogin = false;
-                      UserController.createSession();
-                    },
+                    onPressed: login,
                     child: Text(
                       'Entrar',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     )),
               ),
             ),
@@ -60,7 +63,8 @@ class LoginButton extends StatelessWidget {
                   child: Text(
                     'Cancelar',
                     style: TextStyle(
-                        color: Colors.red.withOpacity(45 / animation!.value), fontSize: 16),
+                        color: Colors.red.withOpacity(45 / animation!.value),
+                        fontSize: 16),
                   ))
           ],
         );

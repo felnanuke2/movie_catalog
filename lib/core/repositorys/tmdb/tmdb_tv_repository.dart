@@ -5,6 +5,7 @@ import 'package:movie_catalog/constant/api_key.dart';
 import 'package:movie_catalog/core/interfaces/tv_interface.dart';
 import 'package:movie_catalog/core/model/credit_model.dart';
 import 'package:movie_catalog/core/model/movie_item_model.dart';
+import 'package:movie_catalog/core/model/movie_model_detailed.dart';
 import 'package:movie_catalog/core/model/movie_video_model.dart';
 import 'package:movie_catalog/core/model/tv_model.dart';
 
@@ -106,5 +107,15 @@ class TmdbTvRepository implements TvRepoInterface {
         .map((e) => MovieItemModel.fromJson(e))
         .toList();
     return similarTVList;
+  }
+
+  @override
+  Future<MovieModelDetail> getDetails(String id) async {
+    var request = await get(Uri.parse(
+        'https://api.themoviedb.org/3/tv/$id?api_key=$API_KEY&language=pt-br'));
+    if (request.statusCode != 200) throw request.body;
+    var json = jsonDecode(request.body);
+    final movieModelDetail = MovieModelDetail.fromJson(json);
+    return movieModelDetail;
   }
 }

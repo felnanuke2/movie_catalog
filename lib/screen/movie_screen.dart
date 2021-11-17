@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:movie_catalog/constant/constant_colors.dart';
+import 'package:get/instance_manager.dart';
+import 'package:movie_catalog/constant/constant.dart';
 import 'package:movie_catalog/controller/movie_screen_controller.dart';
+import 'package:movie_catalog/core/model/credit_model.dart';
 import 'package:movie_catalog/core/model/movie_item_model.dart';
+import 'package:movie_catalog/core/model/movie_model_detailed.dart';
 import 'package:movie_catalog/widget/casting_grid_view.dart';
 import 'package:movie_catalog/widget/categorys_wrap_widget.dart';
 import 'package:movie_catalog/widget/sliverListTitles.dart';
@@ -25,7 +28,7 @@ class _MovieScreenState extends State<MovieScreen>
   @override
   Widget build(BuildContext context) {
     return GetBuilder<MovieScreenController>(
-        init: MovieScreenController(),
+        init: MovieScreenController(widget._movieItemModel!),
         builder: (controller) => Scaffold(
             backgroundColor: BACKGROUND_COLOR,
             body: CustomScrollView(
@@ -43,30 +46,14 @@ class _MovieScreenState extends State<MovieScreen>
                         _buildTitle(),
                         if (controller.isAuthenticated)
                           UserRateMarkFavRow(
-                              controller.meditype, widget._movieItemModel),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        if (controller.movieModelDetail.value != null)
-                          CategorysWrapWidget(
-                              controller.movieModelDetail.value!.genres),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        StarsRowWithAverage(
-                            widget._movieItemModel!.voteAverage!),
+                            controller.meditype,
+                            widget._movieItemModel,
+                            controller: Get.find(),
+                          ),
                         SizedBox(
                           height: 10,
                         ),
                         _buildMoviesDetail(controller),
-                        _buildDirector(controller),
-                        Align(
-                            alignment: Alignment.centerLeft,
-                            child: Obx(() => Text(
-                                  'Lançamento: ${controller.movieModelDetail.value?.releaseDate ?? ''}',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 16),
-                                ))),
                         SizedBox(
                           height: 10,
                         ),
@@ -74,21 +61,7 @@ class _MovieScreenState extends State<MovieScreen>
                         SizedBox(
                           height: 10,
                         ),
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Elenco',
-                            style: TextStyle(color: Colors.white, fontSize: 17),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Obx(() => controller.creditModel.value != null
-                            ? CastingGridView(
-                                creditModel: controller.creditModel.value!,
-                              )
-                            : SizedBox.shrink()),
+                        _buildCredits(controller),
                         SizedBox(
                           height: 10,
                         ),
@@ -114,53 +87,106 @@ class _MovieScreenState extends State<MovieScreen>
             )));
   }
 
-  Align _buildDirector(MovieScreenController controller) {
+  Widget _buildCredits(MovieScreenController controller) {
+    return FutureBuilder<CreditModel>(
+      future: controller.creditModel,
+      builder: (context, snapshot) =>
+          snapshot.connectionState == ConnectionState.waiting
+              ? LinearProgressIndicator()
+              : Column(
+                  children: [
+                    _buildDirector(
+                      snapshot.data!,
+                      controller,
+                    ),
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'Elenco',
+                        style: TextStyle(color: Colors.white, fontSize: 17),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    CastingGridView(
+                      creditModel: snapshot.data!,
+                    ),
+                  ],
+                ),
+    );
+  }
+
+  Align _buildDirector(
+      CreditModel creditModel, MovieScreenController controller) {
     return Align(
       alignment: Alignment.centerLeft,
-      child: Obx(() {
-        if (controller.creditModel.value?.crew == null)
-          return SizedBox.shrink();
-        return Text(
-          'Diretor: ${controller.director}}',
-          style: TextStyle(color: Colors.white, fontSize: 16),
-        );
-      }),
+      child: Text(
+        'Diretor: ${controller.getDirector(creditModel)}}',
+        style: TextStyle(color: Colors.white, fontSize: 16),
+      ),
     );
   }
 
   Widget _buildMoviesDetail(MovieScreenController controller) {
-    return Obx(() => Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return FutureBuilder<MovieModelDetail>(
+      future: controller.movieModelDetail,
+      builder: (context, snapshot) => snapshot.connectionState ==
+              ConnectionState.waiting
+          ? LinearProgressIndicator()
+          : Column(
               children: [
-                if (controller.movieModelDetail.value!.runtime != null)
-                  Expanded(
-                    child: Text(
-                      'Duração: ${_getTimeFormated(controller.movieModelDetail.value!.runtime!)}',
-                      style: TextStyle(color: Colors.white, fontSize: 16),
+                Column(
+                  children: [
+                    if (snapshot.data != null)
+                      CategorysWrapWidget(snapshot.data?.genres),
+                    SizedBox(
+                      height: 10,
                     ),
-                  ),
-                Expanded(
-                  child: Container(
-                    alignment: Alignment.centerRight,
-                    child: Text(
-                      'Receita: \$ ${(controller.movieModelDetail.value!.revenue! / 1000000).round()} M',
-                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    StarsRowWithAverage(
+                        widget._movieItemModel?.voteAverage ?? 0),
+                    SizedBox(
+                      height: 10,
                     ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    if (snapshot.data?.runtime != null)
+                      Expanded(
+                        child: Text(
+                          'Duração: ${_getTimeFormated(snapshot.data?.runtime ?? 0)}',
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
+                      ),
+                    Expanded(
+                      child: Container(
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          'Receita: \$ ${((snapshot.data?.revenue ?? 0) / 1000000).round()} M',
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Título Original: ${snapshot.data?.originalTitle ?? ''}',
+                    style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                 ),
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Lançamento: ${snapshot.data?.releaseDate ?? ''}',
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    )),
               ],
             ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Título Original: ${controller.movieModelDetail.value!.originalTitle}',
-                style: TextStyle(color: Colors.white, fontSize: 16),
-              ),
-            )
-          ],
-        ));
+    );
   }
 
   String _getTimeFormated(int time) {

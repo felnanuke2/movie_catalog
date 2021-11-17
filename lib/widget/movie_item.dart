@@ -5,17 +5,20 @@ import 'package:movie_catalog/screen/tv_screen.dart';
 
 class MovieItem extends StatelessWidget {
   MovieItemModel? _movieItemModel;
-  var _uniqueKey = UniqueKey();
+  final _uniqueKey = UniqueKey();
   MovieItem(this._movieItemModel, {this.tv});
-  bool? tv;
+  final bool? tv;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => Navigator.push(context, MaterialPageRoute(
         builder: (context) {
-          if (tv == true) return TVScreen(_movieItemModel, _uniqueKey);
-          return MovieScreen(_movieItemModel, _uniqueKey);
+          if (tv == true)
+            return TVScreen(
+              movieItemModel: _movieItemModel!,
+            );
+          return MovieScreen(_movieItemModel);
         },
       )),
       child: Container(

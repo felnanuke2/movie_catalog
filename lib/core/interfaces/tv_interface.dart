@@ -1,5 +1,6 @@
 import 'package:movie_catalog/core/model/credit_model.dart';
 import 'package:movie_catalog/core/model/movie_item_model.dart';
+import 'package:movie_catalog/core/model/movie_model_detailed.dart';
 import 'package:movie_catalog/core/model/movie_video_model.dart';
 import 'package:movie_catalog/core/model/tv_model.dart';
 
@@ -12,4 +13,5 @@ abstract class TvRepoInterface {
   Future<List<MovieVideoModel>> getVideos(String id);
   Future<CreditModel> getCredits(String id);
   Future<TvModel> getTvModel(String id);
+  Future<MovieModelDetail> getDetails(String id);
 }

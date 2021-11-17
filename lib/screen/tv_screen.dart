@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:movie_catalog/constant/constant_colors.dart';
+import 'package:get/instance_manager.dart';
+import 'package:movie_catalog/constant/constant.dart';
 import 'package:movie_catalog/controller/tv_screen_controller.dart';
 import 'package:movie_catalog/core/model/credit_model.dart';
 import 'package:movie_catalog/core/model/movie_item_model.dart';
@@ -50,7 +51,10 @@ class _TVScreenState extends State<TVScreen> with TickerProviderStateMixin {
                             _buildTitle(),
                             if (controller.currentUser != null)
                               UserRateMarkFavRow(
-                                  TV_MEDIA_TYPE, widget.movieItemModel),
+                                TV_MEDIA_TYPE,
+                                widget.movieItemModel,
+                                controller: Get.find(),
+                              ),
                             SizedBox(
                               height: 10,
                             ),
@@ -212,7 +216,7 @@ class _TVScreenState extends State<TVScreen> with TickerProviderStateMixin {
   Center _buildTitle() {
     return Center(
       child: Text(
-        widget.movieItemModel!.title!,
+        widget.movieItemModel.title!,
         style: TextStyle(color: Colors.white, fontSize: 20),
       ),
     );

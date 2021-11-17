@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:movie_catalog/constant/constant_colors.dart';
+import 'package:movie_catalog/constant/constant.dart';
 import 'package:movie_catalog/controller/session_controller.dart';
 import 'package:movie_catalog/screen/home/tabs/movie_tab.dart';
 import 'package:movie_catalog/screen/home/tabs/profile_tab.dart';

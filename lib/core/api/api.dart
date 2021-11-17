@@ -6,6 +6,7 @@ import 'package:movie_catalog/core/interfaces/user_interface.dart';
 import 'package:movie_catalog/core/model/base_user.dart';
 import 'package:movie_catalog/core/model/credit_model.dart';
 import 'package:movie_catalog/core/model/movie_item_model.dart';
+import 'package:movie_catalog/core/model/movie_model_detailed.dart';
 import 'package:movie_catalog/core/model/movie_video_model.dart';
 import 'package:movie_catalog/core/model/tv_model.dart';
 
@@ -30,7 +31,7 @@ class Api {
     await _persistence.init();
   }
 
-  Future signIn(String sessionId) => _auth.signIn(sessionId);
+  Future signIn({required String token}) => _auth.signIn(token: token);
 
   Future singnOut() => _auth.signOut();
 
@@ -44,6 +45,9 @@ class Api {
       _movies.getUpcomingMovies(page: page);
   Future<List<MovieItemModel>> searchMovies(String query) =>
       _movies.search(query);
+  Future<MovieModelDetail> getMovieDetails({required String id}) =>
+      _movies.getDetails(id);
+  Future<CreditModel> getMovieCreditModel(String id) => _movies.getCredits(id);
 
   Future<List<MovieItemModel>> getPopularTvShows({int page = 1}) =>
       _series.getPopularTvshows(page: page);
@@ -57,12 +61,16 @@ class Api {
 
   Future<TvModel> getTvModel(String id) => _series.getTvModel(id);
 
-  Future<CreditModel> getCreditModel(String id) => _series.getCredits(id);
+  Future<CreditModel> getTvCreditModel(String id) => _series.getCredits(id);
 
   Future<List<MovieItemModel>> getSimilarTvShow(String id) =>
       _series.getSimilar(id);
 
   Future<List<MovieVideoModel>> getTvVideos(String id) => _series.getVideos(id);
 
-  Future<String> createSession() => _auth.createSession();
+  Future<MovieModelDetail> getTvDetails({required String id}) =>
+      _series.getDetails(id);
+
+  Future<String> requestToken({String? redirectTo}) =>
+      _auth.requestToken(redirectTo: redirectTo);
 }

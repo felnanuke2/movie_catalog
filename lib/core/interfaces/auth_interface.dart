@@ -4,7 +4,7 @@ import 'package:movie_catalog/core/model/base_user.dart';
 abstract class AuthRepoInterface {
   UserAuth? get getUserAuth;
 
-  Future<BaseUser> signIn(String sessionId);
+  Future<BaseUser> signIn({required String token});
   Future<void> signOut();
-  Future<String> createSession();
+  Future<String> requestToken({String? redirectTo});
 }
