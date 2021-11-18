@@ -29,7 +29,6 @@ class _HomeScreenState extends State<HomeScreen> {
             currentPage: currentPage,
             pageController: _pageController,
           ),
-          backgroundColor: BACKGROUND_COLOR.withOpacity(0.6),
           body: PageView(
             physics: NeverScrollableScrollPhysics(),
             controller: _pageController,

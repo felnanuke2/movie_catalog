@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:get/instance_manager.dart';
+
 import 'package:movie_catalog/controller/movie_tab_controller.dart';
-import 'package:movie_catalog/controller/session_controller.dart';
+
 import 'package:movie_catalog/core/model/base_user.dart';
 import 'package:movie_catalog/widget/home_app_bar_widget.dart';
 
@@ -21,40 +21,31 @@ class _MovieTabState extends State<MovieTab>
     super.build(context);
     return GetBuilder<MovieTabController>(
       init: MovieTabController(),
-      builder: (controller) => Padding(
-        padding: const EdgeInsets.only(bottom: 8, left: 2, right: 0),
-        child: CustomScrollView(
-          slivers: [
-            HomeAppBarWidget(),
-            SliverToBoxAdapter(
-              child: Obx(() {
-                final user = Get.find<SessionController>().currentUser.value;
-                if (user != null) return _buildUserHeaders(user);
-                return _buildAnonHeaders();
-              }),
-            ),
-            SliverListTitles(
-                initialData: controller.popularMovies,
-                stream: controller.popularMovies.stream,
-                title: 'Filmes Populares',
-                addFunction: controller.getPopularMovies),
-            SliverListTitles(
-                initialData: controller.upcomingMovies,
-                stream: controller.upcomingMovies.stream,
-                title: 'Em Breve',
-                addFunction: controller.getUpcomingMovies),
-            SliverListTitles(
-                initialData: controller.onAirMovies,
-                stream: controller.onAirMovies.stream,
-                title: 'Nos Cinemas',
-                addFunction: controller.getPLayNowMovies),
-            SliverListTitles(
-                initialData: controller.topRatedMovies,
-                stream: controller.topRatedMovies.stream,
-                title: 'Top Rated',
-                addFunction: controller.getTopRatedMovies),
-          ],
-        ),
+      builder: (controller) => CustomScrollView(
+        slivers: [
+          HomeAppBarWidget(),
+
+          SliverListTitles(
+              initialData: controller.popularMovies,
+              stream: controller.popularMovies.stream,
+              title: 'Filmes Populares',
+              addFunction: controller.getPopularMovies),
+          // SliverListTitles(
+          //     initialData: controller.upcomingMovies,
+          //     stream: controller.upcomingMovies.stream,
+          //     title: 'Em Breve',
+          //     addFunction: controller.getUpcomingMovies),
+          SliverListTitles(
+              initialData: controller.onAirMovies,
+              stream: controller.onAirMovies.stream,
+              title: 'Nos Cinemas',
+              addFunction: controller.getPLayNowMovies),
+          SliverListTitles(
+              initialData: controller.topRatedMovies,
+              stream: controller.topRatedMovies.stream,
+              title: 'Top Rated',
+              addFunction: controller.getTopRatedMovies),
+        ],
       ),
     );
   }

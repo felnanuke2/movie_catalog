@@ -97,7 +97,6 @@ class _UserRateMarkFavRowState extends State<UserRateMarkFavRow> {
           padding: EdgeInsets.all(4),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: BACKGROUND_COLOR,
           ),
           child: InkWell(
             onTap: () {
@@ -119,7 +118,7 @@ class _UserRateMarkFavRowState extends State<UserRateMarkFavRow> {
           padding: EdgeInsets.all(4),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: wachList ? BACKGROUND_COLOR : Colors.white,
+            color: wachList ? ConstantColors.background : Colors.white,
           ),
           child: InkWell(
             onTap: () {
@@ -131,7 +130,7 @@ class _UserRateMarkFavRowState extends State<UserRateMarkFavRow> {
             },
             child: Icon(
               Icons.bookmark,
-              color: wachList ? Colors.red : BACKGROUND_COLOR,
+              color: wachList ? Colors.red : ConstantColors.background,
               size: 28,
             ),
           ),
@@ -140,7 +139,7 @@ class _UserRateMarkFavRowState extends State<UserRateMarkFavRow> {
           padding: EdgeInsets.all(4),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: rated ? BACKGROUND_COLOR : Colors.white,
+            color: rated ? ConstantColors.background : Colors.white,
           ),
           child: InkWell(
             onTap: () {
@@ -148,7 +147,7 @@ class _UserRateMarkFavRowState extends State<UserRateMarkFavRow> {
             },
             child: Icon(
               Icons.star,
-              color: rated ? Colors.amber : BACKGROUND_COLOR,
+              color: rated ? Colors.amber : ConstantColors.background,
               size: 28,
             ),
           ),

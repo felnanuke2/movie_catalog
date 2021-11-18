@@ -7,6 +7,7 @@ import 'package:movie_catalog/controller/movie_screen_controller.dart';
 import 'package:movie_catalog/core/model/credit_model.dart';
 import 'package:movie_catalog/core/model/movie_item_model.dart';
 import 'package:movie_catalog/core/model/movie_model_detailed.dart';
+import 'package:movie_catalog/core/model/movie_video_model.dart';
 import 'package:movie_catalog/widget/casting_grid_view.dart';
 import 'package:movie_catalog/widget/categorys_wrap_widget.dart';
 import 'package:movie_catalog/widget/sliverListTitles.dart';
@@ -30,8 +31,7 @@ class _MovieScreenState extends State<MovieScreen>
     return GetBuilder<MovieScreenController>(
         init: MovieScreenController(widget._movieItemModel!),
         builder: (controller) => Scaffold(
-            backgroundColor: BACKGROUND_COLOR,
-            body: CustomScrollView(
+                body: CustomScrollView(
               slivers: [
                 Obx(() => SliverAppbarWithImage(
                       conenctAwait: controller.awaiting.value,
@@ -65,9 +65,7 @@ class _MovieScreenState extends State<MovieScreen>
                         SizedBox(
                           height: 10,
                         ),
-                        Obx(() => controller.videosList.isEmpty
-                            ? SizedBox.shrink()
-                            : VideoGridView(videosList: controller.videosList)),
+                        _buildVideoGrid(controller),
                         SizedBox(
                           height: 10,
                         ),
@@ -87,6 +85,15 @@ class _MovieScreenState extends State<MovieScreen>
             )));
   }
 
+  Widget _buildVideoGrid(MovieScreenController controller) =>
+      FutureBuilder<List<MovieVideoModel>>(
+        future: controller.videosList,
+        builder: (context, snapshot) =>
+            snapshot.connectionState == ConnectionState.waiting
+                ? LinearProgressIndicator()
+                : VideoGridView(videosList: snapshot.data ?? []),
+      );
+
   Widget _buildCredits(MovieScreenController controller) {
     return FutureBuilder<CreditModel>(
       future: controller.creditModel,
@@ -98,13 +105,6 @@ class _MovieScreenState extends State<MovieScreen>
                     _buildDirector(
                       snapshot.data!,
                       controller,
-                    ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Elenco',
-                        style: TextStyle(color: Colors.white, fontSize: 17),
-                      ),
                     ),
                     SizedBox(
                       height: 10,

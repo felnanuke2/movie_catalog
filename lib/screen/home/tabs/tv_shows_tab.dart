@@ -19,34 +19,31 @@ class _TvShowsTabState extends State<TvShowsTab>
     super.build(context);
     return GetBuilder<TvTabController>(
       init: TvTabController(),
-      builder: (controller) => Padding(
-        padding: const EdgeInsets.only(bottom: 8, left: 8, right: 8),
-        child: CustomScrollView(
-          slivers: [
-            HomeAppBarWidget(),
-            SliverListTitles(
-              addFunction: controller.getPopularTvList,
-              initialData: controller.popularList,
-              stream: controller.popularList.stream,
-              title: 'Séries Populares',
-              tv: true,
-            ),
-            SliverListTitles(
-              addFunction: controller.getLatestTvList,
-              initialData: controller.latestTvList,
-              stream: controller.latestTvList.stream,
-              title: 'Ultimos Lançamentos',
-              tv: true,
-            ),
-            SliverListTitles(
-              addFunction: controller.getTopRatedTvList,
-              initialData: controller.topratedTvList,
-              stream: controller.topratedTvList.stream,
-              title: 'Top Rated',
-              tv: true,
-            ),
-          ],
-        ),
+      builder: (controller) => CustomScrollView(
+        slivers: [
+          HomeAppBarWidget(),
+          SliverListTitles(
+            addFunction: controller.getPopularTvList,
+            initialData: controller.popularList,
+            stream: controller.popularList.stream,
+            title: 'Séries Populares',
+            tv: true,
+          ),
+          SliverListTitles(
+            addFunction: controller.getLatestTvList,
+            initialData: controller.latestTvList,
+            stream: controller.latestTvList.stream,
+            title: 'Ultimos Lançamentos',
+            tv: true,
+          ),
+          SliverListTitles(
+            addFunction: controller.getTopRatedTvList,
+            initialData: controller.topratedTvList,
+            stream: controller.topratedTvList.stream,
+            title: 'Top Rated',
+            tv: true,
+          ),
+        ],
       ),
     );
   }

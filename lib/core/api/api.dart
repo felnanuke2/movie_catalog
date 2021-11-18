@@ -48,6 +48,8 @@ class Api {
   Future<MovieModelDetail> getMovieDetails({required String id}) =>
       _movies.getDetails(id);
   Future<CreditModel> getMovieCreditModel(String id) => _movies.getCredits(id);
+  Future<List<MovieVideoModel>> getMoviesVideos(String id) =>
+      _movies.getVideosList(id);
 
   Future<List<MovieItemModel>> getPopularTvShows({int page = 1}) =>
       _series.getPopularTvshows(page: page);

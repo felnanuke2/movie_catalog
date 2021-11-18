@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_catalog/constant/constant.dart';
 import 'package:movie_catalog/core/model/movie_item_model.dart';
 import 'package:movie_catalog/widget/animated_arrow_scroll_widget.dart';
 import 'package:movie_catalog/widget/movie_item.dart';
@@ -61,8 +62,8 @@ class _SliverListTitlesState extends State<SliverListTitles> {
 
   Positioned _buildScrolButton() {
     return Positioned(
-        top: 0,
-        bottom: 0,
+        top: 70,
+        bottom: 70,
         right: 0,
         child: AnimatedArrowScrollWidget(
           scrollToStart: _scrollToStart,

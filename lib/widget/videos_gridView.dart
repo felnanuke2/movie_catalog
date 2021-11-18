@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 
 import 'package:movie_catalog/core/model/movie_video_model.dart';
-import 'package:movie_catalog/widget/video_dialog.dart';
+import 'package:movie_catalog/ultils/functions/functions.dart';
+
+import 'package:movie_catalog/widget/video_item.dart';
 
 class VideoGridView extends StatelessWidget {
   final List<MovieVideoModel> videosList;
@@ -14,12 +17,20 @@ class VideoGridView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            'Videos',
-            style: TextStyle(color: Colors.white, fontSize: 17),
-          ),
+        Row(
+          children: [
+            Text(
+              'Videos',
+              style: TextStyle(color: Colors.white, fontSize: 17),
+            ),
+            TextButton(
+                onPressed: _onShowDetailsPressed,
+                child: Text(
+                  'Detalhes',
+                  style: TextStyle(
+                      color: Get.theme.colorScheme.secondary, fontSize: 14),
+                ))
+          ],
         ),
         SizedBox(
           height: 10,
@@ -28,51 +39,26 @@ class VideoGridView extends StatelessWidget {
           padding: EdgeInsets.all(0),
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
-          crossAxisCount: 2,
+          crossAxisCount: _crossAxisCount,
           mainAxisSpacing: 6,
           crossAxisSpacing: 6,
           childAspectRatio: 16 / 9,
-          children: List.generate(videosList.length, (index) {
-            var videoItem = videosList[index];
-            var imageUr = 'https://img.youtube.com/vi/${videoItem.key}/0.jpg';
-            return InkWell(
-              onTap: () => showDialog(
-                context: context,
-                builder: (context) => VideoDialog(videoItem.key),
-              ),
-              child: Hero(
-                tag: videoItem.key!,
-                child: Image.network(
-                  imageUr,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            );
-          }),
+          children: List.generate(
+              _videosLenth, (index) => VideoItem(video: videosList[index])),
         ),
-        // if (snapshot.data!.length > 4)
-        //   Center(
-        //       child: IconButton(
-        //     onPressed: () {
-        //       setState(() {
-        //         _expandedGridView = !_expandedGridView;
-        //         if (_animationController!.isCompleted) {
-        //           _animationController!.reverse();
-        //         } else {
-        //           _animationController!.forward();
-        //         }
-        //       });
-        //     },
-        //     icon: RotationTransition(
-        //       turns: _arrowDownAnimation!,
-        //       child: Icon(
-        //         Icons.arrow_drop_down_outlined,
-        //         color: Colors.white,
-        //         size: 36,
-        //       ),
-        //     ),
-        //   )),
       ],
     );
   }
+
+  int get _maxLenth => _crossAxisCount * 3;
+  bool get _showMore => videosList.length > _maxLenth;
+  int get _videosLenth {
+    return videosList.length > _maxLenth ? _maxLenth : videosList.length;
+  }
+
+  int get _crossAxisCount => getAxisCount(
+      maxScreenWidth: MediaQuery.of(Get.context!).size.width,
+      maxChildWidth: 160);
+
+  void _onShowDetailsPressed() {}
 }

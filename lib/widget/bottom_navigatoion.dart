@@ -18,9 +18,6 @@ class _MovieTvShowNavigationBarState extends State<MovieTvShowNavigationBar> {
   Widget build(BuildContext context) {
     return BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        unselectedItemColor: Colors.white.withOpacity(0.4),
-        backgroundColor: BACKGROUND_COLOR,
-        elevation: 4,
         currentIndex: widget.currentPage,
         onTap: (value) {
           widget.currentPage = value;

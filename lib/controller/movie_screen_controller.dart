@@ -13,6 +13,7 @@ class MovieScreenController extends GetxController {
     final id = movieItem.id.toString();
     movieModelDetail = _api.getMovieDetails(id: id);
     creditModel = _api.getMovieCreditModel(id);
+    videosList = _api.getMoviesVideos(id);
   }
   final MovieItemModel movieItem;
   final Api _api = Get.find();
@@ -22,7 +23,7 @@ class MovieScreenController extends GetxController {
   final awaiting = false.obs;
   bool get isAuthenticated => Get.find<AuthRepoInterface>().getUserAuth != null;
   late Future<CreditModel> creditModel;
-  final videosList = <MovieVideoModel>[];
+  late Future<List<MovieVideoModel>> videosList;
   final recomendationsList = <MovieItemModel>[].obs;
 
   String? getDirector(CreditModel credit) =>

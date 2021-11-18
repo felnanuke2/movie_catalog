@@ -25,9 +25,7 @@ class LoginButton extends StatelessWidget {
                 padding: EdgeInsets.all(4),
                 decoration:
                     BoxDecoration(shape: BoxShape.circle, color: Colors.white),
-                child: CircularProgressIndicator(
-                  valueColor: AlwaysStoppedAnimation(BACKGROUND_COLOR),
-                ),
+                child: CircularProgressIndicator(),
               ),
               TextButton(
                   onPressed: () {

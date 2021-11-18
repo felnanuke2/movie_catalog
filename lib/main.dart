@@ -1,10 +1,12 @@
+import 'package:device_preview/device_preview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:movie_catalog/constant/theme.dart';
 import 'package:movie_catalog/screen/splash_screen.dart';
 
 void main() async {
-  runApp(MyApp());
+  runApp(DevicePreview(enabled: !kReleaseMode, builder: (context) => MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -15,6 +17,8 @@ class MyApp extends StatelessWidget {
       theme: ConstantThemes.theme,
       debugShowCheckedModeBanner: false,
       home: SplashScreen(),
+      builder: DevicePreview.appBuilder,
+      locale: DevicePreview.locale(context),
     );
   }
 }

@@ -29,7 +29,6 @@ class _TVScreenState extends State<TVScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: BACKGROUND_COLOR,
         body: GetBuilder<TvScreenController>(
             init: TvScreenController(movieItemModel: widget.movieItemModel),
             builder: (controller) => CustomScrollView(
