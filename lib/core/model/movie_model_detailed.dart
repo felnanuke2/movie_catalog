@@ -1,7 +1,6 @@
 class MovieModelDetail {
   bool? adult;
   String? backdropPath;
-
   int? budget;
   List<Genres>? genres;
   String? homepage;
@@ -57,7 +56,8 @@ class MovieModelDetail {
 
     budget = json['budget'];
     if (json['genres'] != null) {
-      genres = List.from(json['genres']).map((e) => Genres.fromJson(e)).toList();
+      genres =
+          List.from(json['genres']).map((e) => Genres.fromJson(e)).toList();
     }
     homepage = json['homepage'];
     id = json['id'];
@@ -81,8 +81,9 @@ class MovieModelDetail {
     revenue = json['revenue'];
     runtime = json['runtime'];
     if (json['spoken_languages'] != null) {
-      spokenLanguages =
-          List.from(json['spoken_languages']).map((e) => SpokenLanguages.fromJson(e)).toList();
+      spokenLanguages = List.from(json['spoken_languages'])
+          .map((e) => SpokenLanguages.fromJson(e))
+          .toList();
     }
     status = json['status'];
     tagline = json['tagline'];
