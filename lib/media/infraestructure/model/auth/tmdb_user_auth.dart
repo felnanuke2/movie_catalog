@@ -1,4 +1,4 @@
-import 'package:movie_catalog/core/interfaces/user_auth.dart';
+import 'package:movie_catalog/core/model/auth/user_auth.dart';
 
 class TmdbUserAuth extends UserAuth {
   TmdbUserAuth._(this.sessionId, this.userId) : super(args: {});

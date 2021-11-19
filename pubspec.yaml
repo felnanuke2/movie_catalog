@@ -44,6 +44,8 @@ dependencies:
   material_color_generator: ^1.1.0
   visibility_detector: ^0.2.2
   device_preview: ^0.7.4
+  equatable: ^2.0.3
+  dartz: ^0.10.0
 
 flutter_icons:
   android: "launcher_icon"

@@ -1,8 +1,3 @@
-import 'package:movie_catalog/core/model/credit_model.dart';
-import 'package:movie_catalog/core/model/movie_item_model.dart';
-import 'package:movie_catalog/core/model/movie_model_detailed.dart';
-import 'package:movie_catalog/core/model/movie_video_model.dart';
-
 /// this repository is responsible for managing all request involving [Movies]
 abstract class MoviesRepoInterface {
   /// get popular Movies and can be receive a index of ```page = 1``` if null

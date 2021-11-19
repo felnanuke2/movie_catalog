@@ -4,7 +4,7 @@ import 'package:http/http.dart';
 import 'package:movie_catalog/constant/api_key.dart';
 import 'package:movie_catalog/core/interfaces/auth_interface.dart';
 import 'package:movie_catalog/core/interfaces/persistence_interface.dart';
-import 'package:movie_catalog/core/interfaces/user_auth.dart';
+import 'package:movie_catalog/core/model/auth/user_auth.dart';
 import 'package:movie_catalog/core/model/auth/tmdb_user_auth.dart';
 import 'package:movie_catalog/core/model/base_user.dart';
 

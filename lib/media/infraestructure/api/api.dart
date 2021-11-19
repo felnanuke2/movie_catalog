@@ -1,15 +1,3 @@
-import 'package:movie_catalog/core/interfaces/auth_interface.dart';
-import 'package:movie_catalog/core/interfaces/movies_interface.dart';
-import 'package:movie_catalog/core/interfaces/persistence_interface.dart';
-import 'package:movie_catalog/core/interfaces/tv_interface.dart';
-import 'package:movie_catalog/core/interfaces/user_interface.dart';
-import 'package:movie_catalog/core/model/base_user.dart';
-import 'package:movie_catalog/core/model/credit_model.dart';
-import 'package:movie_catalog/core/model/movie_item_model.dart';
-import 'package:movie_catalog/core/model/movie_model_detailed.dart';
-import 'package:movie_catalog/core/model/movie_video_model.dart';
-import 'package:movie_catalog/core/model/tv_model.dart';
-
 class Api {
   final AuthRepoInterface _auth;
   final MoviesRepoInterface _movies;

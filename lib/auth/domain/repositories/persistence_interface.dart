@@ -1,4 +1,6 @@
-import 'package:movie_catalog/core/model/base_user.dart';
+import 'package:dartz/dartz.dart';
+import 'package:movie_catalog/auth/domain/error/local_sotorage_error.dart';
+import 'package:movie_catalog/media/domain/entities/user.dart';
 
 /// This repository is responsible to persisting any data in a local device like ``` Tokens ``` or something
 abstract class PersistenceInterface {
@@ -6,16 +8,16 @@ abstract class PersistenceInterface {
   /// this method needs to be called before anyone else or will broke.
   ///
   /// ```Hint```: TENSURE THAT YOUR REPOSITORY IS INITIALIZED.
-  Future<void> init();
+  Future<Either<AuthLocalStorageError, void>> init();
 
   /// Get ```currentUser``` persited in local storage.
-  BaseUser? get currentUser;
+  Either<AuthLocalStorageError, UserEntity> get currentUser;
 
   /// save the currentuser async in LocalStorage to persisted.
-  Future<BaseUser?> saveUser(BaseUser? user);
+  Future<Either<AuthLocalStorageError, UserEntity>> saveUser(UserEntity user);
 
   /// this will clear you storage.
   /// this can be used to clear a session.
   /// probably this will call from a ``` signOut() ``` method in another class.
-  Future<void> clearUser();
+  Future<Either<AuthLocalStorageError, void>> clearUser();
 }

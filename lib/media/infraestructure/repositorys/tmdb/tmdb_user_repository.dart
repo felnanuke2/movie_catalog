@@ -8,6 +8,7 @@ import 'package:movie_catalog/core/interfaces/persistence_interface.dart';
 import 'package:movie_catalog/core/interfaces/user_interface.dart';
 import 'package:movie_catalog/core/model/auth/tmdb_user_auth.dart';
 import 'package:movie_catalog/core/model/base_user.dart';
+import 'package:movie_catalog/core/model/enums/enums.dart';
 import 'package:movie_catalog/core/model/movie_item_model.dart';
 
 class TmdbUserRepository extends UserInterface {
@@ -23,7 +24,7 @@ class TmdbUserRepository extends UserInterface {
     this.persistence,
   );
 
-  Future<List<MovieItemModel>> getMoviesWachList(
+  Future<List<MovieItemModel>> getMoviesWatchList(
       {bool? add, int page = 1}) async {
     var id = _authUser.sessionId;
     var sessionId = _authUser.sessionId;
@@ -116,7 +117,7 @@ class TmdbUserRepository extends UserInterface {
   }
 
   Future<MovieItemModel> markAsFavorite(
-      bool favorite, String mediaType, MovieItemModel movieItemModel) async {
+      bool favorite, MediaType mediaType, MovieItemModel movieItemModel) async {
     var id = _authUser.sessionId;
     var sessionId = _authUser.sessionId;
     final url = 'https://api.themoviedb.org/3/account/$id/favorite?api_key'
@@ -124,7 +125,7 @@ class TmdbUserRepository extends UserInterface {
     var request = await post(Uri.parse(url),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          'media_type': mediaType,
+          'media_type': mediaType.toValueString(),
           'media_id': movieItemModel.id,
           'favorite': favorite,
         }));
@@ -134,8 +135,8 @@ class TmdbUserRepository extends UserInterface {
   }
 
   /// media
-  Future<MovieItemModel> addToWatchList(
-      bool watchlist, String mediaType, MovieItemModel movieItemModel) async {
+  Future<MovieItemModel> addToWatchList(bool watchlist, MediaType mediaType,
+      MovieItemModel movieItemModel) async {
     var id = _authUser.sessionId;
     var sessionId = _authUser.sessionId;
     final url = 'https://api.themoviedb.org/3/account/$id/watchlist?api_key'
@@ -143,7 +144,7 @@ class TmdbUserRepository extends UserInterface {
     var request = await post(Uri.parse(url),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          'media_type': mediaType,
+          'media_type': mediaType.toValueString(),
           'media_id': movieItemModel.id,
           'watchlist': watchlist,
         }));
@@ -184,5 +185,17 @@ class TmdbUserRepository extends UserInterface {
     movieItemModel.rating = rate;
 
     return movieItemModel;
+  }
+}
+
+extension _ConvertMediaType on MediaType {
+  String toValueString() {
+    String value;
+    if (this == MediaType.Tv) {
+      value = 'tv';
+    } else {
+      value = 'movie';
+    }
+    return value;
   }
 }
