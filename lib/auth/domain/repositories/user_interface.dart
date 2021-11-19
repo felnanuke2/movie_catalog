@@ -9,7 +9,7 @@ import 'package:movie_catalog/media/domain/entities/user.dart';
 
 enum MediaType { Tv, Movie }
 
-abstract class UserInterface {
+abstract class UserRepository {
   /// get the currentUser if is ```Signed```
   Either<AuthUnauthenticatedError, UserEntity> get currentUser;
 

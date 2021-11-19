@@ -3,7 +3,7 @@ import 'package:movie_catalog/auth/domain/error/local_sotorage_error.dart';
 import 'package:movie_catalog/media/domain/entities/user.dart';
 
 /// This repository is responsible to persisting any data in a local device like ``` Tokens ``` or something
-abstract class PersistenceInterface {
+abstract class AuthPersistenceRepository {
   /// this is responsible to inilialize a ```Db``` whatever it is.
   /// this method needs to be called before anyone else or will broke.
   ///

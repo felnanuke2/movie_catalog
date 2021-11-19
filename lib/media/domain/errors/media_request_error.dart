@@ -1,6 +1,6 @@
-class RequestError implements Exception {
+class MediaRequestError implements Exception {
   final String message;
-  RequestError({
+  MediaRequestError({
     required this.message,
   });
 }

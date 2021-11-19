@@ -5,8 +5,7 @@ import 'package:movie_catalog/media/domain/entities/media.dart';
 import 'package:movie_catalog/media/domain/entities/video.dart';
 import 'package:movie_catalog/media/domain/errors/media_request_error.dart';
 
-/// this repository is responsible for managing all request involving [Movies]
-abstract class MediaRepository {
+abstract class MediaDataSource {
   /// get popular Movies and can be receive a index of ```page = 1``` if null
   Future<Either<MediaRequestError, List<Media>>> getPopularMovies(
       {int page = 1});

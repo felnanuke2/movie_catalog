@@ -1,13 +1,6 @@
-import 'dart:convert';
-import 'package:http/http.dart';
-import 'package:movie_catalog/constant/api_key.dart';
-import 'package:movie_catalog/core/interfaces/movies_interface.dart';
-import 'package:movie_catalog/core/model/credit_model.dart';
-import 'package:movie_catalog/core/model/movie_item_model.dart';
-import 'package:movie_catalog/core/model/movie_model_detailed.dart';
-import 'package:movie_catalog/core/model/movie_video_model.dart';
+import 'package:movie_catalog/media/infraestructure/data_sources/media_repository.dart';
 
-class TmdbMoviesRepository implements MoviesRepoInterface {
+class TbdmMediaDataSource implements MediaDataSource {
   @override
   Future<List<MovieItemModel>> getPlayNowMovies({int page = 1}) async {
     var request = await get(Uri.parse(

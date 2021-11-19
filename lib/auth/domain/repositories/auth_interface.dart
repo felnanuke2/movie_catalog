@@ -6,7 +6,7 @@ import 'package:movie_catalog/auth/domain/error/local_sotorage_error.dart';
 import 'package:movie_catalog/auth/domain/error/unauthenticated_user_error.dart';
 
 /// responsible for authenticating the user in the app and authenticating requests in context
-abstract class AuthRepoInterface {
+abstract class AuthRepository {
   Either<AuthUnauthenticatedError, UserAuthEntity> get getUserAuth;
 
   /// if
