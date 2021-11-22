@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:movie_catalog/constant/theme.dart';
-import 'package:movie_catalog/screen/splash_screen.dart';
 
 void main() async {
   runApp(DevicePreview(enabled: !kReleaseMode, builder: (context) => MyApp()));

@@ -1,5 +1,5 @@
 class PersonEntity {
-  final int id;
+  final String id;
   final String name;
   String? profilePath;
 

@@ -1,9 +1,9 @@
-class Media {
+class MediaEntity {
   final String id;
   final String name;
   final num rate;
   final String banner;
-  Media({
+  MediaEntity({
     required this.id,
     required this.name,
     required this.rate,

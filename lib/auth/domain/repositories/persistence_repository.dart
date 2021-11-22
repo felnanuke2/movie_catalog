@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
+import 'package:movie_catalog/auth/domain/entities/user.dart';
 import 'package:movie_catalog/auth/domain/error/local_sotorage_error.dart';
-import 'package:movie_catalog/media/domain/entities/user.dart';
 
 /// This repository is responsible to persisting any data in a local device like ``` Tokens ``` or something
 abstract class AuthPersistenceRepository {

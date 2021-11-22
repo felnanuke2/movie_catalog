@@ -1,8 +1,11 @@
-import 'package:movie_catalog/media/infraestructure/data_sources/media_repository.dart';
+import 'package:movie_catalog/media/domain/data_sources/media_data_source_entity.dart';
+import 'package:movie_catalog/media/domain/entities/credit.dart';
+import 'package:movie_catalog/media/domain/entities/detail.dart';
+import 'package:movie_catalog/media/domain/entities/media.dart';
 
-class TbdmMediaDataSource implements MediaDataSource {
+class TbdmTvMediaDataSource implements MediaDataSource {
   @override
-  Future<List<MovieItemModel>> getPlayNowMovies({int page = 1}) async {
+  Future<List<MediaEntity>> getPlayNowMovies({int page = 1}) async {
     var request = await get(Uri.parse(
         'https://api.themoviedb.org/3/movie/now_playing?api_key=$API_KEY&language=pt-br&page=$page'));
     if (request.statusCode != 200) throw request.body;
@@ -14,7 +17,7 @@ class TbdmMediaDataSource implements MediaDataSource {
   }
 
   @override
-  Future<List<MovieItemModel>> getPopularMovies({int page = 1}) async {
+  Future<List<MediaEntity>> getPopularMovies({int page = 1}) async {
     final request = await get(Uri.parse(
         'https://api.themoviedb.org/3/movie/popular?api_key=$API_KEY&language=pt-br&page=$page'));
     if (request.statusCode != 200) throw request.body;
@@ -26,7 +29,7 @@ class TbdmMediaDataSource implements MediaDataSource {
   }
 
   @override
-  Future<List<MovieItemModel>> getTopRated({int page = 1}) async {
+  Future<List<MediaEntity>> getTopRated({int page = 1}) async {
     final request = await get(Uri.parse(
         'https://api.themoviedb.org/3/movie/top_rated?api_key=$API_KEY&language=pt-br&page=$page'));
     if (request.statusCode != 200) throw request.body;
@@ -38,7 +41,7 @@ class TbdmMediaDataSource implements MediaDataSource {
   }
 
   @override
-  Future<List<MovieItemModel>> getUpcomingMovies({int page = 1}) async {
+  Future<List<MediaEntity>> getUpcomingMovies({int page = 1}) async {
     final request = await get(Uri.parse(
         'https://api.themoviedb.org/3/movie/upcoming?api_key=$API_KEY&language=pt-br&page=$page'));
     if (request.statusCode != 200) throw request.body;
@@ -50,7 +53,7 @@ class TbdmMediaDataSource implements MediaDataSource {
   }
 
   @override
-  Future<List<MovieItemModel>> search(String query) async {
+  Future<List<MediaEntity>> search(String query) async {
     final request = await get(Uri.parse(
         'https://api.themoviedb.org/3/search/movie?api_key=$API_KEY&language= pt-br&query=$query'));
     if (request.statusCode != 200) throw request.body;
@@ -65,7 +68,7 @@ class TbdmMediaDataSource implements MediaDataSource {
   }
 
   @override
-  Future<CreditModel> getCredits(
+  Future<CreditEntity> getCredits(
     String movieId,
   ) async {
     var request = await get(Uri.parse(
@@ -80,7 +83,7 @@ class TbdmMediaDataSource implements MediaDataSource {
   }
 
   @override
-  Future<MovieModelDetail> getDetails(String id) async {
+  Future<DetailsEntity> getDetails(String id) async {
     var request = await get(Uri.parse(
         'https://api.themoviedb.org/3/movie/$id?api_key=$API_KEY&language=pt-br'));
     if (request.statusCode != 200) throw request.body;
@@ -90,7 +93,7 @@ class TbdmMediaDataSource implements MediaDataSource {
   }
 
   @override
-  Future<List<MovieVideoModel>> getVideosList(String id) async {
+  Future<List<VideoEntity>> getVideosList(String id) async {
     var request = await get(Uri.parse(
         'https://api.themoviedb.org/3/movie/$id/videos?api_key=$API_KEY'));
     if (request.statusCode != 200) throw request.body;
@@ -103,7 +106,7 @@ class TbdmMediaDataSource implements MediaDataSource {
   }
 
   @override
-  Future<List<MovieItemModel>> getRecomendations(String id) async {
+  Future<List<MediaEntity>> getRecomendations(String id) async {
     var request = await get(Uri.parse(
         'https://api.themoviedb.org/3/movie/$id/similar?api_key=$API_KEY&language=pt-br'));
     if (request.statusCode != 200) throw request.body;

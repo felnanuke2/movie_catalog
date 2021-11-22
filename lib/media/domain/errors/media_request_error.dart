@@ -1,6 +1,6 @@
 class MediaRequestError implements Exception {
   final String message;
-  MediaRequestError({
-    required this.message,
-  });
+  StackTrace? stackTrace;
+  int? code;
+  MediaRequestError({required this.message, this.stackTrace});
 }

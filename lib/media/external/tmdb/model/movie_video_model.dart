@@ -1,37 +1,43 @@
-class MovieVideoModel {
-  String? id;
+import 'dart:convert';
+
+import 'package:movie_catalog/media/domain/entities/video.dart';
+
+class TmdbVideoModel extends VideoEntity {
+  final String id;
   String? iso6391;
   String? iso31661;
-  String? key;
+  final String key;
   String? name;
   String? site;
   int? size;
   String? type;
+  TmdbVideoModel({
+    required this.id,
+    this.iso6391,
+    this.iso31661,
+    required this.key,
+    this.name,
+    this.site,
+    this.size,
+    this.type,
+  }) : super(
+            id: id,
+            src: key,
+            thumbnail: 'https://img.youtube.com/vi/$key/0.jpg');
 
-  MovieVideoModel(
-      {this.id, this.iso6391, this.iso31661, this.key, this.name, this.site, this.size, this.type});
-
-  MovieVideoModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    iso6391 = json['iso_639_1'];
-    iso31661 = json['iso_3166_1'];
-    key = json['key'];
-    name = json['name'];
-    site = json['site'];
-    size = json['size'];
-    type = json['type'];
+  factory TmdbVideoModel.fromMap(Map<String, dynamic> map) {
+    return TmdbVideoModel(
+      id: map['id'],
+      iso6391: map['iso6391'] != null ? map['iso6391'] : null,
+      iso31661: map['iso31661'] != null ? map['iso31661'] : null,
+      key: map['key'],
+      name: map['name'] != null ? map['name'] : null,
+      site: map['site'] != null ? map['site'] : null,
+      size: map['size'] != null ? map['size'] : null,
+      type: map['type'] != null ? map['type'] : null,
+    );
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['iso_639_1'] = this.iso6391;
-    data['iso_3166_1'] = this.iso31661;
-    data['key'] = this.key;
-    data['name'] = this.name;
-    data['site'] = this.site;
-    data['size'] = this.size;
-    data['type'] = this.type;
-    return data;
-  }
+  factory TmdbVideoModel.fromJson(String source) =>
+      TmdbVideoModel.fromMap(json.decode(source));
 }

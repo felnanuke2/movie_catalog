@@ -1,4 +1,4 @@
-import 'package:movie_catalog/media/domain/entities/crew.dart';
+import 'package:movie_catalog/media/domain/entities/person.dart';
 
 class CreditEntity {
   final String id;
