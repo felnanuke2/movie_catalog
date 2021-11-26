@@ -5,7 +5,6 @@ import 'package:movie_catalog/media/domain/data_sources/media_data_source_entity
 import 'package:movie_catalog/media/domain/entities/media.dart';
 import 'package:movie_catalog/media/domain/errors/media_request_error.dart';
 import 'package:movie_catalog/media/domain/usecases/get_media_usecase.dart';
-
 import 'get_videos_usecase_test.dart';
 
 class MediaDataSourceMock extends Mock implements MediaDataSource {}

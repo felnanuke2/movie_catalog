@@ -19,7 +19,7 @@ class TvScreenController extends GetxController {
   TvScreenController({
     required this.movieItemModel,
   }) {
-    final id = (movieItemModel.id ?? 0).toString();
+    final id = (movieItemModel.query ?? 0).toString();
     tvModel = _api.getTvModel(id);
     creditModel = _api.getTvCreditModel(id);
     movieVideos = _api.getTvVideos(id);
@@ -33,7 +33,7 @@ class TvScreenController extends GetxController {
 
   Stream<List<MovieItemModel>> getSimilarTvList() async* {
     final suggestions =
-        await _api.getSimilarTvShow(movieItemModel.id.toString());
+        await _api.getSimilarTvShow(movieItemModel.query.toString());
     yield suggestions;
   }
 

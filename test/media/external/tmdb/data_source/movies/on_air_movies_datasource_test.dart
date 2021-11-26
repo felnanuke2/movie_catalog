@@ -14,8 +14,9 @@ void main() {
   setUpAll(() {
     registerFallbackValue(Uri());
   });
+
   test('Test if onAir Movies serialize is working', () async {
-    final dataSource = TmdbOnAirMoviesDatasource(client);
+    final dataSource = TmdbOnAirMoviesDatasource(client, laguage: 'pt-BR');
     when(() => client.get(any())).thenAnswer((invocation) async =>
         Response(jsonEncode(TMDB_MOCK_ON_AIR_MOVIES_200), 200, headers: {
           HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8',
@@ -26,7 +27,7 @@ void main() {
   });
 
   test('Test if page is incremented', () async {
-    final dataSource = TmdbOnAirMoviesDatasource(client);
+    final dataSource = TmdbOnAirMoviesDatasource(client, laguage: 'pt-BR');
     when(() => client.get(any())).thenAnswer((invocation) async =>
         Response(jsonEncode(TMDB_MOCK_ON_AIR_MOVIES_200), 200, headers: {
           HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8',
@@ -36,7 +37,7 @@ void main() {
   });
 
   test('test if onAir Movies throws error when response is not ok', () async {
-    final dataSource = TmdbOnAirMoviesDatasource(client);
+    final dataSource = TmdbOnAirMoviesDatasource(client, laguage: 'pt-BR');
     when(() => client.get(any())).thenAnswer((invocation) async =>
         Response(jsonEncode(TMDB_MOCK_RESPONSE_401), 401, headers: {
           HttpHeaders.contentTypeHeader: 'application/json; charset=utf-8',

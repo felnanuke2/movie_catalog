@@ -8,12 +8,13 @@ import 'package:movie_catalog/media/domain/usecases/get_credits_usecase.dart';
 
 import 'get_videos_usecase_test.dart';
 
-class CreditsDatasourceMock extends Mock implements CreditDataSource {}
+class CreditsDatasourceMock<T extends CreditEntity> extends Mock
+    implements CreditDataSource<T> {}
 
 class CreditEntityMock extends Mock implements CreditEntity {}
 
 void main() {
-  final datasource = CreditsDatasourceMock();
+  final datasource = CreditsDatasourceMock<CreditEntity>();
   final mediaRepository = MediaRepositoryMock();
 
   test('Should call repository.getCredits() ', () async {
@@ -21,13 +22,14 @@ void main() {
       datasource,
       mediaRepository,
     );
+
     when(() => mediaRepository.getCredits(datasource))
         .thenAnswer((invocation) async => Right(CreditEntityMock()));
     await getcredits();
     verify(() => mediaRepository.getCredits(datasource)).called(1);
   });
   test('return left on erro  ', () async {
-    final getcredits = GetCreditUsecase(
+    final getcredits = GetCreditUsecase<CreditEntity>(
       datasource,
       mediaRepository,
     );

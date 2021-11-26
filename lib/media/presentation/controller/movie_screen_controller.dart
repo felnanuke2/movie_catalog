@@ -10,8 +10,8 @@ import 'package:movie_catalog/core/model/movie_video_model.dart';
 
 class MovieScreenController extends GetxController {
   MovieScreenController(this.movieItem) {
-    final id = movieItem.id.toString();
-    movieModelDetail = _api.getMovieDetails(id: id);
+    final id = movieItem.query.toString();
+    movieModelDetail = _api.getMovieDetails(query: id);
     creditModel = _api.getMovieCreditModel(id);
     videosList = _api.getMoviesVideos(id);
   }

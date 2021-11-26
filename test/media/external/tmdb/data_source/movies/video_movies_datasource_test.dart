@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart';
 import 'package:mocktail/mocktail.dart';
@@ -12,7 +11,7 @@ import 'popular_movies_datasource_test.dart';
 
 void main() {
   final client = HttpClientMock();
-  final dataSource = TmdbVideoDatasource(client, id: '0');
+  final dataSource = TmdbVideoDatasource(client, id: '0', laguage: 'pt-BR');
   setUpAll(() {
     registerFallbackValue(Uri());
   });

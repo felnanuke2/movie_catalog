@@ -8,12 +8,12 @@ import 'package:movie_catalog/media/domain/entities/detail.dart';
 import 'package:movie_catalog/media/domain/entities/media.dart';
 import 'package:movie_catalog/media/domain/entities/video.dart';
 import 'package:movie_catalog/media/domain/errors/media_request_error.dart';
-import 'package:movie_catalog/media/domain/repositories/movies_interface.dart';
+import 'package:movie_catalog/media/domain/repositories/media_repository.dart';
 
 class MediaRepositoryImplementation implements MediaRepository {
   @override
-  Future<Either<MediaRequestError, CreditEntity>> getCredits(
-      CreditDataSource dataSource) async {
+  Future<Either<MediaRequestError, T>> getCredits<T extends CreditEntity>(
+      CreditDataSource<T> dataSource) async {
     try {
       final result = await dataSource();
       return Right(result);
@@ -23,8 +23,8 @@ class MediaRepositoryImplementation implements MediaRepository {
   }
 
   @override
-  Future<Either<MediaRequestError, DetailsEntity>> getDetails(
-      DetailsDataSource dataSource) async {
+  Future<Either<MediaRequestError, T>> getDetails<T extends DetailsEntity>(
+      DetailsDataSource<T> dataSource) async {
     try {
       final result = await dataSource();
       return Right(result);
@@ -34,8 +34,8 @@ class MediaRepositoryImplementation implements MediaRepository {
   }
 
   @override
-  Future<Either<MediaRequestError, List<MediaEntity>>> getMedia(
-      MediaDataSource dataSource) async {
+  Future<Either<MediaRequestError, List<T>>> getMedia<T extends MediaEntity>(
+      MediaDataSource<T> dataSource) async {
     try {
       final result = await dataSource();
       return Right(result);
@@ -45,8 +45,9 @@ class MediaRepositoryImplementation implements MediaRepository {
   }
 
   @override
-  Future<Either<MediaRequestError, List<VideoEntity>>> getVideosList(
-      VideoDataSource dataSource) async {
+  Future<Either<MediaRequestError, List<T>>>
+      getVideosList<T extends VideoEntity>(
+          VideoDataSource<T> dataSource) async {
     try {
       final result = await dataSource();
       return Right(result);

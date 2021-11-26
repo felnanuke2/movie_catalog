@@ -4,7 +4,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:movie_catalog/media/domain/data_sources/video_data_source.dart';
 import 'package:movie_catalog/media/domain/entities/video.dart';
 import 'package:movie_catalog/media/domain/errors/media_request_error.dart';
-import 'package:movie_catalog/media/domain/repositories/movies_interface.dart';
+import 'package:movie_catalog/media/domain/repositories/media_repository.dart';
 
 import 'package:movie_catalog/media/domain/usecases/get_videos_usecase.dart';
 

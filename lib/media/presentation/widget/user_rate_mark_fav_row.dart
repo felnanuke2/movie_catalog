@@ -46,38 +46,38 @@ class _UserRateMarkFavRowState extends State<UserRateMarkFavRow> {
     if (controller.currentUser.value != null) {
       if (widget._mediaType == 'tv') {
         isLiked = controller.tvFavorites
-            .map((e) => e.id)
+            .map((e) => e.query)
             .toList()
-            .contains(widget._movieItemModel!.id!);
+            .contains(widget._movieItemModel!.query!);
         wachList = controller.tvWhactList
-            .map((e) => e.id)
+            .map((e) => e.query)
             .toList()
-            .contains(widget._movieItemModel!.id!);
+            .contains(widget._movieItemModel!.query!);
         rated = controller.tvRated
-            .map((e) => e.id)
+            .map((e) => e.query)
             .toList()
-            .contains(widget._movieItemModel!.id!);
+            .contains(widget._movieItemModel!.query!);
         if (rated) {
           var item = controller.tvRated.firstWhere(
-              (element) => element.id == widget._movieItemModel!.id!);
+              (element) => element.query == widget._movieItemModel!.query!);
           starCount = item.rating!;
         }
       } else {
         isLiked = controller.movieFavorites
-            .map((e) => e.id)
+            .map((e) => e.query)
             .toList()
-            .contains(widget._movieItemModel!.id!);
+            .contains(widget._movieItemModel!.query!);
         wachList = controller.movieWhactList
-            .map((e) => e.id)
+            .map((e) => e.query)
             .toList()
-            .contains(widget._movieItemModel!.id!);
+            .contains(widget._movieItemModel!.query!);
         rated = controller.movieRated
-            .map((e) => e.id)
+            .map((e) => e.query)
             .toList()
-            .contains(widget._movieItemModel!.id!);
+            .contains(widget._movieItemModel!.query!);
         if (rated) {
           var item = controller.movieRated.firstWhere(
-              (element) => element.id == widget._movieItemModel!.id!);
+              (element) => element.query == widget._movieItemModel!.query!);
           starCount = item.rating!;
         }
       }

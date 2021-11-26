@@ -11,7 +11,7 @@ class HttpClientMock extends Mock implements Client {}
 
 void main() {
   final client = HttpClientMock();
-  final dataSource = TmdbPopularMoviesDatasource(client);
+  final dataSource = TmdbPopularMoviesDatasource(client, laguage: 'pt-BR');
   setUpAll(() {
     registerFallbackValue(Uri());
   });
