@@ -1,114 +1,114 @@
 1
-00: 00: 03,400 -> 00: 00: 06.177
+00: 00: 03,400 --> 00: 00: 06.177
 Nesta lição, vamos
 estar falando sobre finanças. E
 
 2
-00: 00: 06,177 -> 00: 00: 10.009
+00: 00: 06,177 --> 00: 00: 10.009
 um dos aspectos mais importantes
 das finanças são os juros.
 
 3
-00: 00: 10.009 -> 00: 00: 13.655
+00: 00: 10.009 --> 00: 00: 13.655
 Quando eu vou a um banco ou algum
 outra instituição de crédito
 
 4
-00: 00: 13,655 -> 00: 00: 17.720
+00: 00: 13,655 --> 00: 00: 17.720
 para pedir dinheiro emprestado, o banco fica feliz
 para me dar esse dinheiro. Mas então eu sou
 
 5
-00: 00: 17,900 -> 00: 00: 21.480
+00: 00: 17,900 --> 00: 00: 21.480
 vou pagar ao banco pelo
 privilégio de usar seu dinheiro. E essa
 
 6
-00: 00: 21,660 -> 00: 00: 26.440
+00: 00: 21,660 --> 00: 00: 26.440
 quantidade de dinheiro que eu pago ao banco é
 chamado de juros. Da mesma forma, se eu colocar dinheiro
 
 7
-00: 00: 26,620 -> 00: 00: 31.220
+00: 00: 26,620 --> 00: 00: 31.220
 em uma conta poupança ou eu compro um
 certificado de depósito, o banco apenas
 
 8
-00: 00: 31,300 -> 00: 00: 35.800
+00: 00: 31,300 --> 00: 00: 35.800
 não põe meu dinheiro em uma caixinha
 e deixá-lo lá até mais tarde. Eles pegam
 
 9
-00: 00: 35,800 -> 00: 00: 40.822
+00: 00: 35,800 --> 00: 00: 40.822
 meu dinheiro e emprestar para alguem
 senão. Então, eles estão usando meu dinheiro.
 
 10
-00: 00: 40,822 -> 00: 00: 44.400
+00: 00: 40,822 --> 00: 00: 44.400
 O banco tem que me pagar pelo privilégio
 de usar meu dinheiro.
 
 11
-00: 00: 44,400 -> 00: 00: 48.700
+00: 00: 44,400 --> 00: 00: 48.700
 Agora, o que torna os bancos
 lucrativa é a taxa
 
 12
-00: 00: 48,700 -> 00: 00: 53.330
+00: 00: 48,700 --> 00: 00: 53.330
 que eles cobram das pessoas para usar o banco
 o dinheiro é maior do que a taxa que eles
 
 13
-00: 00: 53,510 -> 00: 01: 00.720
+00: 00: 53,510 --> 00: 01: 00.720
 pagar pessoas como eu para usar meu dinheiro. O
 quantidade de juros que uma pessoa paga ou
 
 14
-00: 01: 00,800 -> 00: 01: 06.640
+00: 01: 00,800 --> 00: 01: 06.640
 ganha depende de três coisas. Isso é
 depende de quanto dinheiro está envolvido.
 
 15
-00: 01: 06,820 -> 00: 01: 11.300
+00: 01: 06,820 --> 00: 01: 11.300
 Depende da taxa de juros
 sendo pago ou a taxa de juros sendo
 
 16
-00: 01: 11,480 -> 00: 01: 17.898
+00: 01: 11,480 --> 00: 01: 17.898
 carregada. E também depende de
 quanto tempo está envolvido. Se eu tiver
 
 17
-00: 01: 17,898 -> 00: 01: 22.730
+00: 01: 17,898 --> 00: 01: 22.730
 um empréstimo e quero diminuir o valor
 de interesse que vou pagar, então
 
 18
-00: 01: 22,800 -> 00: 01: 28.040
+00: 01: 22,800 --> 00: 01: 28.040
 Eu terei que diminuir como
 muito dinheiro eu peço emprestado, vou ter
 
 19
-00: 01: 28,220 -> 00: 01: 32.420
+00: 01: 28,220 --> 00: 01: 32.420
 para pedir dinheiro emprestado por um período mais curto
 de tempo, ou terei que encontrar um
 
 20
-00: 01: 32,600 -> 00: 01: 37.279
+00: 01: 32,600 --> 00: 01: 37.279
 instituição de crédito que cobra um menor
 taxa de juro. Por outro lado, se eu
 
 21
-00: 01: 37,279 -> 00: 01: 41.480
+00: 01: 37,279 --> 00: 01: 41.480
 quero ganhar mais juros no meu
 investimento, vou ter que investir
 
 22
-00: 01: 41,480 -> 00: 01: 46.860
+00: 01: 41,480 --> 00: 01: 46.860
 mais dinheiro, deixe o dinheiro no
 conta por um longo período de tempo, ou
 
 23
-00: 01: 46,860 -> 00: 01: 49.970
+00: 01: 46,860 --> 00: 01: 49.970
 encontre uma instituição que irá pagar
 me uma taxa de juros mais alta.
